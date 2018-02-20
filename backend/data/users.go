@@ -1,10 +1,13 @@
 package data
 
-// db.AutoMigrate(&User{})
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type User struct {
-	ID           uint   `gorm:"primary_key" json:"id"`
-	Username     string `gorm:"UNIQUE;NOT NULL" json:"-"`
-	Hash         string `gorm:"NOT NULL" json:"-"`
-	SessionToken string `gorm:"NOT NULL" json:"-"`
+	gorm.Model
+	OAuthID string `gorm:"NOT NULL" json:"accessToken"`
+	UserID  string `gorm:"UNIQUE;NOT NULL" json:"userID"`
+	// Hash     string `gorm:"NOT NULL" json:"Hash"`
+	// Token    string `gorm:"NOT NULL" json:"SessionToken"`
 }
