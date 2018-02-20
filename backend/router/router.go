@@ -15,15 +15,10 @@ import (
 func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	r := gin.Default()
 	db := data.SetupDB()
-<<<<<<< HEAD
-	defer db.Close()
-	r.LoadHTMLFiles("/home/theodore/go/src/flex_project/backend/templates/root.tmpl.html")
-=======
 	db.DropTable(&data.User{})
 	db.CreateTable(&data.User{})
 	db.AutoMigrate(&data.User{})
-	r.LoadHTMLFiles("/Users/andrewblum/go/src/flex_project/backend/templates/root.html")
->>>>>>> 66548e909f4bbed3db391a003cda26734cb59047
+	r.LoadHTMLFiles("/home/theodore/go/src/flex_project/backend/templates/root.tmpl.html")
 
 	type Test struct {
 		test int
