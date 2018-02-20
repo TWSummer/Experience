@@ -11,7 +11,7 @@ type Test struct {
 }
 
 func RootHandler(c *gin.Context) {
-	c.HTML(http.StatusOK, "root.html", gin.H{
+	c.HTML(http.StatusOK, "root.tmpl.html", gin.H{
 		"title": "Main webSIITTEE",
 	})
 }

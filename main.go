@@ -12,6 +12,7 @@ var db *gorm.DB
 
 func main() {
 	r, db = router.SetupRouterAndDB()
+	r.Static("/css", "backend/css")
 	defer db.Close()
 
 	// Listen and Server in 0.0.0.0:8080
