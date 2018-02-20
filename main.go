@@ -1,14 +1,15 @@
 package main
 
 import (
-	"flex_project/backend/db"
 	"flex_project/backend/router"
+
+	"github.com/gin-gonic/gin"
 )
 
+var r *gin.Engine
+
 func main() {
-	db := db.SetupDB()
-	defer db.Close()
-	r := router.SetupRouter()
+	r = router.SetupRouter()
 	// Listen and Server in 0.0.0.0:8080
 	r.Run(":8080")
 }

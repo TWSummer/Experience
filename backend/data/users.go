@@ -1,4 +1,6 @@
-package db
+package data
+
+// db.AutoMigrate(&User{})
 
 type User struct {
 	ID           uint   `gorm:"primary_key" json:"id"`

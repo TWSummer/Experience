@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -8,7 +10,8 @@ type Test struct {
 	test bool
 }
 
-func rootHandler(c *gin.Context) {
-	tester := &Test{test: true}
-	c.JSON(200, tester)
+func RootHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "root.html", gin.H{
+		"title": "Main webSIITTEE",
+	})
 }

@@ -1,6 +1,9 @@
 package router
 
 import (
+	"flex_project/backend/data"
+	"flex_project/backend/handlers"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -8,15 +11,15 @@ func SetupRouter() *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 	r := gin.Default()
+	db := data.SetupDB()
+	defer db.Close()
+	r.LoadHTMLFiles("/Users/andrewblum/go/src/flex_project/backend/templates/root.html")
 
 	type Test struct {
 		test int
 	}
 
-	r.GET("/", func(c *gin.Context) {
-		tester := &Test{test: 99}
-		c.JSON(200, tester)
-	})
+	r.GET("/", handlers.RootHandler)
 
 	//User Routes
 	r.POST("/api/users", func(c *gin.Context) {
@@ -30,8 +33,9 @@ func SetupRouter() *gin.Engine {
 	})
 
 	r.GET("/api/users", func(c *gin.Context) {
-		tester := &Test{test: 99}
-		c.JSON(200, tester)
+		users := []data.User{}
+		db.Find(&users)
+		c.JSON(200, users)
 	})
 
 	//Session Routes
