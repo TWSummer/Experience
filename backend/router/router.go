@@ -12,6 +12,8 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+
+
 func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	r := gin.Default()
 	db := data.SetupDB()
@@ -24,6 +26,17 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 		test int
 	}
 
+	validateAuthToken := func(UserID, OAuthID string) bool {
+		url := fmt.Sprintf("https://graph.facebook.com/debug_token?input_token=%v&access_token=867019043470476|8ff4a2c7cb4900eae302baf8f01139ba", OAuthID)
+		resp, _ := http.Get(url)
+		contents, _ := ioutil.ReadAll(resp.Body)
+		var foo interface{}
+		json.Unmarshal(contents, &foo)
+		m := foo.(map[string]interface{})
+		n := m["data"].(map[string]interface{})
+		return (n["user_id"] == UserID && n["app_id"] == "867019043470476")
+	}
+
 	r.GET("/", handlers.RootHandler)
 
 	//User Routes
@@ -34,21 +47,21 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 			c.JSON(400, gin.H{"error": user})
 			return
 		}
-		url := fmt.Sprintf("https://graph.facebook.com/debug_token?input_token=%v&access_token=867019043470476|8ff4a2c7cb4900eae302baf8f01139ba", c.PostForm("OAuthID"))
-		resp, _ := http.Get(url)
-		contents, _ := ioutil.ReadAll(resp.Body)
-		var foo interface{}
-		json.Unmarshal(contents, &foo)
-		m := foo.(map[string]interface{})
-		n := m["data"].(map[string]interface{})
-		if n["user_id"] == c.PostForm("UserID") && n["app_id"] == "867019043470476" {
-			db.Create(&user)
-			c.JSON(200, user)
+		if validateAuthToken(user.UserID, user.OAuthID) {
+			tempUser := data.User{}
+			prevUser := db.Where("user_id = ?", user.UserID).First(&tempUser)
+			if err := prevUser.RecordNotFound(); !err {
+				tempUser.OAuthID = user.UserID
+				db.Save(&tempUser)
+				c.JSON(200, user)
+			} else {
+					db.Create(&user)
+					c.JSON(200, user)
+			}
 		} else {
 			c.JSON(400, gin.H{"error": "Invalid token"})
 			return
 		}
-
 	})
 
 	// r.PUT("/api/users", func(c *gin.Context) {
