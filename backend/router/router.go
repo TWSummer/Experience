@@ -1,6 +1,10 @@
 package router
 
 import (
+	"net/http"
+	"fmt"
+	"io/ioutil"
+	"encoding/json"
 	"flex_project/backend/data"
 	"flex_project/backend/handlers"
 
@@ -18,6 +22,25 @@ func SetupRouter() *gin.Engine {
 	type Test struct {
 		test int
 	}
+
+	r.GET("/test", func(c *gin.Context) {
+		userID := "EAAMUjJoZAfIwBACHlmS2tcLPuOXDrluZBqiF1LCBdfuiByCZCjNP6nUHG3JWx6sx7YLSm8tODuIrYZCQ7eWkAs7kxQf0Wzfcy9slxjX0JBrmfoBVxFago1ZCl3yBhtRENGWc9mSpsMgOGSZAlSJNTcHqWsS2avRSbqiXQ5vZAOhVhqWDeLbpz8OwYv3gHglv8ILFMyWrdIgsQZDZD"
+
+		url := fmt.Sprintf("https://graph.facebook.com/debug_token?input_token=%v&access_token=867019043470476|8ff4a2c7cb4900eae302baf8f01139ba", userID)
+		resp, _ := http.Get(url)
+		contents, _ := ioutil.ReadAll(resp.Body)
+
+
+		var foo interface{}
+		err2 := json.Unmarshal(contents, &foo)
+		m := foo.(map[string]interface{})
+		n := m["data"].(map[string]interface{})
+		fmt.Printf("resp: %v", n["user_id"])
+		fmt.Printf("resp: %v", n["app_id"])
+
+		fmt.Printf("err2: %v", err2)
+
+	})
 
 	r.GET("/", handlers.RootHandler)
 
@@ -49,23 +72,23 @@ func SetupRouter() *gin.Engine {
 		c.JSON(200, tester)
 	})
 
-	//Experince routes
-	r.POST("/api/experinces", func(c *gin.Context) {
+	//Experience routes
+	r.POST("/api/experiences", func(c *gin.Context) {
 		tester := &Test{test: 99}
 		c.JSON(200, tester)
 	})
 
-	r.DELETE("/api/experinces", func(c *gin.Context) {
+	r.DELETE("/api/experiences", func(c *gin.Context) {
 		tester := &Test{test: 99}
 		c.JSON(200, tester)
 	})
 
-	r.PUT("/api/experinces", func(c *gin.Context) {
+	r.PUT("/api/experiences", func(c *gin.Context) {
 		tester := &Test{test: 99}
 		c.JSON(200, tester)
 	})
 
-	r.GET("/api/experinces", func(c *gin.Context) {
+	r.GET("/api/experiences", func(c *gin.Context) {
 		tester := &Test{test: 99}
 		c.JSON(200, tester)
 	})
