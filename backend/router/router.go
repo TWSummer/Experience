@@ -10,6 +10,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 
@@ -20,14 +25,20 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	db.DropTable(&data.User{})
 	db.CreateTable(&data.User{})
 	db.AutoMigrate(&data.User{})
-	r.LoadHTMLFiles("/Users/Patrick/go/src/flex_project/backend/templates/root.tmpl.html")
+	// r.LoadHTMLFiles("/home/theodore/go/src/flex_project/backend/templates/root.tmpl.html")
+	r.LoadHTMLGlob("backend/templates/*.html")
 
 	type Test struct {
 		test int
 	}
 
 	validateAuthToken := func(UserID, OAuthID string) bool {
-		url := fmt.Sprintf("https://graph.facebook.com/debug_token?input_token=%v&access_token=867019043470476|8ff4a2c7cb4900eae302baf8f01139ba", OAuthID)
+		dotEnvErr := godotenv.Load()
+		if dotEnvErr != nil {
+			log.Fatal("Error loading .env file")
+		}
+		secret := os.Getenv("FACEBOOK_APP_SECRET")
+		url := fmt.Sprintf("https://graph.facebook.com/debug_token?input_token=%v&access_token=867019043470476|%v", OAuthID, secret)
 		resp, _ := http.Get(url)
 		contents, _ := ioutil.ReadAll(resp.Body)
 		var foo interface{}
