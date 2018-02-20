@@ -18,7 +18,7 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	db.DropTable(&data.User{})
 	db.CreateTable(&data.User{})
 	db.AutoMigrate(&data.User{})
-	r.LoadHTMLFiles("/Users/Patrick/go/src/flex_project/backend/templates/root.tmpl.html")
+	r.LoadHTMLFiles("/home/theodore/go/src/flex_project/backend/templates/root.tmpl.html")
 
 	type Test struct {
 		test int
