@@ -18,13 +18,15 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	db.DropTable(&data.User{})
 	db.CreateTable(&data.User{})
 	db.AutoMigrate(&data.User{})
-	r.LoadHTMLFiles("/Users/andrewblum/go/src/flex_project/backend/templates/root.html")
+	r.LoadHTMLFiles("/Users/Patrick/go/src/flex_project/backend/templates/root.html")
 
 	type Test struct {
 		test int
 	}
 
 	r.GET("/test", func(c *gin.Context) {
+		fmt.Printf("sdfsdfsdfsdf")
+
 		userID := "EAAMUjJoZAfIwBACHlmS2tcLPuOXDrluZBqiF1LCBdfuiByCZCjNP6nUHG3JWx6sx7YLSm8tODuIrYZCQ7eWkAs7kxQf0Wzfcy9slxjX0JBrmfoBVxFago1ZCl3yBhtRENGWc9mSpsMgOGSZAlSJNTcHqWsS2avRSbqiXQ5vZAOhVhqWDeLbpz8OwYv3gHglv8ILFMyWrdIgsQZDZD"
 
 		url := fmt.Sprintf("https://graph.facebook.com/debug_token?input_token=%v&access_token=867019043470476|8ff4a2c7cb4900eae302baf8f01139ba", userID)
@@ -47,13 +49,44 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	//User Routes
 	r.POST("/api/users", func(c *gin.Context) {
 		user := data.User{}
-		err := c.BindJSON(&user)
+		err := c.Bind(&user)
 		if err != nil {
 			c.JSON(400, gin.H{"error": user})
 			return
 		}
-		db.Create(&user)
-		c.JSON(200, user)
+		fmt.Printf("user: %v", user)
+
+		// var foo interface{}
+		// err2 := json.Unmarshal(contents, &foo)
+
+		fmt.Printf("UserID: %v", c.PostForm("UserID"))
+		fmt.Printf("OAuthID: %v", c.PostForm("OAuthID"))
+		url := fmt.Sprintf("https://graph.facebook.com/debug_token?input_token=%v&access_token=867019043470476|8ff4a2c7cb4900eae302baf8f01139ba", c.PostForm("OAuthID"))
+		fmt.Printf("url: %v", url)
+		resp, _ := http.Get(url)
+		contents, _ := ioutil.ReadAll(resp.Body)
+		var foo interface{}
+		json.Unmarshal(contents, &foo)
+		m := foo.(map[string]interface{})
+		n := m["data"].(map[string]interface{})
+		fmt.Printf("resp user_id: %v", n["user_id"])
+		fmt.Printf("resp app_id: %v", n["app_id"])
+
+		if n["user_id"] == c.PostForm("UserID") && n["app_id"] == "867019043470476" {
+			fmt.Printf("resp app_id: %v", n["app_id"])
+			fmt.Printf("resp app_id: %v", n["app_id"])
+
+			fmt.Printf("good user")
+
+			db.Create(&user)
+			c.JSON(200, user)
+		} else {
+			fmt.Printf("bad user")
+
+			c.JSON(400, gin.H{"error": "Invalid token"})
+			return
+		}
+
 	})
 
 	// r.PUT("/api/users", func(c *gin.Context) {

@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="backend/css/main">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   </head>
 
   <body>
@@ -19,6 +20,15 @@
         if (response.status === 'connected') {
           // Logged into your app and Facebook.
           testAPI();
+          $.ajax({
+            method: "POST",
+            url: "/api/users",
+            data: {
+              UserID: response.authResponse.userID,
+              OAuthID: response.authResponse.accessToken,
+            }
+          });
+
         } else {
           // The person is not logged into your app or we are unable to tell.
           document.getElementById('status').innerHTML = 'Please log ' +
