@@ -13,7 +13,7 @@ func SetupRouter() *gin.Engine {
 	r := gin.Default()
 	db := data.SetupDB()
 	defer db.Close()
-	r.LoadHTMLFiles("/Users/andrewblum/go/src/flex_project/backend/templates/root.html")
+	r.LoadHTMLFiles("/home/theodore/go/src/flex_project/backend/templates/root.tmpl.html")
 
 	type Test struct {
 		test int
