@@ -1,6 +1,7 @@
 import {merge} from 'lodash';
 import {
-  RECEIVE_CURRENT_USER
+  RECEIVE_CURRENT_USER,
+  REMOVE_CURRENT_USER,
 } from  '../actions/session_actions';
 const _nullSession = {
   currentUser: null,
@@ -9,7 +10,7 @@ const _nullSession = {
 export default (state = _nullSession, action) => {
   switch(action.type) {
     case RECEIVE_CURRENT_USER:
-      state = {
+      let newState = {
         currentUser: {
           id: action.id,
           name: action.name,
@@ -17,6 +18,9 @@ export default (state = _nullSession, action) => {
         }
 
       };
+      return newState;
+    case REMOVE_CURRENT_USER:
+      return _nullSession;
     default:
       return state;
   }
