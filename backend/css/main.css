@@ -187,4 +187,14 @@ a:link:visited {
 .session-controls {
   display: flex;
   align-items: center;
+
+}
+
+#root {
+  height: 100%;
+}
+
+.full-page-body {
+  height: 100%;
+  margin-top: 52px;
 }
