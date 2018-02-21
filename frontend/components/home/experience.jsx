@@ -7,9 +7,10 @@ class Experience extends React.Component {
 
    render() {
      return (
-       <span className="experience-index-item">
-         <p>{this.props.experience.title}</p>
-       </span>
+       <div className="experience-index-item">
+         <p>{this.props.experience.Title}</p>
+         <section className="experience-ribbon"></section>
+       </div>
      );
    }
  }
