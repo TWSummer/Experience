@@ -34,11 +34,13 @@ window.fbAsyncInit = function() {
 
 
     //Required for bootstrapping user
-    if(response.status == 'connected') {
+    // if(response.status == 'connected') {
       store.dispatch(checkLoginState());
-    }
+    // }
     window.store = store;
-    ReactDOM.render(<Root store={store} />, root);
+    setTimeout(() => {
+      ReactDOM.render(<Root store={store} />, root);
+    }, 500);
   });
 
 };

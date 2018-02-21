@@ -19,11 +19,10 @@ class NavBar extends React.Component {
     super(props);
     this.state = {
       searchQuery: "",
-      pictureUrl: "",
     };
 
     //Initialize FB methods... substitute for bootstrapping user
-    
+
 
     this.update = this.update.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -42,7 +41,7 @@ class NavBar extends React.Component {
 
   handleLogin(e) {
     e.preventDefault();
-    console.log("click! ", e);
+
 
     FB.login(this.props.checkLoginState);
 
@@ -54,23 +53,9 @@ class NavBar extends React.Component {
   }
 
   render() {
-    // console.log(this.props.currentUser);
-    // if (this.props.currentUser) {
-    //   console.log(this.props.currentUser);
-    //   this.setState({
-    //     pictureUrl: "dog",
-    //   });
-    // }
-    let url;
-    if (this.props.currentUser) {
-      url = this.props.currentUser.pictureURL;
-      console.log(this.props.currentUser);
-      console.log(url);
-
-    }
     const display = this.props.currentUser ? (
     <div className="user-info" onClick={this.toggleDropdown}>
-      <img className="profile-picture" src={url ? url : ""}>
+      <img className="profile-picture" src={this.props.currentUser.pictureURL}>
       </img>
       <span>{this.props.currentUser.name}</span>
       <button

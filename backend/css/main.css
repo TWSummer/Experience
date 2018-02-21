@@ -107,6 +107,7 @@ a:link:visited {
 }
 
 .logo span:last-child {
+  margin-left: -10px;
   font-size: 24px;
   line-height: 1;
   margin-top: 10px;
@@ -135,7 +136,7 @@ a:link:visited {
   font-size: 20px;
   border: 1px solid #000;
   border-radius: 5px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
 }
 
 .user-info {
