@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { checkLoginState} from '../../actions/session_actions';
+import { checkLoginState, logoutUser} from '../../actions/session_actions';
 import { withRouter } from 'react-router-dom';
 import NavBar from './nav_bar';
 
@@ -12,6 +12,7 @@ const mapDispatchToProps = dispatch => {
   return {
     // logout: () => dispatch(logout()),
     checkLoginState: () => dispatch(checkLoginState()),
+    logoutUser: () => dispatch(logoutUser()),
   };
 };
 

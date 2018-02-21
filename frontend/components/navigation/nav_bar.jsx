@@ -4,9 +4,7 @@
 //  document.getElementById('root').appendChild(logoutButton);
 // logoutButton.addEventListener("click", (e) =>{
 //   e.preventDefault();
-//   FB.api("/me/permissions", "delete", function(response){
-//     console.log(response);
-//   });
+
 // });
 
 
@@ -24,12 +22,33 @@ class NavBar extends React.Component {
       pictureUrl: "",
     };
 
+    //Initialize FB methods... substitute for bootstrapping user
+    window.fbAsyncInit = function() {
+      console.log("init!");
+      FB.init({
+        appId      : '867019043470476',
+        status     : true,
+        cookie     : true,  // enable cookies to allow the server to access
+                            // the session
+        xfbml      : true,  // parse social plugins on this page
+        version    : 'v2.8' // use graph api version 2.8
+      });
+
+      //Subscribe to a crazy event that facebook provides
+      FB.Event.subscribe('auth.statusChange', function(response) {
+        if(response.status == 'connected') {
+          props.checkLoginState();
+
+      }
+});
+
+    };
+
     this.update = this.update.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
   }
 
   componentWillReceiveProps() {
-    // this.props.checkLoginState();
   }
 
   update(attribute) {
@@ -44,8 +63,13 @@ class NavBar extends React.Component {
     e.preventDefault();
     console.log("click! ", e);
 
-    FB.login(this.props.checkLoginState());
+    FB.login(this.props.checkLoginState);
 
+  }
+
+  handleLogout(e) {
+    e.preventDefault();
+    this.props.logoutUser();
   }
 
   render() {
@@ -68,17 +92,25 @@ class NavBar extends React.Component {
       <img className="profile-picture" src={url ? url : ""}>
       </img>
       <span>{this.props.currentUser.name}</span>
+      <button
+        className="logout-button btn"
+        onClick={(e) => {
+          console.log("click");
+          this.handleLogout(e);
+        }}>
+        <i className="fab fa-facebook-square"></i> Log Out
+        </button>
     </div>
   ) : (
     <div className="session-controls">
-      <div
-        className="login-button"
+      <button
+        className="login-button btn"
         onClick={(e) => {
           console.log("click");
           this.handleLogin(e);
         }}>
-        Login
-      </div>
+        <i className="fab fa-facebook-square"></i> Login
+      </button>
     </div>
   );
 
