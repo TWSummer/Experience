@@ -23,26 +23,7 @@ class NavBar extends React.Component {
     };
 
     //Initialize FB methods... substitute for bootstrapping user
-    window.fbAsyncInit = function() {
-      console.log("init!");
-      FB.init({
-        appId      : '867019043470476',
-        status     : true,
-        cookie     : true,  // enable cookies to allow the server to access
-                            // the session
-        xfbml      : true,  // parse social plugins on this page
-        version    : 'v2.8' // use graph api version 2.8
-      });
-
-      //Subscribe to a crazy event that facebook provides
-      FB.Event.subscribe('auth.statusChange', function(response) {
-        if(response.status == 'connected') {
-          props.checkLoginState();
-
-      }
-});
-
-    };
+    
 
     this.update = this.update.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
