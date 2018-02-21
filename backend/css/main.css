@@ -61,6 +61,9 @@ input[type="submit"] {
 
 html {
   height: 100%;
+  /* background: #3F3250; */
+  /* background: #fff; */
+  background: linear-gradient(to bottom right, #57BC90, #77C9D4);
 }
 
 body {
@@ -69,11 +72,15 @@ body {
   margin: 0 auto;
   font-size: 14px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
+  /* background: #C0B3A0; */
+  background: #fff;
   /* font-size: 72px; */
 }
 
 nav {
+  /* background: #E14658; */
+  background: #fff;
   display: flex;
   justify-content: space-between;
   height: 50px;
@@ -82,7 +89,7 @@ nav {
   left: 0px;
   right: 0px;
   padding: 0 10%;
-  border: 1px solid #000;
+  border-bottom: 1px solid #57BC90;
 }
 
 a:link {
@@ -98,6 +105,12 @@ a:link:visited {
   align-items: center;
   line-height: 1;
   margin-top: -10px;
+}
+
+.logo span {
+  color: #57BC90;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.1), -1px 1px 1px rgba(0,0,0,.1);
+
 
 }
 .logo span:first-child {
@@ -107,7 +120,7 @@ a:link:visited {
 }
 
 .logo span:last-child {
-  margin-left: -10px;
+  margin-left: -5px;
   font-size: 24px;
   line-height: 1;
   margin-top: 10px;
@@ -126,28 +139,41 @@ a:link:visited {
 }
 
 .search-container input {
-  border: 1px solid #000;
+  border: 1px solid #57BC90;
+
   border-radius: 5px;
   padding: 5px 10px;
   width: 275px;
+  background: #fff;
 }
 .btn {
   padding: 5px 10px;
   font-size: 20px;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
   border-radius: 5px;
+  background: #77C9D4;
+  box-shadow: 0px 1px 1px 1px rgba(0,0,0,.2), 0px 1px 1px 1px rgba(0,0,0,.2);
+
+
+  color: #fff;
   /* margin-top: 5px; */
 }
 
 .user-info {
   display: flex;
   align-items: center;
+  color: #fff;
+  padding: 0 10px;
 }
 
 .profile-picture {
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   margin-right: 20px;
+  /* border: 0.5px solid rgba(0,0,0,0.1); */
+  box-shadow: 0px 1px 1px 1px rgba(0,0,0,0.04), 0px 1px 1px 1px rgba(0,0,0,0.04);
+
+
 }
 
 .login-button .fa-facebook-square{
@@ -156,4 +182,9 @@ a:link:visited {
 
 .logout-button {
   margin-left: 20px;
+}
+
+.session-controls {
+  display: flex;
+  align-items: center;
 }
