@@ -5,10 +5,20 @@ class HomePage extends React.Component {
     super(props);
   }
 
+  componentWillMount() {
+    this.props.fetchExperiences(10, 0);
+  }
+
    render() {
      return (
        <main className="home-page">
-
+         {
+           this.props.experiences.map((experience) => {
+             return (
+               <p>{experience.title}</p>
+             );
+           })
+         }
        </main>
      );
    }
