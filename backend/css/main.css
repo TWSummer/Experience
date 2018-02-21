@@ -64,11 +64,12 @@ html {
 }
 
 body {
-  height: 100%;
+  min-height: 100%;
   width: 80%;
   margin: 0 auto;
   font-size: 14px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 1px solid #000;
   /* font-size: 72px; */
 }
 
@@ -106,6 +107,7 @@ a:link:visited {
 }
 
 .logo span:last-child {
+  margin-left: -10px;
   font-size: 24px;
   line-height: 1;
   margin-top: 10px;
@@ -127,18 +129,33 @@ a:link:visited {
   border: 1px solid #000;
   border-radius: 5px;
   padding: 5px 10px;
-  width: 175px;
+  width: 275px;
 }
-.login-button {
+.btn {
   padding: 5px 10px;
-  font-size: 24px;
+  font-size: 20px;
   border: 1px solid #000;
-  border-radius: 8px;
-  margin-top: 5px;
+  border-radius: 5px;
+  /* margin-top: 5px; */
 }
 
-.login-button:hover {
-  cursor: pointer;
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.profile-picture {
+  height: 30px;
+  width: 30px;
+  margin-right: 20px;
+}
+
+.login-button .fa-facebook-square{
+  font-size: 24px;
+}
+
+.logout-button {
+  margin-left: 20px;
 }
 
 #root {

@@ -4,9 +4,7 @@
 //  document.getElementById('root').appendChild(logoutButton);
 // logoutButton.addEventListener("click", (e) =>{
 //   e.preventDefault();
-//   FB.api("/me/permissions", "delete", function(response){
-//     console.log(response);
-//   });
+
 // });
 
 
@@ -21,15 +19,16 @@ class NavBar extends React.Component {
     super(props);
     this.state = {
       searchQuery: "",
-      pictureUrl: "",
     };
+
+    //Initialize FB methods... substitute for bootstrapping user
+
 
     this.update = this.update.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
   }
 
   componentWillReceiveProps() {
-    // this.props.checkLoginState();
   }
 
   update(attribute) {
@@ -42,43 +41,42 @@ class NavBar extends React.Component {
 
   handleLogin(e) {
     e.preventDefault();
-    console.log("click! ", e);
 
-    FB.login(this.props.checkLoginState());
+
+    FB.login(this.props.checkLoginState);
 
   }
 
-  render() {
-    // console.log(this.props.currentUser);
-    // if (this.props.currentUser) {
-    //   console.log(this.props.currentUser);
-    //   this.setState({
-    //     pictureUrl: "dog",
-    //   });
-    // }
-    let url;
-    if (this.props.currentUser) {
-      url = this.props.currentUser.pictureURL;
-      console.log(this.props.currentUser);
-      console.log(url);
+  handleLogout(e) {
+    e.preventDefault();
+    this.props.logoutUser();
+  }
 
-    }
+  render() {
     const display = this.props.currentUser ? (
     <div className="user-info" onClick={this.toggleDropdown}>
-      <img className="profile-picture" src={url ? url : ""}>
+      <img className="profile-picture" src={this.props.currentUser.pictureURL}>
       </img>
       <span>{this.props.currentUser.name}</span>
+      <button
+        className="logout-button btn"
+        onClick={(e) => {
+          console.log("click");
+          this.handleLogout(e);
+        }}>
+        <i className="fab fa-facebook-square"></i> Log Out
+        </button>
     </div>
   ) : (
     <div className="session-controls">
-      <div
-        className="login-button"
+      <button
+        className="login-button btn"
         onClick={(e) => {
           console.log("click");
           this.handleLogin(e);
         }}>
-        Login
-      </div>
+        <i className="fab fa-facebook-square"></i> Login
+      </button>
     </div>
   );
 
