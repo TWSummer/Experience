@@ -1,7 +1,168 @@
-html {
+/* PHASE 0: Reset */
 
+
+html, body, header, nav, h1, a,
+ul, li, strong, main, button, i,
+section, img, div, h2, p, form,
+fieldset, label, input, textarea,
+span, article, footer, time, small {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  font-family: $sans-serif;
+  color: #000;
+  text-align: inherit;
+  text-decoration:none;
+  vertical-align: baseline;
+  box-sizing: inherit;
+  background: transparent;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+input[type="password"],
+input[type="email"],
+input[type="text"],
+input[type="submit"],
+textarea,
+button {
+  /*
+  Get rid of native styling. Read more here:
+  http://css-tricks.com/almanac/properties/a/appearance/
+  */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+/* Clearfix */
+
+.group:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+
+html {
+  height: 100%;
 }
 
 body {
+  min-height: 100%;
+  width: 80%;
+  margin: 0 auto;
+  font-size: 14px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 1px solid #000;
+  /* font-size: 72px; */
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 0 10%;
+  border: 1px solid #000;
+}
+
+a:link {
+  text-decoration: none;
+
+}
+
+a:link:visited {
+  color: inherit;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  margin-top: -10px;
+
+}
+.logo span:first-child {
   font-size: 72px;
+  line-height: .70;
+
+}
+
+.logo span:last-child {
+  margin-left: -10px;
+  font-size: 24px;
+  line-height: 1;
+  margin-top: 10px;
+}
+
+.left-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-container {
+  margin-left: 200px;
+  display: flex;
+  align-items: center;
+
+}
+
+.search-container input {
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 5px 10px;
+  width: 275px;
+}
+.btn {
+  padding: 5px 10px;
+  font-size: 20px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  /* margin-top: 5px; */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.profile-picture {
+  height: 30px;
+  width: 30px;
+  margin-right: 20px;
+}
+
+.login-button .fa-facebook-square{
+  font-size: 24px;
+}
+
+.logout-button {
+  margin-left: 20px;
+}
+
+#root {
+  height: 100%;
+}
+
+.full-page-body {
+  height: 100%;
+  margin-top: 52px;
 }
