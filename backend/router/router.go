@@ -21,7 +21,7 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	r.GET("/", handlers.RootHandler)
 
 	//User Routes
-	r.POST("/api/users", wrapHandler(handlers.CreateUser, db))
+	r.POST("/api/users/", wrapHandler(handlers.CreateUser, db))
 	// r.PUT("/api/users", )
 
 	// r.GET("/api/users", func(c *gin.Context) {
