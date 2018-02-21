@@ -157,3 +157,12 @@ a:link:visited {
 .logout-button {
   margin-left: 20px;
 }
+
+#root {
+  height: 100%;
+}
+
+.full-page-body {
+  height: 100%;
+  margin-top: 52px;
+}
