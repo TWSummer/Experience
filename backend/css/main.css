@@ -140,3 +140,12 @@ a:link:visited {
 .login-button:hover {
   cursor: pointer;
 }
+
+#root {
+  height: 100%;
+}
+
+.full-page-body {
+  height: 100%;
+  margin-top: 52px;
+}

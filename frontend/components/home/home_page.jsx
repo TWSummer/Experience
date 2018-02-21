@@ -7,7 +7,9 @@ class HomePage extends React.Component {
 
    render() {
      return (
-       <p>Theo is awesome!</p>
+       <main className="home-page">
+
+       </main>
      );
    }
  }
