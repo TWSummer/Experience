@@ -12,7 +12,7 @@
     <script>
     // This code handles the usage of Facebook's OAuth implementation.
       // This is called with the results from from FB.getLoginStatus().
-      function statusChangeCallback(response) {
+      async function statusChangeCallback(response) {
         console.log('statusChangeCallback');
         console.log(response);
         // The response object is returned with a status field that lets the
@@ -21,14 +21,34 @@
         // for FB.getLoginStatus().
         if (response.status === 'connected') {
           // Logged into your app and Facebook.
-          testAPI();
-          $.ajax({
+          await testAPI();
+          await $.ajax({
             method: "POST",
             url: "/api/users",
             data: {
               UserID: response.authResponse.userID,
               OAuthID: response.authResponse.accessToken,
             }
+          });
+          let logoutButton = document.createElement("button");
+          logoutButton.id = 'logout-button';
+          logoutButton.innerHTML = 'Log Out'
+          await document.getElementById('root').appendChild(logoutButton);
+          console.log(logoutButton);
+          logoutButton.addEventListener("click", (e) =>{
+            console.log("should be logging out!");
+            console.log(response);
+            e.preventDefault();
+            FB.api("/me/permissions", "delete", function(response){
+
+
+              console.log(response);
+
+            }).then(() => {
+              FB.getLoginStatus(function(response) {
+                console.log(response);
+              })
+            })
           });
 
         } else {
@@ -85,14 +105,16 @@
 
       // Here we run a very simple test of the Graph API after login is
       // successful.  See statusChangeCallback() for when this call is made.
-      function testAPI() {
+      async function testAPI() {
         console.log('Welcome!  Fetching your information.... ');
-        FB.api('me?fields=id,name,picture', function(response) {
+        await FB.api('me?fields=id,name,picture', function(response) {
           console.log('Successful login for: ' + response.name);
           document.getElementById('status').innerHTML =
             `<img src=${response.picture.data.url}></img><h1>${response.name}</h1>`
 
         });
+
+
       }
     </script>
 
@@ -104,7 +126,6 @@
 
     <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
     </fb:login-button>
-
     <div id="status">
     </div>
 
