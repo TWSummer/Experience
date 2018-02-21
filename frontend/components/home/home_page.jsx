@@ -1,4 +1,5 @@
 import React from 'react';
+import Experience from './experience';
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -12,10 +13,13 @@ class HomePage extends React.Component {
    render() {
      return (
        <main className="home-page">
+         <header className="home-header">
+           <img src="https://i.imgur.com/O72fdnu.jpg" />
+         </header>
          {
            this.props.experiences.map((experience) => {
              return (
-               <p>{experience.title}</p>
+               <Experience key={experience.id} experience={experience} />
              );
            })
          }
