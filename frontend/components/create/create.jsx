@@ -29,7 +29,7 @@ class HomePage extends React.Component {
     var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', map);
 
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    map.controls[google.maps.ControlPosition.TOP].push(input);
 
     var infowindow = new google.maps.InfoWindow();
     var marker = new google.maps.Marker({
@@ -92,10 +92,11 @@ class HomePage extends React.Component {
          <input type="text" placeholder="Search" id="pac-input"></input>
          <div id="map">This is the map</div>
          <form>
-
            {
              this.state.imgUrl ?
-              <img src={this.state.imgUrl} /> :
+              <img
+                src={this.state.imgUrl}
+                className="location-preview-image"/> :
               ""
            }
          </form>
