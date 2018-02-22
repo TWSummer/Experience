@@ -50,7 +50,12 @@ class HomePage extends React.Component {
       infowindow.close();
       var place = autocomplete.getPlace();
       console.log(place);
-      this.setState({imgUrl: ""});
+      this.setState({
+        imgUrl: "",
+        lat: undefined,
+        lng: undefined,
+        name: ""
+      });
       if (place.photos) {
         let newImgUrl = place.photos[0].getUrl({'maxWidth': 1000, 'maxHeight': 1000});
         this.setState({imgUrl: newImgUrl});
@@ -58,6 +63,13 @@ class HomePage extends React.Component {
       if (!place.geometry) {
         return;
       }
+      if (place.geometry.location.lat() && place.geometry.location.lng()) {
+        this.setState({
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        });
+      }
+      this.setState({name: place.name});
 
       if (place.geometry.viewport) {
         map.fitBounds(place.geometry.viewport);
@@ -92,6 +104,7 @@ class HomePage extends React.Component {
          <input type="text" placeholder="Search" id="pac-input"></input>
          <div id="map">This is the map</div>
          <form>
+           <p>Place: {this.state.name}</p>
            {
              this.state.imgUrl ?
               <img
@@ -99,6 +112,8 @@ class HomePage extends React.Component {
                 className="location-preview-image"/> :
               ""
            }
+           <p>Latitude {this.state.lat}</p>
+           <p>Longitude {this.state.lng}</p>
          </form>
        </section>
      </main>
