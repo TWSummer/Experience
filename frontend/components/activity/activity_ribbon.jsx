@@ -66,7 +66,7 @@ class ActivityRibbon extends React.Component {
           onClick={(e) => this.props.handleClick(e, activity.id)}
           key={activity.id}
           style={activity.style}
-          className="activity-index-item">
+          className={"activity-index-item " + (this.props.clicked === activity.id ? "selected" : "")} >
           <div className="activity-overlay">
             {icons[activity.genre]}
           </div>
