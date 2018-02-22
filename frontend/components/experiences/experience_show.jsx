@@ -11,7 +11,6 @@ class ExperienceShow extends React.Component {
       duration: 180,
       title: "North Berkeley Date Night",
       genre: "Romantic",
-      location: "",
       description: "A casual but romantic night out exploring the natural beauty of the East Bay. Start in North Berkeley's famed gourmet ghetto, wind your way up to the Berkeley hills, and enjoy the sights as you chow down on a hillside picnic"
     };
     let activities = [
@@ -19,7 +18,8 @@ class ExperienceShow extends React.Component {
         id: 1,
         imageUrl: "https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png",
         title: "Meet at Gregoire's",
-        location: "",
+        latitude: 1,
+        longitude: 1,
         genre: "Food",
         duration: 60,
         description: "Meet up at this famous French takeout spot to pick up the materials for a tasty picnic. You can't afford to miss out on their delightful potato puffs!",
@@ -63,7 +63,7 @@ class ExperienceShow extends React.Component {
   }
 
   handleMouseEnter(e, activityId) {
-    
+
     this.setState({selected: this.state.activities[activityId - 1]});
   }
 
