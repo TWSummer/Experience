@@ -27,25 +27,21 @@ window.fbAsyncInit = function() {
   });
   FB.getLoginStatus(function(response) {console.log(response)});
   //Subscribe to a crazy event that facebook provides, instead of DOMContentLoaded
-  // FB.Event.subscribe('auth.statusChange', function(response) {
-  const root = document.getElementById('root');
-  let store = configureStore();
-  //Required for facebook auth;
+  FB.Event.subscribe('auth.statusChange', function(response) {
+    const root = document.getElementById('root');
+    let store = configureStore();
+    //Required for facebook auth;
 
 
-  //Required for bootstrapping user
-  // if(response.status == 'connected') {
-  store.dispatch(checkLoginState());
-  let rootComponent = <Root store={store} />;
-  // }
-  window.store = store;
-  setTimeout(() => {
-    ReactDOM.render(rootComponent, root);
-  }, 500);
-  // });
+    //Required for bootstrapping user
+    // if(response.status == 'connected') {
+    store.dispatch(checkLoginState());
+    let rootComponent = <Root store={store} />;
+    // }
+    window.store = store;
+    setTimeout(() => {
+      ReactDOM.render(rootComponent, root);
+    }, 500);
+  });
 
 };
-
-document.addEventListener('DOMContentLoaded', (response) => {
-
-});
