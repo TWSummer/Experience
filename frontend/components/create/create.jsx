@@ -9,6 +9,10 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
+    this.setupMap();
+  }
+
+  setupMap() {
     var mapOptions = {
       center: {lat: 37.7749, lng: -122.4194},
       zoom: 11,
@@ -37,12 +41,20 @@ class HomePage extends React.Component {
 
     // Get the full place details when the user selects a place from the
     // list of suggestions.
-    google.maps.event.addListener(autocomplete, 'place_changed', () => {
+    google.maps.event.addListener(autocomplete, 'place_changed',
+      this.autocompleteCallback(infowindow, autocomplete, map, marker));
+  }
+
+  autocompleteCallback(infowindow, autocomplete, map, marker) {
+    return () => {
       infowindow.close();
       var place = autocomplete.getPlace();
       console.log(place);
-      let newImgUrl = place.photos[0].getUrl({'maxWidth': 1000, 'maxHeight': 1000});
-      this.setState({imgUrl: newImgUrl});
+      this.setState({imgUrl: ""});
+      if (place.photos) {
+        let newImgUrl = place.photos[0].getUrl({'maxWidth': 1000, 'maxHeight': 1000});
+        this.setState({imgUrl: newImgUrl});
+      }
       if (!place.geometry) {
         return;
       }
@@ -61,19 +73,33 @@ class HomePage extends React.Component {
       }));
       marker.setVisible(true);
 
-      infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-          '<img src=' + place.photos[0].getUrl({'maxWidth': 80, 'maxHeight': 80}) + '/><br>' +
-          place.formatted_address + '</div>');
+      this.setInfowindowContent(infowindow, place);
+
       infowindow.open(map, marker);
-    });
+    };
+  }
+
+  setInfowindowContent(infowindow, place) {
+    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+    place.formatted_address + '</div>');
   }
 
  render() {
    return (
      <main className="create-page">
-       <input type="text" placeholder="Search" id="pac-input"></input>
-       <div id="map">This is the map</div>
-       <img src={this.state.imgUrl} />
+       <aside className="create-activity-ribbon"></aside>
+       <section className="create-activity-form">
+         <input type="text" placeholder="Search" id="pac-input"></input>
+         <div id="map">This is the map</div>
+         <form>
+
+           {
+             this.state.imgUrl ?
+              <img src={this.state.imgUrl} /> :
+              ""
+           }
+         </form>
+       </section>
      </main>
    );
  }
