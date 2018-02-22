@@ -1,15 +1,3 @@
-// let logoutButton = document.createElement("button");
-// logoutButton.id = 'logout-button';
-// logoutButton.innerHTML = 'Log Out';
-//  document.getElementById('root').appendChild(logoutButton);
-// logoutButton.addEventListener("click", (e) =>{
-//   e.preventDefault();
-
-// });
-
-
-
-
 import React from 'react';
 import {Link} from 'react-router-dom';
 
@@ -20,9 +8,6 @@ class NavBar extends React.Component {
     this.state = {
       searchQuery: "",
     };
-
-    //Initialize FB methods... substitute for bootstrapping user
-
 
     this.update = this.update.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -42,7 +27,8 @@ class NavBar extends React.Component {
   handleLogin(e) {
     e.preventDefault();
 
-
+    //Prompts FB login popup, and calls checkLoginState after user has
+    //Completed or exited auth process
     FB.login(this.props.checkLoginState);
 
   }
@@ -51,6 +37,10 @@ class NavBar extends React.Component {
     e.preventDefault();
     this.props.logoutUser();
   }
+
+
+
+
 
   render() {
     const display = this.props.currentUser ? (
@@ -64,7 +54,7 @@ class NavBar extends React.Component {
           console.log("click");
           this.handleLogout(e);
         }}>
-        <i className="fab fa-facebook-square"></i> Log Out
+        <i className="fab fa-facebook-square"></i> <span>Log Out</span>
         </button>
     </div>
   ) : (
