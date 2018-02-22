@@ -11,7 +11,6 @@ class ExperienceShow extends React.Component {
       duration: 180,
       title: "North Berkeley Date Night",
       genre: "Romantic",
-      location: "",
       description: "A casual but romantic night out exploring the natural beauty of the East Bay. Start in North Berkeley's famed gourmet ghetto, wind your way up to the Berkeley hills, and enjoy the sights as you chow down on a hillside picnic"
     };
     let activities = [
@@ -19,7 +18,8 @@ class ExperienceShow extends React.Component {
         id: 1,
         imageUrl: "https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png",
         title: "Meet at Gregoire's",
-        location: "",
+        latitude: 1,
+        longitude: 1,
         genre: "Food",
         duration: 60,
         description: "Meet up at this famous French takeout spot to pick up the materials for a tasty picnic. You can't afford to miss out on their delightful potato puffs!",
@@ -63,12 +63,12 @@ class ExperienceShow extends React.Component {
   }
 
   handleMouseEnter(e, activityId) {
-    // console.log('mouse enter', this.state, activityId);
+
     this.setState({selected: this.state.activities[activityId - 1]});
   }
 
   handleMouseLeave(e, activityId) {
-    // console.log('mouse leave', this.state, activityId);
+
     if (!this.state.clicked) {
       this.setState({selected: undefined});
     } else {
@@ -77,11 +77,19 @@ class ExperienceShow extends React.Component {
   }
 
   handleClick(e, activityId) {
-    console.log(activityId);
-    this.setState({
-      clicked: activityId,
-      selected: this.state.activities[activityId - 1]
-    })
+
+    if (this.state.clicked === activityId) {
+      this.setState({
+        clicked: undefined,
+        selected: undefined, // This makes it so that when you click, it immediately unselects the activity
+                            // Comment that line out to keep the activity selected until mouse leave.
+      });
+    } else {
+      this.setState({
+        clicked: activityId,
+        selected: this.state.activities[activityId - 1]
+      });
+    }
   }
 
   precisionRound(number, precision) {
@@ -95,6 +103,7 @@ class ExperienceShow extends React.Component {
     return (
       <div className="experience-show-container">
       <ActivityRibbon
+        clicked={this.state.clicked}
         experience={this.state.experience}
         handleMouseLeave={this.handleMouseLeave}
         handleMouseEnter={this.handleMouseEnter}
