@@ -1,0 +1,9 @@
+#map {
+  height: 600px;
+}
+
+#pac-input {
+  width: 80%;
+  background-color: #fff;
+  font-size: 16px;
+}

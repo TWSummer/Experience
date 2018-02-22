@@ -4,6 +4,7 @@ import React from 'react';
 import { AuthRoute, ProtectedRoute } from '../util/route_util';
 import HomePageContainer from './home/home_page_container';
 import NavBarContainer from './navigation/nav_bar_container';
+import CreateContainer from './create/create_container';
 
 
 const App = () => (
@@ -11,6 +12,7 @@ const App = () => (
     <NavBarContainer />
     <Switch>
       <Route path="/home" component={HomePageContainer} />
+      <ProtectedRoute path="/create" component={CreateContainer} />
     </Switch>
   </div>
 );
