@@ -63,12 +63,12 @@ class ExperienceShow extends React.Component {
   }
 
   handleMouseEnter(e, activityId) {
-    // console.log('mouse enter', this.state, activityId);
+    
     this.setState({selected: this.state.activities[activityId - 1]});
   }
 
   handleMouseLeave(e, activityId) {
-    // console.log('mouse leave', this.state, activityId);
+
     if (!this.state.clicked) {
       this.setState({selected: undefined});
     } else {
@@ -77,11 +77,19 @@ class ExperienceShow extends React.Component {
   }
 
   handleClick(e, activityId) {
-    console.log(activityId);
-    this.setState({
-      clicked: activityId,
-      selected: this.state.activities[activityId - 1]
-    })
+
+    if (this.state.clicked === activityId) {
+      this.setState({
+        clicked: undefined,
+        selected: undefined, // This makes it so that when you click, it immediately unselects the activity
+                            // Comment that line out to keep the activity selected until mouse leave.
+      });
+    } else {
+      this.setState({
+        clicked: activityId,
+        selected: this.state.activities[activityId - 1]
+      });
+    }
   }
 
   precisionRound(number, precision) {
@@ -95,6 +103,7 @@ class ExperienceShow extends React.Component {
     return (
       <div className="experience-show-container">
       <ActivityRibbon
+        clicked={this.state.clicked}
         experience={this.state.experience}
         handleMouseLeave={this.handleMouseLeave}
         handleMouseEnter={this.handleMouseEnter}
