@@ -67,6 +67,7 @@ html {
 }
 
 body {
+
   min-height: 100%;
   width: 80%;
   margin: 0 auto;
@@ -90,6 +91,7 @@ nav {
   right: 0px;
   padding: 0 10%;
   border-bottom: 1px solid #57BC90;
+  z-index: 100;
 }
 
 a:link {
@@ -154,6 +156,8 @@ a:link:visited {
   background: #77C9D4;
   box-shadow: 0px 1px 1px 1px rgba(0,0,0,.2), 0px 1px 1px 1px rgba(0,0,0,.2);
 
+  display: flex;
+  justify-content: space-around;
 
   color: #fff;
   /* margin-top: 5px; */
@@ -164,12 +168,14 @@ a:link:visited {
   align-items: center;
   color: #fff;
   padding: 0 10px;
+  font-size: 18px;
 }
 
 .profile-picture {
   height: 40px;
   width: 40px;
   margin-right: 20px;
+  border-radius: 50%;
   /* border: 0.5px solid rgba(0,0,0,0.1); */
   box-shadow: 0px 1px 1px 1px rgba(0,0,0,0.04), 0px 1px 1px 1px rgba(0,0,0,0.04);
 
@@ -178,10 +184,26 @@ a:link:visited {
 
 .login-button .fa-facebook-square{
   font-size: 24px;
+
+
+}
+
+.login-button {
+  width: 100px;
 }
 
 .logout-button {
   margin-left: 20px;
+  width: 100px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+}
+
+.btn span {
+  color: #fff;
 }
 
 .session-controls {
@@ -197,4 +219,69 @@ a:link:visited {
 .full-page-body {
   height: 100%;
   margin-top: 52px;
+  padding: 20px;
+}
+
+.activity-ribbon-list {
+  width: 250px;
+  height: 750px;
+  /* border: 1px solid #000; */
+  /* box-shadow: 0px 1px 1px 1px rgba(0,0,0,0.1), 0px 1px 1px 1px rgba(0,0,0,0.1); */
+
+  /* padding: 10px; */
+}
+
+.activity-index-item {
+  position: relative;
+  margin-bottom: 10px;
+  /* border: 1px solid #000; */
+  box-shadow: 0px 1px 0.5px 0.5px rgba(0,0,0,0.3), 0px 1px 0.5px 0.5px rgba(0,0,0,0.3);
+  transition: transform, 0.2s, ease;
+
+}
+.activity-index-item img{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+
+}
+
+.activity-index-item:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.activity-overlay {
+  position: absolute;
+  background: rgba(0,0,0,0.4);
+  /* height: 100%; */
+  /* width: 100%; */
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  transition: background-color 0.5s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+
+}
+
+.activity-overlay svg[class^="svg"] {
+  color: #FEFEFE;
+  margin: auto auto;
+  font-size: 75px;
+  transition: opacity 0.5s ease;
+  z-index: 0;
+}
+
+.activity-overlay:hover {
+  background: rgba(0,0,0,0);
+
+}
+
+.activity-overlay:hover svg[class^="svg"] {
+  opacity: 0;
 }

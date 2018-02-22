@@ -16,7 +16,6 @@ export default (state = _nullSession, action) => {
           name: action.name,
           pictureURL: action.pictureUrl,
         }
-
       };
       return newState;
     case REMOVE_CURRENT_USER:

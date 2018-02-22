@@ -25,7 +25,6 @@ const fbInit = () => ({
 export const checkLoginState = (a) => (dispatch) => FB.getLoginStatus(function(response) {
   console.log("arg? ", response);
   if (response.status === 'connected') {
-    console.log(response);
     loginUser(response.authResponse.userID, response.authResponse.accessToken);
     dispatch(fetchNameAndPicture());
   }
