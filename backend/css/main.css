@@ -284,4 +284,5 @@ a:link:visited {
 
 .activity-overlay:hover svg[class^="svg"] {
   opacity: 0;
+  padding-top: 52px;
 }
