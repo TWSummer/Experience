@@ -14,6 +14,10 @@ const receiveUser = (response) => ({
   pictureUrl: response.picture.data.url
 });
 
+const receiveServerUser = (response) => ({
+
+});
+
 const removeUser = (response) => ({
   type: REMOVE_CURRENT_USER,
 });
@@ -25,7 +29,9 @@ const fbInit = () => ({
 export const checkLoginState = (a) => (dispatch) => FB.getLoginStatus(function(response) {
   console.log("arg? ", response);
   if (response.status === 'connected') {
-    loginUser(response.authResponse.userID, response.authResponse.accessToken);
+    loginUser(response.authResponse.userID, response.authResponse.accessToken).then(response2 =>
+      console.log("response2", response2)
+    );
     dispatch(fetchNameAndPicture());
   }
 });

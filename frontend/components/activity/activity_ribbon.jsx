@@ -1,5 +1,5 @@
 import React from 'react';
-
+import * as Vibrant from 'node-vibrant';
 // THOUGHTS REGARDING THE ULTIMATE SHAPE OF ACTIVITIES:
 // 1) Activities have a type, that will determine the underlying information
 // 2) The types are as follows: Food, Outdoors, Venue, Transit, Views, Explore, (Other)
@@ -16,58 +16,73 @@ class ActivityRibbon extends React.Component {
     super(props);
 
 
+    this.state = {
+      activities: props.activities,
+      selectedActivity: undefined,
+      colors: {},
+    };
+    let vibrant;
+
+    props.activities.forEach(activity => {
+      // Vibrant.from(activity.imageUrl)
+      //   .quality(10)
+      //   .clearFilters()
+      //   .getPalette()
+      //   .then((palette) => {
+      //     vibrant = palette;
+      //     console.log(vibrant);
+      //     console.log(vibrant.Vibrant.getHex());
+      //     let newColors = this.state.colors
+      //     newColors[activity.id].backgroundImage = `linear-gradient(to bottom right, ${this.state.vibrant.DarkVibrant.getHex()}, ${this.state.vibrant.LightMuted.getHex()})`;
+      //     newColors[activity.id].height = `${activity.duration/experience.duration}%`;
+      //     this.setState({
+      //       styles: newColors,
+      //     });
+          activity.style = {
+            height: `${activity.duration/this.props.experience.duration * 100}%`,
+            // backgroundImage: `linear-gradient(to bottom right, ${this.state.vibrant.DarkVibrant.getHex()}, ${this.state.vibrant.LightMuted.getHex()})`
+          };
+      //   });
+      }
+
+
+    );
 
   }
 
+
+
   render() {
+    const icons = {
+      Food: <i className="fas fa-utensils"></i>,
+      Transit: <i className="fas fa-car"></i>,
+      Views: <i className="far fa-image"></i>,
+    };
+    const activityIndexItems = this.state.activities.map(activity => {
+      return (
+        <li
+          onMouseEnter={(e) => this.props.handleMouseEnter(e, activity.id)}
+          onMouseLeave={(e) => this.props.handleMouseLeave(e, activity.id)}
+          onClick={(e) => this.props.handleClick(e, activity.id)}
+          key={activity.id}
+          style={activity.style}
+          className="activity-index-item">
+          <div className="activity-overlay">
+            {icons[activity.genre]}
+          </div>
+          <span className="activity-index-item title">
+            {activity.title}
+          </span>
+          <img src={activity.imageUrl}>
+          </img>
+        </li>
+      );
+    });
 
     return (
       <div className="activity-ribbon-container">
         <ul className="activity-ribbon-list">
-          <li
-            style={{"height": "33%",}}
-            className="activity-index-item">
-            <div className="activity-overlay">
-              <i class="fas fa-utensils"></i>
-            </div>
-            <img
-              src="https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png">
-            </img>
-          </li>
-          <li
-            style={{"height": "13%",}}
-            className="activity-index-item">
-            <div className="activity-overlay">
-              <i class="fas fa-car"></i>
-            </div>
-            <img
-              src="https://cdn.rideapart.com/wp-content/uploads/2017/01/2018-Suzuki-GSX250R-BLK-770x440.jpg">
-            </img>
-
-          </li>
-          <li
-            style={{"height": "33%",}}
-            className="activity-index-item">
-            <div className="activity-overlay">
-              <i class="fas fa-image"></i>
-            </div>
-            <img
-              src="http://2.bp.blogspot.com/-W8wEx8paoU4/VgIr838Bb8I/AAAAAAAAIdI/4z58zv36hrQ/s1600/wtd90.jpg">
-            </img>
-
-          </li>
-          <li
-            style={{"height": "20%",}}
-            className="activity-index-item">
-            <div className="activity-overlay">
-              <i class="fas fa-utensils"></i>
-            </div>
-            <img
-              src="https://us-east-1.tchyn.io/snopes-production/uploads/2015/01/picnic_fb.jpg">
-            </img>
-
-
-          </li>
+          {activityIndexItems}
         </ul>
       </div>
 

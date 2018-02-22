@@ -38,6 +38,10 @@ class NavBar extends React.Component {
     this.props.logoutUser();
   }
 
+
+
+
+
   render() {
     const display = this.props.currentUser ? (
     <div className="user-info" onClick={this.toggleDropdown}>
