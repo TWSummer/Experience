@@ -17,6 +17,7 @@ class DetailDisplay extends React.Component {
     let mapOptions = this.computeMapOptions(props);
     let map = new google.maps.Map(document.getElementById('show-map'), {
       zoom: 10,
+      scrollwheel: true,
       center: mapOptions.center  // Australia.
     });
     this.setState({ map });
@@ -100,11 +101,11 @@ class DetailDisplay extends React.Component {
             lat: newProps.selectedActivity.lat,
             lng: newProps.selectedActivity.lng
           });
-          // this.state.map.setZoom(16);
+          this.state.map.setZoom(16);
         } else {
           let mapOptions = this.computeMapOptions(newProps);
           this.state.map.panTo(mapOptions.center);
-          // this.state.map.setZoom(this.state.defaultZoom);
+          this.state.map.setZoom(this.state.defaultZoom);
         }
       }
     }
