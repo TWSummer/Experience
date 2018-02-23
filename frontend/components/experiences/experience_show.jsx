@@ -70,7 +70,7 @@ class ExperienceShow extends React.Component {
   handleMouseLeave(e, activityId) {
 
     if (!this.state.clicked) {
-      this.setState({selected: undefined});
+      // this.setState({selected: undefined});
     } else {
       this.setState({selected: this.state.activities[this.state.clicked - 1]});
     }

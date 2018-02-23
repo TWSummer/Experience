@@ -23,7 +23,7 @@ func ValidateAuthToken(UserID, OAuthID string) bool {
 	url := fmt.Sprintf("https://graph.facebook.com/debug_token?input_token=%v&access_token=867019043470476|%v", OAuthID, secret)
 	resp, _ := http.Get(url)
 	defer resp.Body.Close()
-	
+
 	contents, _ := ioutil.ReadAll(resp.Body)
 	var foo interface{}
 	json.Unmarshal(contents, &foo)
