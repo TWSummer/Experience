@@ -16,7 +16,7 @@ class DetailDisplay extends React.Component {
   setupMap(props) {
     let mapOptions = this.computeMapOptions(props);
     let map = new google.maps.Map(document.getElementById('show-map'), {
-      zoom: 13,
+      zoom: 10,
       center: mapOptions.center  // Australia.
     });
     this.setState({ map });
@@ -75,7 +75,7 @@ class DetailDisplay extends React.Component {
       destination: destination,
       waypoints: waypoints,
       travelMode: 'DRIVING',
-      avoidTolls: true
+      avoidTolls: false
     }, function(response, status) {
       if (status === 'OK') {
         display.setDirections(response);
@@ -96,13 +96,15 @@ class DetailDisplay extends React.Component {
       if (newProps.experience) {
         if (newProps.selectedActivity && newProps.selectedActivity.lat &&
         newProps.selectedActivity.lng) {
-          this.state.map.setCenter({
+          this.state.map.panTo({
             lat: newProps.selectedActivity.lat,
             lng: newProps.selectedActivity.lng
           });
+          // this.state.map.setZoom(16);
         } else {
           let mapOptions = this.computeMapOptions(newProps);
-          this.state.map.setCenter(mapOptions.center);
+          this.state.map.panTo(mapOptions.center);
+          // this.state.map.setZoom(this.state.defaultZoom);
         }
       }
     }
