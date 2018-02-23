@@ -9,8 +9,8 @@ class Experience extends React.Component {
      return (
        <div className="experience-index-item">
          <aside className="vote-buttons">
-           <i class="fas fa-angle-up"></i>
-           <i class="fas fa-angle-down"></i>
+           <i className="fas fa-angle-up"></i>
+           <i className="fas fa-angle-down"></i>
          </aside>
          <section>
            <p>{this.props.experience.Title}</p>

@@ -1,0 +1,39 @@
+.create-page {
+  display: flex;
+}
+
+.create-activity-ribbon {
+  width: 25%;
+  border: 1px solid #ddd;
+  margin: 5px;
+}
+
+.create-activity-form {
+  width: 100%;
+  margin: 5px;
+  border: 1px solid #ccc;
+}
+
+#map {
+  height: 400px;
+  width: 95%;
+  margin: 20px auto;
+}
+
+#pac-input {
+  margin-top: 12px;
+  transform: translateX(30px);
+  width: 70%;
+  background-color: #fff;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 1300px) {
+  #pac-input {
+    width: 60%;
+  }
+}
+
+.location-preview-image {
+  width: 25%;
+}
