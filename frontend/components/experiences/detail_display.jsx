@@ -15,24 +15,28 @@ class DetailDisplay extends React.Component {
 
   setupMap(props) {
     let mapOptions = this.computeMapOptions(props);
-    let map = new google.maps.Map(document.getElementById('show-map'), {
-      zoom: 10,
-      scrollwheel: true,
-      center: mapOptions.center  // Australia.
-    });
-    this.setState({ map });
+    if (mapOptions.center.lat) {
+      let map = new google.maps.Map(document.getElementById('show-map'), {
+        zoom: 10,
+        scrollwheel: true,
+        center: mapOptions.center  // Australia.
+      });
+      this.setState({ map });
 
-    let directionsService = new google.maps.DirectionsService;
-    let directionsDisplay = new google.maps.DirectionsRenderer({
-      draggable: true,
-      map: map
-    });
+      let directionsService = new google.maps.DirectionsService;
+      let directionsDisplay = new google.maps.DirectionsRenderer({
+        draggable: true,
+        map: map,
+        markerOptions: {animation: google.maps.Animation.DROP}
+      });
 
-    directionsDisplay.addListener('directions_changed', () => {
-      directionsDisplay.getDirections();
-    });
-    this.displayRoute(mapOptions.startPoint, mapOptions.endPoint,
-      directionsService, directionsDisplay, mapOptions.waypoints);
+      directionsDisplay.addListener('directions_changed', () => {
+        directionsDisplay.getDirections();
+      });
+      this.displayRoute(mapOptions.startPoint, mapOptions.endPoint,
+        directionsService, directionsDisplay, mapOptions.waypoints);
+
+    }
 
   }
 
@@ -88,13 +92,17 @@ class DetailDisplay extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (this.state.map && !this.state.defaultZoom) {
-      this.setState({defaultZoom: this.state.map.getZoom()});
+      if (this.state.map.getZoom() < 16) {
+        this.setState({defaultZoom: this.state.map.getZoom()});
+      } else {
+        this.setState({defaultZoom: 16});
+      }
     }
     if (this.state.mounted) {
       if (this.state.map === undefined && newProps.experience) {
         this.setupMap(newProps);
       }
-      if (newProps.experience) {
+      if (this.state.map && newProps.experience) {
         if (newProps.selectedActivity && newProps.selectedActivity.lat &&
         newProps.selectedActivity.lng) {
           this.state.map.panTo({
