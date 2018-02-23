@@ -1,47 +1,27 @@
 .home-page {
   min-height: 100%;
-  background-color: #ddd;
-  padding-top: 20px;
   width: 100%;
 }
 
 .home-header {
-  margin: 0 20px;
-  border-top-left-radius: 40px;
-  border-top-right-radius: 40px;
-  overflow: hidden;
-}
-
-.experience-index-item {
-  width: 95%;
-  height: 15%;
-  margin: 30px auto;
-  border: 1px solid #000;
+  padding-top: 20px;
   display: flex;
-}
-
-.experience-index-item section {
-  width: 100%;
-}
-
-.vote-buttons {
-  width: 6%;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
 }
 
-.vote-buttons svg {
-  font-size: 2vw;
+.header-text {
+  position: absolute;
+  font-size: 180px;
+  font-weight: 900;
+  /* font-family: 'Rock Salt', cursive; */
+  /* font-family: 'Open Sans Condensed', sans-serif; */
+  /* font-family: 'Permanent Marker', cursive; */
+  font-family: 'Arial', sans-serif;
+  opacity: 0.6;
+  overflow-wrap: break-word;
 }
 
-.experience-index-item p {
-  font-size: 2vh;
-}
-
-.experience-ribbon {
-  height: 84.44444444444%;
-  width: 100%;
-  background-color: #bbb;
+.banner-image {
+  height: 38%;
+  width: 83vw;
 }
