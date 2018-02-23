@@ -3,19 +3,23 @@ import React from 'react';
 class DetailDisplay extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   componentDidMount() {
-    this.setupMap();
+    this.setState({mounted: true});
+    if (this.props.experience) {
+      this.setupMap(this.props);
+    }
   }
 
-  setupMap() {
-    let mapOptions = this.computeMapOptions();
+  setupMap(props) {
+    let mapOptions = this.computeMapOptions(props);
     let map = new google.maps.Map(document.getElementById('show-map'), {
-      zoom: 10,
+      zoom: 13,
       center: mapOptions.center  // Australia.
     });
-    this.setState({map});
+    this.setState({ map });
 
     let directionsService = new google.maps.DirectionsService;
     let directionsDisplay = new google.maps.DirectionsRenderer({
@@ -24,16 +28,17 @@ class DetailDisplay extends React.Component {
     });
 
     directionsDisplay.addListener('directions_changed', () => {
-      this.computeTotalDistance(directionsDisplay.getDirections());
+      directionsDisplay.getDirections();
     });
     this.displayRoute(mapOptions.startPoint, mapOptions.endPoint,
       directionsService, directionsDisplay, mapOptions.waypoints);
+
   }
 
-  computeMapOptions() {
+  computeMapOptions(props) {
     let minLat, minLng, maxLat, maxLng, startLat, startLng, endLat, endLng;
     let waypoints = [];
-    let activities = this.props.experience.activities;
+    let activities = props.experience.activities;
     activities.forEach((activity) => {
       if (minLat === undefined || activity.lat < minLat) {
         minLat = activity.lat;
@@ -44,7 +49,7 @@ class DetailDisplay extends React.Component {
       if (maxLat === undefined || activity.lat > maxLat) {
         maxLat = activity.lat;
       }
-      if (maxLng === undefined || activity.lng < maxLng) {
+      if (maxLng === undefined || activity.lng > maxLng) {
         maxLng = activity.lng;
       }
       if (startLat === undefined || startLng === undefined) {
@@ -81,12 +86,25 @@ class DetailDisplay extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.selectedActivity && newProps.selectedActivity.lat &&
-    newProps.selectedActivity.lng) {
-      this.state.map.setCenter({
-        lat: newProps.selectedActivity.lat,
-        lng: newProps.selectedActivity.lng
-      });
+    if (this.state.map && !this.state.defaultZoom) {
+      this.setState({defaultZoom: this.state.map.getZoom()});
+    }
+    if (this.state.mounted) {
+      if (this.state.map === undefined && newProps.experience) {
+        this.setupMap(newProps);
+      }
+      if (newProps.experience) {
+        if (newProps.selectedActivity && newProps.selectedActivity.lat &&
+        newProps.selectedActivity.lng) {
+          this.state.map.setCenter({
+            lat: newProps.selectedActivity.lat,
+            lng: newProps.selectedActivity.lng
+          });
+        } else {
+          let mapOptions = this.computeMapOptions(newProps);
+          this.state.map.setCenter(mapOptions.center);
+        }
+      }
     }
   }
 
@@ -95,7 +113,6 @@ class DetailDisplay extends React.Component {
   render() {
     let itemToDisplay = this.props.selectedActivity ?
       this.props.selectedActivity : this.props.experience;
-    console.log(itemToDisplay);
     return (
       <div className="detail-display">
         <div className="detail-display-header">
