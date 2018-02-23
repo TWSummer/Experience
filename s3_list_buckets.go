@@ -5,12 +5,12 @@ import (
     "github.com/aws/aws-sdk-go/aws/session"
     "github.com/aws/aws-sdk-go/service/s3"
     "github.com/aws/aws-sdk-go/aws/credentials"
+    "github.com/aws/aws-sdk-go/service/s3/s3manager"
     "fmt"
     "os"
     "net/http"
-    "io/ioutil"
-    "encoding/json"
-    "io"
+
+    // "io"
     "log"
 
 )
@@ -21,8 +21,10 @@ func exitErrorf(msg string, args ...interface{}) {
 }
 
 func main() {
+  bucket := "experience.images"
+  filename := "cat.gifv"
   sess, err := session.NewSession(&aws.Config{
-      Region: aws.String("us-west-2"),
+      Region: aws.String("us-west-1"),
       Credentials: credentials.NewStaticCredentials(
          os.Getenv("AWS_ACCESS_KEY_ID"),
          os.Getenv("AWS_SECRET_ACCESS_KEY"),
@@ -59,18 +61,6 @@ func main() {
       fmt.Println("")
   }
 
-  resp, _ := http.Get("http://experience.images.s3.amazonaws.com")
-	defer resp.Body.Close()
-
-	contents, _ := ioutil.ReadAll(resp.Body)
-  fmt.Println(contents)
-  fmt.Println("\n")
-
-  var foo interface{}
-	json.Unmarshal(contents, &foo)
-	// m := foo.(map[string]interface{})
-  fmt.Println(foo)
-
   url := "http://i.imgur.com/m1UIjW1.jpg"
   // don't worry about errors
   response, e := http.Get(url)
@@ -81,21 +71,21 @@ func main() {
   defer response.Body.Close()
 
   //open a file for writing
-  file, err := os.Create("/tmp/image.jpg")
+  file, err := os.Open(filename)
   if err != nil {
       log.Fatal(err)
   }
-  // Use io.Copy to just dump the response body to the file. This supports huge files
-  _, err = io.Copy(file, response.Body)
-  if err != nil {
-      log.Fatal(err)
-  }
-  file.Close()
-  fmt.Println("Success!")
-
+  // // Use io.Copy to just dump the response body to the file. This supports huge files
+  // _, err = io.Copy(file, response.Body)
+  // if err != nil {
+  //     log.Fatal(err)
+  // }
+  // file.Close()
+  fmt.Println("Success! %v", file)
+  uploader := s3manager.NewUploader(sess)
   _, err = uploader.Upload(&s3manager.UploadInput{
     Bucket: aws.String(bucket),
-    Key: aws.String("/tmp/image.jpg"),
+    Key: aws.String(filename),
     Body: file,
   })
   if err != nil {
@@ -105,6 +95,6 @@ func main() {
 
   fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket)
 
-  os.Remove("/tmp/image.jpg")
+  // defer os.Remove("/tmp/image.jpg")
 
 }

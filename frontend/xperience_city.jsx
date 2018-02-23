@@ -4,16 +4,6 @@ import configureStore from './store/store';
 import {checkLoginState} from './actions/session_actions';
 import Root from './components/root';
 
-
-//Adds Facebook's SDK to our script tags. Wish we could load it manually...
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=867019043470476&autoLogAppEvents=1';
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-
 //This method is called in the window once Facebook has been loaded in our script tags
 window.fbAsyncInit = function() {
   console.log("init!");
@@ -27,7 +17,7 @@ window.fbAsyncInit = function() {
   });
   FB.getLoginStatus(function(response) {console.log(response)});
   //Subscribe to a crazy event that facebook provides, instead of DOMContentLoaded
-  FB.Event.subscribe('auth.statusChange', function(response) {
+  // FB.Event.subscribe('auth.statusChange', function(response) {
     const root = document.getElementById('root');
     let store = configureStore();
     //Required for facebook auth;
@@ -39,9 +29,9 @@ window.fbAsyncInit = function() {
     let rootComponent = <Root store={store} />;
     // }
     window.store = store;
-    setTimeout(() => {
+    // setTimeout(() => {
       ReactDOM.render(rootComponent, root);
-    }, 500);
-  });
+    // }, 500);
+  // });
 
 };
