@@ -1,5 +1,6 @@
 import React from 'react';
 import ActivityRibbon from '../activity/activity_ribbon';
+import ActivityMenu from './activity_menu';
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
@@ -7,11 +8,16 @@ class HomePage extends React.Component {
       imgUrls: [],
       title: "",
       description: "",
+      count: 1,
+      duration: "",
       // experience: {}
     };
     this.handleBuild = this.handleBuild.bind(this);
     this.update = this.update.bind(this);
     this.showForm = this.showForm.bind(this);
+    this.createActivity = this.createActivity.bind(this);
+    this.setImageUrl = this.setImageUrl.bind(this);
+    this.setFile = this.setFile.bind(this);
   }
 
   componentDidMount() {
@@ -20,12 +26,14 @@ class HomePage extends React.Component {
 
   handleBuild(e) {
     e.preventDefault();
-
+    console.log("handleBuild");
     this.setState({
       experience: {
         title: this.state.title,
         description: this.state.description,
+        duration: 0,
         activities: {},
+        files: [],
       },
       title: "",
       description: "",
@@ -42,6 +50,198 @@ class HomePage extends React.Component {
       });
     };
   }
+
+
+
+  setInfowindowContent(infowindow, place) {
+    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+    place.formatted_address + '</div>');
+  }
+
+  showForm(genre) {
+    return () => {
+      console.log(genre);
+      this.setState({
+        form: genre,
+        activity: {},
+      });
+    };
+  }
+
+  createActivity(e, genre) {
+    console.log("createActivity");
+    e.preventDefault();
+    let experience = this.state.experience;
+    experience.duration = experience.duration + parseInt(this.state.duration);
+    experience.activities[this.state.count] = {
+      id: this.state.count,
+      genre,
+      description: this.state.description,
+      title: this.state.title,
+      imageUrl: this.state.imageUrl,
+      lat: this.state.lat,
+      long: this.state.long,
+      duration: parseInt(this.state.duration),
+    };
+    console.log(experience);
+    console.log(this.state);
+    this.setState({
+      activity: undefined,
+      experience,
+      count: this.state.count + 1,
+      duration: "",
+      lat: "",
+      long: "",
+      title: "",
+      description: "",
+      form: "",
+
+    });
+    console.log(this.state);
+    // this.setupMap();
+  }
+
+  setImageUrl(imageUrl) {
+    console.log(imageUrl);
+    this.setState({
+      imageUrl
+    });
+  }
+
+  setFile(e) {
+    e.preventDefault();
+    let experience = this.state.experience;
+    let reader = new FileReader();
+    reader.onload = () => {
+      experience.files.push(e.target.files[0]);
+      this.setState({
+        experience,
+        file: reader.result,
+        imageUrl: reader.result,
+      });
+    };
+    reader.readAsDataURL(e.target.files[0]);
+
+
+    console.log(e.target.files[0]);
+    console.log(e.target.file);
+
+  }
+
+ render() {
+   const icons = {
+     Food: <i className="fas fa-utensils"></i>,
+     Transit: <i className="fas fa-car"></i>,
+     Views: <i className="far fa-image"></i>,
+   };
+
+
+   return (
+     <main className="create-page">
+      <ActivityRibbon experience={this.state.experience}/>
+
+      <section className={'create-activity-form-container'}>
+        <div className="form-header">
+        <h1 className="form-title">{this.state.experience ? this.state.experience.title : "Create an Experience"}</h1>
+        </div>
+        {!this.state.experience && <div className="experience-form"><input
+          onChange={this.update("title")}
+          className="title-input"
+          placeholder="Add a Title"
+          type="text"
+          value={this.state.title}></input>
+        <textarea
+          onChange={this.update("description")}
+
+          className="description-input"
+          placeholder="Add a Description"
+          type="text"
+          value={this.state.description}></textarea>
+        <button
+          className="btn"
+          onClick={(e) => this.handleBuild(e)}>Build your Experience</button></div>}
+        {this.state.experience &&
+          <ActivityMenu showForm={this.showForm}/>
+
+
+        }
+        <input className={`google-maps-search ${this.state.activity ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
+        <div className={this.state.activity && this.state.form !== "Custom"? "" : "hidden"} id="map">This is the map</div>
+        {this.state.activity && <form className="create-activity-form">
+
+          <input type="text" ></input>
+
+            <input
+              onChange={this.update("title")}
+              className="title-input"
+              placeholder="Add a Title"
+              type="text"
+              value={this.state.title}></input>
+
+
+
+            <textarea
+              onChange={this.update("description")}
+              className="description-input"
+              placeholder="Add a Description"
+              type="text"
+              value={this.state.description}></textarea>
+
+          <label className="duration-input">
+            <span className="duration-input">Duration (minutes): </span>
+            <input
+              onChange={(e) => {
+                console.log("fire");
+                e.preventDefault();
+                console.log(e.target.value);
+                if (!e.target.value || ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ""].includes(e.target.value[e.target.value.length - 1])) {
+                  console.log("hit");
+                  this.update("duration")(e);
+                }
+              }}
+              value={this.state.duration}
+              className="duration-input"
+              type="text"></input>
+          </label>
+
+          <label className="file-input">
+            {this.state.file && <img src={this.state.file}></img>}
+            <span className="file-input">Upload Image: </span>
+            <input
+              onChange={(e) => this.setFile(e)}
+              className="file-input"
+              type="file"></input>
+
+
+          </label>
+
+          <button
+            onClick={(e) => this.createActivity(e, this.state.form)}
+            className="activity-create btn">
+            Add Activity
+          </button>
+
+
+          <p>Place: {this.state.name}</p>
+          <ul className="google-maps-photos">{
+            this.state.imgUrls &&
+              this.state.imgUrls.map((imageUrl, index) => {
+
+              return (<li
+                key={index}
+                className="google-maps-photo"><img
+                src={imageUrl}
+                onClick={(e) => this.setImageUrl(imageUrl)}
+                className="location-preview-image"/></li>
+            );})
+          }</ul>
+          <p>Latitude {this.state.lat}</p>
+          <p>Longitude {this.state.lng}</p>
+        </form>}
+      </section>
+    </main>
+  );}
+
 
   setupMap() {
     var mapOptions = {
@@ -82,7 +282,7 @@ class HomePage extends React.Component {
       var place = autocomplete.getPlace();
       console.log(place);
       this.setState({
-        imgUrl: "",
+        imgUrls: [],
         lat: undefined,
         lng: undefined,
         name: ""
@@ -124,159 +324,5 @@ class HomePage extends React.Component {
       infowindow.open(map, marker);
     };
   }
-
-  setInfowindowContent(infowindow, place) {
-    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-    place.formatted_address + '</div>');
-  }
-
-  showForm(genre) {
-    return () => {
-      console.log(genre);
-      this.setState({
-        form: genre,
-        activity: {},
-      });
-    };
-  }
-
- render() {
-   const icons = {
-     Food: <i className="fas fa-utensils"></i>,
-     Transit: <i className="fas fa-car"></i>,
-     Views: <i className="far fa-image"></i>,
-   };
-   return (
-     <main className="create-page">
-      <ActivityRibbon/>
-
-      <section className={'create-activity-form-container'}>
-        <div className="form-header">
-        <h1 className="form-title">{this.state.experience ? this.state.experience.title : "Create an Experience"}</h1>
-        </div>
-        {!this.state.experience && <div className="experience-form"><input
-          onChange={this.update("title")}
-          className="title-input"
-          placeholder="Add a Title"
-          type="text"
-          value={this.state.title}></input>
-        <textarea
-          onChange={this.update("description")}
-
-          className="description-input"
-          placeholder="Add a Description"
-          type="text"
-          value={this.state.description}></textarea>
-        <button
-          className="btn"
-          onClick={(e) => this.handleBuild(e)}>Build your Experience</button></div>}
-        {this.state.experience &&
-          <ul className="activity-menu">
-            <li
-              className="activity-menu-button"
-              onClick={this.showForm("Food")}
-              >
-              <i className="fas fa-utensils"></i>
-              <span>Food</span>
-
-            </li>
-            <li
-              className="activity-menu-button"
-              onClick={this.showForm("Transit")}
-              >
-              <i className="fas fa-car"></i>
-              <span>Transit</span>
-
-            </li>
-            <li
-              className="activity-menu-button"
-              onClick={this.showForm("Views")}
-              >
-              <i className="far fa-image"></i>
-              <span>Views</span>
-
-            </li>
-            <li
-              className="activity-menu-button"
-              onClick={this.showForm("Outdoors")}
-              >
-              <i className="fas fa-tree"></i>
-              <span>Outdoors</span>
-
-            </li>
-            <li
-              className="activity-menu-button"
-              onClick={this.showForm("Venues")}
-              >
-              <i className="fas fa-users"></i>
-              <span>Venues</span>
-
-            </li>
-            <li
-              className="activity-menu-button"
-              onClick={this.showForm("Explore")}
-              >
-              <i className="fas fa-map-marker-alt"></i>
-              <span>Explore</span>
-
-            </li>
-            <li
-              className="activity-menu-button"
-              onClick={this.showForm("Custom")}
-              >
-              <i className="fas fa-asterisk"></i>
-              <span>Custom</span>
-
-            </li>
-
-
-          </ul>
-
-
-        }
-        <input className={`google-maps-search ${this.state.activity ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
-        <div className={this.state.activity && this.state.activity.genre !== "Custom"? "" : "hidden"} id="map">This is the map</div>
-        {this.state.activity && <form className="create-activity-form">
-
-          <input type="text" ></input>
-
-            <input
-              className="title-input"
-              placeholder="Add a Title"
-              type="text"
-              value={this.state.title}></input>
-
-
-
-            <textarea
-              className="description-input"
-              placeholder="Add a Description"
-              type="text"
-              value={this.state.description}></textarea>
-
-          <label className="duration-input">
-            <span className="duration-input">Duration: </span>
-            <input
-              className="duration-input"
-              type="select"></input>
-          </label>
-
-          <p>Place: {this.state.name}</p>
-          {
-            this.state.imgUrls &&
-              this.state.imgUrls.map(imgUrl => {
-
-              return (<img
-                src={imgUrl}
-                className="location-preview-image"/>
-            );})
-          }
-          <p>Latitude {this.state.lat}</p>
-          <p>Longitude {this.state.lng}</p>
-        </form>}
-      </section>
-    </main>
-  );}
 }
-
 export default HomePage;

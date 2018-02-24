@@ -28,54 +28,42 @@ class ActivityRibbon extends React.Component {
   render() {
     let activityIndexItems;
     let vibrant;
-    if (this.props.activities) {
-      this.props.activities.forEach(activity => {
-        // Vibrant.from(activity.imageUrl)
-        //   .quality(10)
-        //   .clearFilters()
-        //   .getPalette()
-        //   .then((palette) => {
-        //     vibrant = palette;
-        //     console.log(vibrant);
-        //     console.log(vibrant.Vibrant.getHex());
-        //     let newColors = this.state.colors
-        //     newColors[activity.id].backgroundImage = `linear-gradient(to bottom right, ${this.state.vibrant.DarkVibrant.getHex()}, ${this.state.vibrant.LightMuted.getHex()})`;
-        //     newColors[activity.id].height = `${activity.duration/experience.duration}%`;
-        //     this.setState({
-        //       styles: newColors,
-        //     });
+    console.log(this.props);
+    const icons = {
+      Food: <i className="fas fa-utensils"></i>,
+      Transit: <i className="fas fa-car"></i>,
+      Views: <i className="far fa-image"></i>,
+    };
+    if (this.props.experience && this.props.experience.activities) {
+      console.log(this.props);
+      activityIndexItems = Object.keys(this.props.experience.activities).map(activityId => {
+            let activity = this.props.experience.activities[activityId];
             activity.style = {
               height: `${activity.duration/this.props.experience.duration * 100}%`,
               // backgroundImage: `linear-gradient(to bottom right, ${this.state.vibrant.DarkVibrant.getHex()}, ${this.state.vibrant.LightMuted.getHex()})`
             };
-        //   });
+
+            return (<li
+              onMouseEnter={(e) => this.props.handleMouseEnter(e, activity.id)}
+              onMouseLeave={(e) => this.props.handleMouseLeave(e, activity.id)}
+              onClick={(e) => this.props.handleClick(e, activity.id)}
+              key={activity.id}
+              style={activity.style}
+              className={"activity-index-item " + (this.props.clicked === activity.id ? "selected" : "")} >
+              <div className="activity-overlay">
+                {icons[activity.genre]}
+              </div>
+              <span className="activity-index-item title">
+                {activity.title}
+              </span>
+              <img src={activity.imageUrl}>
+              </img>
+            </li>);
         }
       );
-      const icons = {
-        Food: <i className="fas fa-utensils"></i>,
-        Transit: <i className="fas fa-car"></i>,
-        Views: <i className="far fa-image"></i>,
-      };
-      activityIndexItems = this.props.activities.map(activity => {
-        return (
-          <li
-            onMouseEnter={(e) => this.props.handleMouseEnter(e, activity.id)}
-            onMouseLeave={(e) => this.props.handleMouseLeave(e, activity.id)}
-            onClick={(e) => this.props.handleClick(e, activity.id)}
-            key={activity.id}
-            style={activity.style}
-            className={"activity-index-item " + (this.props.clicked === activity.id ? "selected" : "")} >
-            <div className="activity-overlay">
-              {icons[activity.genre]}
-            </div>
-            <span className="activity-index-item title">
-              {activity.title}
-            </span>
-            <img src={activity.imageUrl}>
-            </img>
-          </li>
-        );
-      });
+
+
+
     }
 
     return (

@@ -47,14 +47,15 @@ class NavBar extends React.Component {
     <div className="user-info" onClick={this.toggleDropdown}>
       <img className="profile-picture" src={this.props.currentUser.pictureURL}>
       </img>
-      <span>{this.props.currentUser.name}</span>
+      <span className="username">{this.props.currentUser.name.toUpperCase()}</span>
       <button
         className="logout-button btn"
         onClick={(e) => {
           console.log("click");
           this.handleLogout(e);
         }}>
-        <i className="fab fa-facebook-square"></i> <span>Log Out</span>
+        <i className="fab fa-facebook-square"></i>
+          <span className="logout-text">Log Out</span>
         </button>
     </div>
   ) : (
@@ -72,27 +73,23 @@ class NavBar extends React.Component {
 
     return (
       <nav>
-
+        <nav className="nav-content-box">
         <ul className="left-nav">
-          <Link className='logo' to='/directory'>
-            <span>x</span><span>perience</span>
+          <Link className='logo' to='/home'>
+            <span>x</span><span>PERIENCITY</span>
           </Link>
-
           <form
             onSubmit={this.handleSubmit}
             className="search-container">
-
-
             <input
-
-              placeholder="Search"
+              placeholder="find adventure"
               onChange={this.update("searchQuery")}
               type="search"
               value={this.state.searchQuery}></input>
           </form>
         </ul>
-
           {display}
+        </nav>
       </nav>
     );
   }

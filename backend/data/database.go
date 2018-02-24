@@ -8,6 +8,9 @@ import (
 )
 
 func SetupDB() *gorm.DB {
+	//for OSX docker container
+	// postgresOptions := fmt.Sprintf("host=%v user=postgres password=password dbname=flexproject sslmode=disable", os.Getenv("DB_HOST"))
+	// db, err := gorm.Open("postgres", postgresOptions)
 	db, err := gorm.Open("postgres", "user=postgres password=password dbname=flexproject sslmode=disable")
 	if err != nil {
 		panic(fmt.Sprintf("Cannot connect to DB %v", err))
