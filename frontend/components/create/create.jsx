@@ -1,7 +1,7 @@
 import React from 'react';
 import ActivityRibbon from '../activity/activity_ribbon';
 import ActivityMenu from './activity_menu';
-class HomePage extends React.Component {
+class NewExperience extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,29 +18,54 @@ class HomePage extends React.Component {
     this.createActivity = this.createActivity.bind(this);
     this.setImageUrl = this.setImageUrl.bind(this);
     this.setFile = this.setFile.bind(this);
+    this.validateActivity = this.validateActivity.bind(this);
+    this.validateExperience = this.validateExperience.bind(this);
+    this.validateSave = this.validateSave.bind(this);
   }
 
   componentDidMount() {
     this.setupMap();
   }
 
+  validateExperience(experience) {
+    return experience.title && experience.description;
+  }
+
+  validateSave(experience) {
+    let activities = Object.values(experience.activities);
+    let bool = true;
+    bool = this.validateExperience(experience);
+    activities.forEach(activity => {
+      if (bool) {
+        bool = this.validateActivity(activity);
+      }
+    });
+
+  }
+
   handleBuild(e) {
     e.preventDefault();
-    console.log("handleBuild");
-    this.setState({
-      experience: {
-        title: this.state.title,
-        description: this.state.description,
-        duration: 0,
-        activities: {},
-        files: [],
-      },
-      title: "",
-      description: "",
-      // activity: {},
+    let experience = {
+      user_id: this.props.currentUser.id,
+      title: this.state.title,
+      description: this.state.description,
+      duration: 0,
+      score: 1,
+      activities: {},
+      files: [],
+    };
+    if (this.validateExperience(experience)) {
+      this.setState({
+        experience,
+        title: "",
+        description: "",
+        // activity: {},
 
-    });
-    console.log(this.state.experience);
+      });
+    } else {
+      console.log("experience validation failed");
+    }
+
   }
 
   update(attribute) {
@@ -60,49 +85,69 @@ class HomePage extends React.Component {
 
   showForm(genre) {
     return () => {
-      console.log(genre);
+
       this.setState({
         form: genre,
         activity: {},
       });
+      // this.setupMap();
+
     };
   }
 
+  validateActivity(activity) {
+    return (activity.id &&
+      activity.genre &&
+        activity.title &&
+          activity.description &&
+            activity.imageUrl &&
+              activity.lat &&
+                activity.lng &&
+                  activity.duration > 0);
+  }
+
   createActivity(e, genre) {
-    console.log("createActivity");
     e.preventDefault();
     let experience = this.state.experience;
-    experience.duration = experience.duration + parseInt(this.state.duration);
-    experience.activities[this.state.count] = {
+    let activity = {
       id: this.state.count,
       genre,
       description: this.state.description,
       title: this.state.title,
       imageUrl: this.state.imageUrl,
       lat: this.state.lat,
-      long: this.state.long,
+      lng: this.state.lng,
       duration: parseInt(this.state.duration),
     };
-    console.log(experience);
-    console.log(this.state);
-    this.setState({
-      activity: undefined,
-      experience,
-      count: this.state.count + 1,
-      duration: "",
-      lat: "",
-      long: "",
-      title: "",
-      description: "",
-      form: "",
+    if (this.validateActivity(activity)) {
+      experience.duration = experience.duration + parseInt(this.state.duration);
+      experience.activities[this.state.count] = activity;
+      console.log("experience", experience);
+      this.setState({
+        activity: undefined,
+        experience,
+        count: this.state.count + 1,
+        duration: "",
+        lat: "",
+        lng: "",
+        title: "",
+        description: "",
+        form: "",
+        imgUrls: [],
+        file: undefined,
+        imageUrl: ""
 
-    });
-    console.log(this.state);
-    // this.setupMap();
+      });
+    } else {
+      console.log("activity validation failed");
+      console.log(activity);
+    }
+    console.log("state", this.state);
   }
 
+
+
   setImageUrl(imageUrl) {
-    console.log(imageUrl);
     this.setState({
       imageUrl
     });
@@ -121,11 +166,6 @@ class HomePage extends React.Component {
       });
     };
     reader.readAsDataURL(e.target.files[0]);
-
-
-    console.log(e.target.files[0]);
-    console.log(e.target.file);
-
   }
 
  render() {
@@ -191,11 +231,11 @@ class HomePage extends React.Component {
             <span className="duration-input">Duration (minutes): </span>
             <input
               onChange={(e) => {
-                console.log("fire");
+
                 e.preventDefault();
-                console.log(e.target.value);
+
                 if (!e.target.value || ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ""].includes(e.target.value[e.target.value.length - 1])) {
-                  console.log("hit");
+
                   this.update("duration")(e);
                 }
               }}
@@ -254,7 +294,7 @@ class HomePage extends React.Component {
 
     var input = /** @type {HTMLInputElement} */(
         document.getElementById('pac-input'));
-
+    console.log(input);
     // Create the autocomplete helper, and associate it with
     // an HTML text input box.
     var autocomplete = new google.maps.places.Autocomplete(input);
@@ -325,4 +365,4 @@ class HomePage extends React.Component {
     };
   }
 }
-export default HomePage;
+export default NewExperience;

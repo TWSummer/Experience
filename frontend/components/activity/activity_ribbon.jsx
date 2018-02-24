@@ -69,8 +69,9 @@ class ActivityRibbon extends React.Component {
     return (
       <div className="activity-ribbon-container">
         <ul className="activity-ribbon-list">
-          <Link to="/create" className="create-link btn">Create an Experience</Link>
+          <Link to="/create" className="create-experience btn">Create an Experience</Link>
           {activityIndexItems}
+          <button className="save-experience btn">Save your Experience</button>
         </ul>
       </div>
 
