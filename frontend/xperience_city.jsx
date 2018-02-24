@@ -17,7 +17,7 @@ window.fbAsyncInit = function() {
   });
   FB.getLoginStatus(function(response) {console.log(response)});
   //Subscribe to a crazy event that facebook provides, instead of DOMContentLoaded
-  // FB.Event.subscribe('auth.statusChange', function(response) {
+  FB.Event.subscribe('auth.statusChange', function(response) {
     const root = document.getElementById('root');
     let store = configureStore();
     //Required for facebook auth;
@@ -29,9 +29,9 @@ window.fbAsyncInit = function() {
     let rootComponent = <Root store={store} />;
     // }
     window.store = store;
-    // setTimeout(() => {
+    setTimeout(() => {
       ReactDOM.render(rootComponent, root);
-    // }, 500);
-  // });
+    }, 500);
+  });
 
 };

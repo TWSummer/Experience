@@ -1,15 +1,46 @@
 import React from 'react';
-
+import ActivityRibbon from '../activity/activity_ribbon';
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      imgUrl: ""
+      imgUrls: [],
+      title: "",
+      description: "",
+      // experience: {}
     };
+    this.handleBuild = this.handleBuild.bind(this);
+    this.update = this.update.bind(this);
+    this.showForm = this.showForm.bind(this);
   }
 
   componentDidMount() {
     this.setupMap();
+  }
+
+  handleBuild(e) {
+    e.preventDefault();
+
+    this.setState({
+      experience: {
+        title: this.state.title,
+        description: this.state.description,
+        activities: {},
+      },
+      title: "",
+      description: "",
+      // activity: {},
+
+    });
+    console.log(this.state.experience);
+  }
+
+  update(attribute) {
+    return (e) => {
+      this.setState({
+        [attribute]: e.target.value
+      });
+    };
   }
 
   setupMap() {
@@ -57,8 +88,11 @@ class HomePage extends React.Component {
         name: ""
       });
       if (place.photos) {
-        let newImgUrl = place.photos[0].getUrl({'maxWidth': 1000, 'maxHeight': 1000});
-        this.setState({imgUrl: newImgUrl});
+        const newImgUrls = place.photos.map(photo => {
+          return photo.getUrl({'maxWidth': 1000, 'maxHeight': 1000});
+        });
+        console.log(place.photos.length);
+        this.setState({imgUrls: newImgUrls});
       }
       if (!place.geometry) {
         return;
@@ -96,29 +130,153 @@ class HomePage extends React.Component {
     place.formatted_address + '</div>');
   }
 
+  showForm(genre) {
+    return () => {
+      console.log(genre);
+      this.setState({
+        form: genre,
+        activity: {},
+      });
+    };
+  }
+
  render() {
+   const icons = {
+     Food: <i className="fas fa-utensils"></i>,
+     Transit: <i className="fas fa-car"></i>,
+     Views: <i className="far fa-image"></i>,
+   };
    return (
      <main className="create-page">
-       <aside className="create-activity-ribbon"></aside>
-       <section className="create-activity-form">
-         <input type="text" placeholder="Search" id="pac-input"></input>
-         <div id="map">This is the map</div>
-         <form>
-           <p>Place: {this.state.name}</p>
-           {
-             this.state.imgUrl ?
-              <img
-                src={this.state.imgUrl}
-                className="location-preview-image"/> :
-              ""
-           }
-           <p>Latitude {this.state.lat}</p>
-           <p>Longitude {this.state.lng}</p>
-         </form>
-       </section>
-     </main>
-   );
- }
+      <ActivityRibbon/>
+
+      <section className={'create-activity-form-container'}>
+        <div className="form-header">
+        <h1 className="form-title">{this.state.experience ? this.state.experience.title : "Create an Experience"}</h1>
+        </div>
+        {!this.state.experience && <div className="experience-form"><input
+          onChange={this.update("title")}
+          className="title-input"
+          placeholder="Add a Title"
+          type="text"
+          value={this.state.title}></input>
+        <textarea
+          onChange={this.update("description")}
+
+          className="description-input"
+          placeholder="Add a Description"
+          type="text"
+          value={this.state.description}></textarea>
+        <button
+          className="btn"
+          onClick={(e) => this.handleBuild(e)}>Build your Experience</button></div>}
+        {this.state.experience &&
+          <ul className="activity-menu">
+            <li
+              className="activity-menu-button"
+              onClick={this.showForm("Food")}
+              >
+              <i className="fas fa-utensils"></i>
+              <span>Food</span>
+
+            </li>
+            <li
+              className="activity-menu-button"
+              onClick={this.showForm("Transit")}
+              >
+              <i className="fas fa-car"></i>
+              <span>Transit</span>
+
+            </li>
+            <li
+              className="activity-menu-button"
+              onClick={this.showForm("Views")}
+              >
+              <i className="far fa-image"></i>
+              <span>Views</span>
+
+            </li>
+            <li
+              className="activity-menu-button"
+              onClick={this.showForm("Outdoors")}
+              >
+              <i className="fas fa-tree"></i>
+              <span>Outdoors</span>
+
+            </li>
+            <li
+              className="activity-menu-button"
+              onClick={this.showForm("Venues")}
+              >
+              <i className="fas fa-users"></i>
+              <span>Venues</span>
+
+            </li>
+            <li
+              className="activity-menu-button"
+              onClick={this.showForm("Explore")}
+              >
+              <i className="fas fa-map-marker-alt"></i>
+              <span>Explore</span>
+
+            </li>
+            <li
+              className="activity-menu-button"
+              onClick={this.showForm("Custom")}
+              >
+              <i className="fas fa-asterisk"></i>
+              <span>Custom</span>
+
+            </li>
+
+
+          </ul>
+
+
+        }
+        <input className={`google-maps-search ${this.state.activity ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
+        <div className={this.state.activity && this.state.activity.genre !== "Custom"? "" : "hidden"} id="map">This is the map</div>
+        {this.state.activity && <form className="create-activity-form">
+
+          <input type="text" ></input>
+
+            <input
+              className="title-input"
+              placeholder="Add a Title"
+              type="text"
+              value={this.state.title}></input>
+
+
+
+            <textarea
+              className="description-input"
+              placeholder="Add a Description"
+              type="text"
+              value={this.state.description}></textarea>
+
+          <label className="duration-input">
+            <span className="duration-input">Duration: </span>
+            <input
+              className="duration-input"
+              type="select"></input>
+          </label>
+
+          <p>Place: {this.state.name}</p>
+          {
+            this.state.imgUrls &&
+              this.state.imgUrls.map(imgUrl => {
+
+              return (<img
+                src={imgUrl}
+                className="location-preview-image"/>
+            );})
+          }
+          <p>Latitude {this.state.lat}</p>
+          <p>Longitude {this.state.lng}</p>
+        </form>}
+      </section>
+    </main>
+  );}
 }
 
 export default HomePage;
