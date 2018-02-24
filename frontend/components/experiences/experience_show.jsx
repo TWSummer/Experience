@@ -63,6 +63,7 @@ class ExperienceShow extends React.Component {
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.props.createExperience(experience);
 
   }
 

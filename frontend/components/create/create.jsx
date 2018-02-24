@@ -28,11 +28,11 @@ class NewExperience extends React.Component {
   }
 
   validateExperience(experience) {
-    return experience.title && experience.description;
+    return experience.Title && experience.Description;
   }
 
   validateSave(experience) {
-    let activities = Object.values(experience.activities);
+    let activities = Object.values(experience.Activities);
     let bool = true;
     bool = this.validateExperience(experience);
     activities.forEach(activity => {
@@ -46,12 +46,12 @@ class NewExperience extends React.Component {
   handleBuild(e) {
     e.preventDefault();
     let experience = {
-      user_id: this.props.currentUser.id,
-      title: this.state.title,
-      description: this.state.description,
-      duration: 0,
-      score: 1,
-      activities: {},
+      User_ID: this.props.currentUser.id,
+      Title: this.state.title,
+      Description: this.state.description,
+      Duration: 0,
+      Score: 1,
+      Activities: {},
       files: [],
     };
     if (this.validateExperience(experience)) {
@@ -101,8 +101,8 @@ class NewExperience extends React.Component {
         activity.title &&
           activity.description &&
             activity.imageUrl &&
-              activity.lat &&
-                activity.lng &&
+              // activity.lat &&
+              //   activity.lng &&
                   activity.duration > 0);
   }
 
@@ -120,8 +120,8 @@ class NewExperience extends React.Component {
       duration: parseInt(this.state.duration),
     };
     if (this.validateActivity(activity)) {
-      experience.duration = experience.duration + parseInt(this.state.duration);
-      experience.activities[this.state.count] = activity;
+      experience.Duration = experience.Duration + parseInt(this.state.duration);
+      experience.Activities[this.state.count] = activity;
       console.log("experience", experience);
       this.setState({
         activity: undefined,
@@ -155,6 +155,7 @@ class NewExperience extends React.Component {
 
   setFile(e) {
     e.preventDefault();
+    e.persist();
     let experience = this.state.experience;
     let reader = new FileReader();
     reader.onload = () => {
@@ -182,7 +183,7 @@ class NewExperience extends React.Component {
 
       <section className={'create-activity-form-container'}>
         <div className="form-header">
-        <h1 className="form-title">{this.state.experience ? this.state.experience.title : "Create an Experience"}</h1>
+        <h1 className="form-title">{this.state.experience ? this.state.experience.Title : "Create an Experience"}</h1>
         </div>
         {!this.state.experience && <div className="experience-form"><input
           onChange={this.update("title")}

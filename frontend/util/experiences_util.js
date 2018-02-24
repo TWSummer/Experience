@@ -9,7 +9,9 @@ export const createExperience = (exp) => (
   $.ajax({
     method: "POST",
     url:"/api/experiences",
-    data: exp
+    data: exp,
+    contentType: false,
+    processData: false,
   })
 );
 

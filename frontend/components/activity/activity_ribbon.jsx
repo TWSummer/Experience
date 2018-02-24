@@ -34,12 +34,12 @@ class ActivityRibbon extends React.Component {
       Transit: <i className="fas fa-car"></i>,
       Views: <i className="far fa-image"></i>,
     };
-    if (this.props.experience && this.props.experience.activities) {
+    if (this.props.experience && this.props.experience.Activities) {
       console.log(this.props);
-      activityIndexItems = Object.keys(this.props.experience.activities).map(activityId => {
-            let activity = this.props.experience.activities[activityId];
+      activityIndexItems = Object.keys(this.props.experience.Activities).map(activityId => {
+            let activity = this.props.experience.Activities[activityId];
             activity.style = {
-              height: `${activity.duration/this.props.experience.duration * 100}%`,
+              height: `${activity.duration/this.props.experience.Duration * 100}%`,
               // backgroundImage: `linear-gradient(to bottom right, ${this.state.vibrant.DarkVibrant.getHex()}, ${this.state.vibrant.LightMuted.getHex()})`
             };
 
