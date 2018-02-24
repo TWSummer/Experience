@@ -1,30 +1,12 @@
 package data
 
 import (
-	"database/sql/driver"
 	"encoding/json"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
 	"github.com/jinzhu/gorm/dialects/postgres"
 )
-
-type Activity struct {
-	imageUrl    string
-	title       string
-	lat         float64
-	lng         float64
-	genre       string
-	duration    float64
-	description string
-}
-
-type ActivityMap map[string]interface{}
-
-func (a ActivityMap) Value() (driver.Value, error) {
-	j, err := json.Marshal(a)
-	return j, err
-}
 
 func SetupDB() *gorm.DB {
 	//for OSX docker container
@@ -48,35 +30,46 @@ func SetupDB() *gorm.DB {
 }
 
 func seedExp(db *gorm.DB) {
-	a1 := Activity{"https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png", "Meet at Gregoire's", 37.9, -122.5, "Food", 60, "Meet up at this famous French takeout spot to pick up the materials for a tasty picnic. You can't afford to miss out on their delightful potato puffs!"}
-	b, err := json.Marshal(a1)
-	fmt.Printf("The error is: %v", err)
-	fmt.Printf("The value of b is %v", b)
-	fmt.Printf("The value of a1 is %v", a1)
 
-	a2 := make(ActivityMap)
-	a2["imageUrl"] = "https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png"
-	a2["title"] = "Meet at Gregoire's"
-	a2["lat"] = 37.9
-	a2["lng"] = -122.5
-	a2["genre"] = "Food"
-	a2["duration"] = 60
-	a2["description"] = "Meet up at this famous French takeout spot to pick up the materials for a tasty picnic. You can't afford to miss out on their delightful potato puffs!"
-	fmt.Println("Image url is", a2["imageUrl"])
-	fmt.Println("Duration is", a2["duration"])
-	b2, err2 := a2.Value()
+	activities1 := postgres.Jsonb{json.RawMessage(`{"1": {
+				"lat": 37.9,
+				"lng": -122.6,
+				"imageUrl": "https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png",
+				"title": "Meet at Gregoire's",
+				"genre": "Food",
+				"duration": 60,
+				"description": "Meet up at this famous French takeout spot to pick up the materials for a tasty picnic. You can't afford to miss out on their delightful potato puffs!"
+			},
+			"2": {
+				"lat": 37.9,
+				"lng": -122.55,
+				"imageUrl": "https://www.cycleworld.com/sites/cycleworld.com/files/styles/2000_1x_/public/images/2017/10/2018-suzuki-gsx-s750-hero.jpg?itok=9oc76nHH&fc=50,50",
+				"title": "Motorcycle Ride to the Berkeley Hills",
+				"genre": "Transit",
+				"duration": 20,
+				"description": "Take your date on a thrilling ride up into Berkeley's famous hills, just north of UC Berkeley's campus. Enjoy a fantastc view of both sides of the Bay."
+			},
+			"3": {
+				"lat": 37.7747,
+				"lng": -122.43,
+				"imageUrl": "http://2.bp.blogspot.com/-W8wEx8paoU4/VgIr838Bb8I/AAAAAAAAIdI/4z58zv36hrQ/s1600/wtd90.jpg",
+				"title": "Hiking in the Berkeley Hills",
+				"genre": "Views",
+				"duration": 60,
+				"description": "Climb up a variety of scenic trails in the cool Berkeley air. My personal favorite route is (Andrew tell me what it is because I didn't do any of this at Cal)"
+			},
+			"4": {
+				"lat": 37.79,
+				"lng": -121.95,
+				"imageUrl": "https://www.phillymag.com/wp-content/uploads/sites/3/2016/05/picnic.jpg",
+				"title": "Hillside Picnic",
+				"genre": "Food",
+				"duration": 40,
+				"description": "Dig in to the food you picked up earlier in the day. Hope you were patient! In these unfortunately drought filled times, at least you're likely to get a clear view wherever you look!"
+			}
+		}`)}
 
-	fmt.Printf("err2 is %v", err2)
-	fmt.Printf("b2 is %v", b2)
-
-	a3 := postgres.Jsonb{json.RawMessage(`{"1": {
-		"lat": 37.9,
-		"lng": -122.5,
-		"imageUrl": "https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png",
-		"title": "Meet at Gregoire's"
-		}}`)}
-
-	db.Create(&Experience{UserID: "1", Title: "Test1", Genre: "Test1", Description: "Test1", Duration: 120, Activities: a3})
+	db.Create(&Experience{UserID: "1", Title: "North Berkeley Date Night", Genre: "Romantic", Description: "A casual but romantic night out exploring the natural beauty of the East Bay. Start in North Berkeley's famed gourmet ghetto, wind your way up to the Berkeley hills, and enjoy the sights as you chow down on a hillside picnic", Duration: 120, Activities: activities1})
 	db.Create(&Experience{UserID: "2", Title: "Test2", Genre: "Test2", Description: "Test2", Duration: 120})
 	db.Create(&Experience{UserID: "3", Title: "Test3", Genre: "Test3", Description: "Test3", Duration: 120})
 	db.Create(&Experience{UserID: "4", Title: "Test4", Genre: "Test4", Description: "Test4", Duration: 120})
