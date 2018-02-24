@@ -1,0 +1,153 @@
+/* font-family: 'Permanent Marker', cursive; */
+nav {
+  /* background: #E14658; */
+  background: #fff;
+  display: flex;
+  height: 50px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 0 10%;
+  border-bottom: 1px solid #3b3a36;
+  z-index: 100;
+}
+
+.nav-content-box {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  height: 50px;
+
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:link:visited {
+  color: inherit;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  margin-top: -10px;
+}
+
+.logo span {
+  font-family: 'Permanent Marker', cursive;
+
+  color: rgb(40, 42, 53);
+  text-shadow: 0 2px 4px -1px rgba(0,0,0,.1),0 2px 2px -2px rgba(0,0,0,.02),0 1px 4px 0 rgba(0,0,0,.04);
+}
+
+.logo span:first-child {
+
+  font-size: 72px;
+  line-height: .70;
+}
+
+.logo span:last-child {
+  font-family: 'Open Sans Condensed', sans-serif;
+
+  margin-left: -5px;
+  font-size: 34px;
+  line-height: 1;
+  margin-top: 10px;
+}
+
+.left-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-container {
+  margin-left: 200px;
+  display: flex;
+  align-items: center;
+}
+
+.search-container input {
+  border: 1px solid #c9c9c9;
+
+  border-radius: 5px;
+  padding: 5px 10px;
+  width: 375px;
+  background: #fff;
+}
+
+::placeholder {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 12px;
+}
+
+.btn {
+  padding: 5px 10px;
+  font-size: 20px;
+  /* border: 1px solid #000; */
+  border-radius: 5px;
+  background: rgb(41, 42, 53);
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.1),0 2px 2px -2px rgba(0,0,0,.02),0 1px 4px 0 rgba(0,0,0,.04);
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  /* margin-top: 5px; */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  padding: 0 10px;
+  font-size: 18px;
+}
+
+.username {
+  font-family: 'Open Sans Condensed', sans-serif;
+  /* font-family: 'Rock Salt', cursive; */
+  /* font-family: Arial; */
+  font-weight: 900;
+}
+
+.logout-text {
+  font-family: 'Rock Salt', cursive;
+  font-size: 12px;
+}
+
+.profile-picture {
+  height: 40px;
+  width: 40px;
+  margin-right: 20px;
+  border-radius: 50%;
+  /* border: 0.5px solid rgba(0,0,0,0.1); */
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.1),0 2px 2px -2px rgba(0,0,0,.02),0 1px 4px 0 rgba(0,0,0,.04);
+}
+
+.login-button .fa-facebook-square{
+  font-size: 24px;
+}
+
+.login-button {
+  width: 100px;
+}
+
+.logout-button {
+  margin-left: 20px;
+  width: 100px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+}
+
+.btn span {
+  color: #fff;
+}
+
+.session-controls {
+  display: flex;
+  align-items: center;
+}
