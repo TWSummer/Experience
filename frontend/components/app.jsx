@@ -14,7 +14,11 @@ const App = () => (
     <Switch>
       <Route path="/home" component={HomePageContainer} />
       <ProtectedRoute path="/create" component={CreateContainer} />
+<<<<<<< HEAD
       <Route path="/activitytest" component={ExperienceShowContainer}/>
+=======
+      <Route path="/experience/:id" component={ExperienceShowContainer}/>
+>>>>>>> d38c9eabc9d5f0bd476a8fda22ff20b8a21eb239
     </Switch>
   </div>
 );

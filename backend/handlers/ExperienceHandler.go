@@ -4,6 +4,7 @@ import (
 	"flex_project/backend/data"
 	"strconv"
 	// "log"
+<<<<<<< HEAD
 	// // "net/http"
 	// "github.com/aws/aws-sdk-go/aws"
 	// "github.com/aws/aws-sdk-go/aws/session"
@@ -11,14 +12,30 @@ import (
 	// "github.com/aws/aws-sdk-go/aws/credentials"
 	// "github.com/aws/aws-sdk-go/service/s3/s3manager"
 	// "os"
+=======
+>>>>>>> d38c9eabc9d5f0bd476a8fda22ff20b8a21eb239
 	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )
 
 func CreateExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
+<<<<<<< HEAD
 
+=======
+	// form, _ := c.MultipartForm()
+	file, _ := c.FormFile("file")
+	fmt.Println(file.Filename)
+	// files := form.File["upload[]"]
+	//
+	// for _, file := range files {
+	// 	log.Println(file.Filename)
+	// }
+	c.String(http.StatusOK, "Uploaded...")
+>>>>>>> d38c9eabc9d5f0bd476a8fda22ff20b8a21eb239
 	err := c.Bind(&exp)
 	//Hopefully, after some frontend magic, the context also contains activities
 
@@ -86,10 +103,8 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	c.JSON(200, exp)
 }
 
-
-
 // func UploadActivityPhoto(p *) {
-	// bucket := "experience.images"
+// bucket := "experience.images"
 //   filename := "/tmp/image.jpg"
 //   sess, err := session.NewSession(&aws.Config{
 //       Region: aws.String("us-west-1"),
@@ -140,6 +155,7 @@ func GetExperiences(c *gin.Context, db *gorm.DB) {
 
 func GetExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
+	fmt.Printf("data.experience %v", exp)
 	err := c.Bind(&exp)
 	if err != nil {
 		c.JSON(400, gin.H{"error": exp})
