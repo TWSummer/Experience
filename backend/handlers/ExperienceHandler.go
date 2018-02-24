@@ -4,8 +4,9 @@ import (
 	"flex_project/backend/data"
 	"strconv"
 	// "log"
-	"net/http"
 	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )
@@ -16,7 +17,7 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	file, _ := c.FormFile("file")
 	fmt.Println(file.Filename)
 	// files := form.File["upload[]"]
-  //
+	//
 	// for _, file := range files {
 	// 	log.Println(file.Filename)
 	// }
@@ -33,10 +34,8 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	c.JSON(200, exp)
 }
 
-
-
 // func UploadActivityPhoto(p *) {
-	// bucket := "experience.images"
+// bucket := "experience.images"
 //   filename := "/tmp/image.jpg"
 //   sess, err := session.NewSession(&aws.Config{
 //       Region: aws.String("us-west-1"),
@@ -87,6 +86,7 @@ func GetExperiences(c *gin.Context, db *gorm.DB) {
 
 func GetExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
+	fmt.Printf("data.experience %v", exp)
 	err := c.Bind(&exp)
 	if err != nil {
 		c.JSON(400, gin.H{"error": exp})

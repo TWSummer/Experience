@@ -4,12 +4,13 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	// "github.com/aws/aws-sdk-go/service/s3"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"flex_project/backend/data"
 	"flex_project/backend/handlers"
 	"fmt"
 	"os"
+
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	// "net/http"
@@ -49,18 +50,16 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 		fmt.Printf("err, %+v\n", err)
 		fmt.Printf("form, %+v\n", form)
 
-
 		files := form.File["file"]
 		fmt.Printf("files, %+v\n", files)
 
 		sess, err := session.NewSession(&aws.Config{
-				Region: aws.String("us-west-1"),
-				Credentials: credentials.NewStaticCredentials(
-					 os.Getenv("AWS_ACCESS_KEY_ID"),
-					 os.Getenv("AWS_SECRET_ACCESS_KEY"),
-					 "",
-					 )})
-
+			Region: aws.String("us-west-1"),
+			Credentials: credentials.NewStaticCredentials(
+				os.Getenv("AWS_ACCESS_KEY_ID"),
+				os.Getenv("AWS_SECRET_ACCESS_KEY"),
+				"",
+			)})
 
 		for _, file := range files {
 			log.Println(file.Filename)
@@ -74,12 +73,12 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 			uploader := s3manager.NewUploader(sess)
 			uploader.Upload(&s3manager.UploadInput{
 				Bucket: aws.String(bucket),
-				Key: aws.String(filename),
-				Body: fileBody,
+				Key:    aws.String(filename),
+				Body:   fileBody,
 			})
 			if err != nil {
-					// Print the error and exit.
-					// exitErrorf("Unable to upload %q to %q, %v", filename, bucket, err)
+				// Print the error and exit.
+				// exitErrorf("Unable to upload %q to %q, %v", filename, bucket, err)
 			}
 
 			// var imageURL = uploadOutput.Location
@@ -88,15 +87,12 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 		}
 		// c.String(http.StatusOK, "Uploaded...")
 		fmt.Printf("err, %+v\n", err)
-    //
+		//
 		fmt.Printf("c, %+v \n", c)
 		fmt.Printf("c.params, %+v \n", c)
 
 		// fmt.Printf("File: %+v \n", file)
 		fmt.Println("success?")
-
-
-
 
 	})
 	return r, db

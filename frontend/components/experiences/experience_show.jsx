@@ -66,6 +66,19 @@ class ExperienceShow extends React.Component {
 
   }
 
+  componentDidMount() {
+    this.props.fetchExperience(this.props.match.params.id)
+      .then((result) => console.log(result));
+  }
+
+  componentWillReceiveProps(newProps, oldProps) {
+    // if (!oldProps.match) {
+    //   this.props.fetchExperience(newProps.match.params.id);
+    // } else if (oldProps.match.params.id !== newProps.match.params.id) {
+    //   this.props.fetchExperience(newProps.match.params.id);
+    // }
+  }
+
   handleMouseEnter(e, activityId) {
 
     this.setState({selected: this.state.activities[activityId - 1]});
