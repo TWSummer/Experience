@@ -9,6 +9,12 @@
   width: 100%;
 }
 
+.small-exp-ribbion-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .vote-buttons {
   width: 6%;
   display: flex;
@@ -21,8 +27,12 @@
   font-size: 2vw;
 }
 
-.experience-index-item p {
-  font-size: 2vh;
+.small-exp-title {
+  padding-left: 70px;
+  font-size: 22px;
+  /* font-family: arial, sans-serif; */
+  font-family: 'Futura', sans-serif;
+  font-weight: 700;
 }
 
 .experience-ribbon {
