@@ -7,14 +7,16 @@ import (
 
 	"github.com/jinzhu/gorm/dialects/postgres"
 
-	// "log"
-	// // "net/http"
-	// "github.com/aws/aws-sdk-go/aws"
-	// "github.com/aws/aws-sdk-go/aws/session"
-	// // "github.com/aws/aws-sdk-go/service/s3"
-	// "github.com/aws/aws-sdk-go/aws/credentials"
-	// "github.com/aws/aws-sdk-go/service/s3/s3manager"
-	// "os"
+	"log"
+	// "net/http"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	// "github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	"github.com/joho/godotenv"
+	"math/rand"
+	"os"
 	"fmt"
 	// "net/http"
 
@@ -23,20 +25,12 @@ import (
 )
 
 func CreateExperience(c *gin.Context, db *gorm.DB) {
+
 	exp := data.Experience{}
 
-	// form, _ := c.MultipartForm()
-	// file, _ := c.FormFile("file")
-	// fmt.Println(file.Filename)
-	// // files := form.File["upload[]"]
-	// //
-	// // for _, file := range files {
-	// // 	log.Println(file.Filename)
-	// // }
-	// c.String(http.StatusOK, "Uploaded...")
+
 	fmt.Printf("c: %+v \n", c)
 	err := c.Bind(&exp)
-	//Hopefully, after some frontend magic, the context also contains activities
 
 	if err != nil {
 		fmt.Printf("err: %+v \n", err)
@@ -45,59 +39,12 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
-	// bucket := "experience.images"
-	// // file, err := c.FormFile("file")
-	// form, err := c.MultipartForm()
-	// fmt.Printf("err, %+v\n", err)
-	// fmt.Printf("form, %+v\n", form)
-	//
-	//
-	// files := form.File["file"]
-	// fmt.Printf("files, %+v\n", files)
-	//
-	// sess, err := session.NewSession(&aws.Config{
-	// 		Region: aws.String("us-west-1"),
-	// 		Credentials: credentials.NewStaticCredentials(
-	// 			 os.Getenv("AWS_ACCESS_KEY_ID"),
-	// 			 os.Getenv("AWS_SECRET_ACCESS_KEY"),
-	// 			 "",
-	// 			 )})
-	//
-	//
-	// for _, file := range files {
-	// 	log.Println(file.Filename)
-	// 	filename := file.Filename
-	//
-	// 	//http://experience.images.s3.amazonaws.com
-	//
-	// 	// Create S3 service client
-	// 	// svc := s3.New(sess)
-	// 	fileBody, err := file.Open()
-	// 	uploader := s3manager.NewUploader(sess)
-	// 	uploader.Upload(&s3manager.UploadInput{
-	// 		Bucket: aws.String(bucket),
-	// 		Key: aws.String(filename),
-	// 		Body: fileBody,
-	// 	})
-	// 	if err != nil {
-	// 			// Print the error and exit.
-	// 			fmt.Printf("Unable to upload %q to %q, %v", filename, bucket, err)
-	// 	} else {
-	// 		fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket)
-	//
-	// 	}
-	//
-	// 	// var imageURL = uploadOutput.Location
-	// 	// fmt.Printf("URL: %v \n", imageURL)
-	// }
-	// c.String(http.StatusOK, "Uploaded...")
+
 	fmt.Printf("err, %+v\n", err)
-	//
-	fmt.Printf("experiment: %T\n", json.RawMessage(c.PostForm("ActivitiesString")))
+
 	fmt.Printf("experiment: %+v\n", c.PostForm("activities"))
 	exp.Activities = postgres.Jsonb{(json.RawMessage(c.PostForm("ActivitiesString")))}
 
-	fmt.Printf("exp, %+v \n", exp)
 
 	fmt.Printf("exp.Activities, %+v \n", exp.Activities)
 	// exp.Activities = postgres.Jsonb{exp.Activities}
@@ -108,37 +55,80 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	c.JSON(200, exp)
 }
 
-// func UploadActivityPhoto(p *) {
-// bucket := "experience.images"
-//   filename := "/tmp/image.jpg"
-//   sess, err := session.NewSession(&aws.Config{
-//       Region: aws.String("us-west-1"),
-//       Credentials: credentials.NewStaticCredentials(
-//          os.Getenv("AWS_ACCESS_KEY_ID"),
-//          os.Getenv("AWS_SECRET_ACCESS_KEY"),
-//          "",
-//          )})
-//
-//   //http://experience.images.s3.amazonaws.com
-//
-//   // Create S3 service client
-//   svc := s3.New(sess)
-//
-// 	uploader := s3manager.NewUploader(sess)
-//   uploadOutput, err = uploader.Upload(&s3manager.UploadInput{
-//     Bucket: aws.String(bucket),
-//     Key: aws.String("/tmp/image.jpg"),
-//     Body: file,
-//   })
-//   if err != nil {
-//       // Print the error and exit.
-//       exitErrorf("Unable to upload %q to %q, %v", filename, bucket, err)
-//   }
-//
-// 	exp.imageURL = uploadOutput.location
-//
-//   fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket)
-// }
+func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
+	exp := data.Experience{}
+	db.Where("ID = ?", c.Param("expID")).First(&exp)
+
+	var foo interface{}
+	activitiesRaw := exp.Activities.RawMessage
+	json.Unmarshal(activitiesRaw, &foo)
+	activitiesMap := foo.(map[string]interface{})
+
+
+	dotEnvErr := godotenv.Load()
+	if dotEnvErr != nil {
+		log.Fatal("Error loading .env file")
+	}
+	form, formErr := c.MultipartForm()
+	if formErr != nil {
+		fmt.Printf("form err, %+v\n", formErr)
+		fmt.Printf("c:, %+v\n", c)
+
+		return
+	}
+
+
+
+	//data is an array containing activity ids for the files
+	data := form.Value["data"]
+	files := form.File["file"]
+	bucket := "experience.images"
+
+	sess, err := session.NewSession(&aws.Config{
+		Region: aws.String("us-west-1"),
+		Credentials: credentials.NewStaticCredentials(
+			os.Getenv("AWS_ACCESS_KEY_ID"),
+			os.Getenv("AWS_SECRET_ACCESS_KEY"),
+			"",
+		)})
+
+	for index, file := range files {
+		log.Println(file.Filename)
+		filename := file.Filename
+
+		// Create S3 service client
+		// svc := s3.New(sess)
+		fileBody, _ := file.Open()
+
+		uploader := s3manager.NewUploader(sess)
+		var uploadOutput, err2 = uploader.Upload(&s3manager.UploadInput{
+			Bucket: aws.String(bucket),
+			Key:    aws.String(fmt.Sprintf("%v%v", rand.Int(), filename)),
+			Body:   fileBody,
+		})
+		if err2 != nil {
+			fmt.Printf("uploadOutput err, %+v\n", err2)
+
+		}
+		fmt.Printf("imgUrl, %v\n", uploadOutput.Location)
+		activityMap := activitiesMap[data[index]].(map[string]interface{})
+		activityMap["ImageUrl"] = uploadOutput.Location
+		activitiesMap[data[index]] = activityMap
+
+
+
+
+
+		fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket)
+	}
+	marshalM, err := json.Marshal(activitiesMap)
+	fmt.Printf("err, %+v\n", err)
+	exp.Activities = postgres.Jsonb{json.RawMessage(marshalM)}
+	fmt.Printf("exp, %+v\n", exp)
+	db.Save(&exp)
+	c.JSON(200, exp)
+
+}
 
 func GetExperiences(c *gin.Context, db *gorm.DB) {
 	exps := []data.Experience{}
