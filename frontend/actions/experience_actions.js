@@ -20,6 +20,8 @@ const receiveErrors = errors => ({
   errors
 });
 
+//not currently in use, here for when we want to change the
+//user state to include their voted on experiences
 const receiveExperienceVote = experience => ({
   type: RECEIVE_EXPERIENCE_VOTE,
   experience
@@ -59,7 +61,7 @@ export const voteOnExperience = (expID, vote) => dispatch => {
   return (
     APIUtil.voteOnExperience(expID, vote)
       .then(
-        experience => dispatch(receiveExperienceVote(experience)),
+        experience => dispatch(receiveExperience(experience)),
         errors => dispatch(receiveErrors(errors))
       )
   );

@@ -103,6 +103,7 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	// exp.Activities = postgres.Jsonb{exp.Activities}
 	// fmt.Printf("File: %+v \n", file)
 	// fmt.Println("success?")
+	exp.Score = 1
 	db.Create(&exp)
 	c.JSON(200, exp)
 }
@@ -150,9 +151,9 @@ func GetExperiences(c *gin.Context, db *gorm.DB) {
 		c.JSON(400, gin.H{"error": "invalid offset"})
 	}
 	if offset == 0 {
-		db.Limit(quantity).Find(&exps).Order("Score desc")
+		db.Limit(quantity).Order("Score desc").Find(&exps)
 	} else {
-		db.Offset(offset).Limit(quantity).Find(&exps).Order("Score desc")
+		db.Offset(offset).Limit(quantity).Order("Score desc").Find(&exps)
 	}
 	c.JSON(200, exps)
 }
@@ -160,12 +161,7 @@ func GetExperiences(c *gin.Context, db *gorm.DB) {
 func GetExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
 	expID := c.Param("expID")
-
-	fmt.Printf("data.experience %v", exp)
-
 	db.Where("ID = ?", expID).First(&exp)
-	fmt.Printf("data.experience %v", exp)
-
 	c.JSON(200, exp)
 }
 
@@ -179,9 +175,16 @@ func DeleteExperience(c *gin.Context, db *gorm.DB) {
 
 func VoteExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
-	expID := c.Param("id")
-	vote, _ := strconv.Atoi(c.Param("vote"))
+	expID, err := strconv.Atoi(c.Param("expID"))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "invalid experience id"})
+	}
+	vote, err := strconv.Atoi(c.PostForm("voteValue"))
+	if err != nil || vote != 1 && vote != -1 {
+		c.JSON(400, gin.H{"error": "invalid vote value"})
+	}
 	db.Where("ID = ?", expID).First(&exp)
 	exp.Score += vote
 	db.Save(&exp)
+	c.JSON(200, exp)
 }

@@ -8,7 +8,10 @@ const experiencesReducer = (state = {}, action) => {
   let newState;
   switch(action.type) {
     case RECEIVE_EXPERIENCES:
-      newState = merge({}, state, action.experiences);
+      newState = merge({}, state);
+      action.experiences.forEach(exp => {
+        newState[exp.ID] = exp;
+      });
       return newState;
     case RECEIVE_EXPERIENCE:
       newState = merge({}, state, {[action.experience.ID]: action.experience});

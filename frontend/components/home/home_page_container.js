@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { fetchExperiences } from '../../actions/experience_actions';
 
 const mapStateToProps = (state, ownProps) => {
+  let experiences = Object.values(state.entities.experiences);
+  experiences.sort((a, b) => (a.Score < b.Score ? 1 : -1));
   return ({
-    experiences: Object.values(state.entities.experiences)
+    experiences
   });
 };
 
