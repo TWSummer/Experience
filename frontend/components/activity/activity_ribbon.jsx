@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Vibrant from 'node-vibrant';
+
 import {Link} from 'react-router-dom';
 // THOUGHTS REGARDING THE ULTIMATE SHAPE OF ACTIVITIES:
 // 1) Activities have a type, that will determine the underlying information
@@ -27,13 +27,19 @@ class ActivityRibbon extends React.Component {
 
   render() {
     let activityIndexItems;
-    let vibrant;
-    console.log(this.props);
-    const icons = {
-      Food: <i className="fas fa-utensils"></i>,
-      Transit: <i className="fas fa-car"></i>,
-      Views: <i className="far fa-image"></i>,
-    };
+
+
+
+      const icons = {
+        Food: <i className="fas fa-utensils"></i>,
+        Transit: <i className="fas fa-car"></i>,
+        Views: <i className="far fa-image"></i>,
+        Outdoors: <i className="fas fa-tree"></i>,
+        Venues: <i className="fas fa-users"></i>,
+        Explore: <i className="fas fa-map-marker-alt"></i>,
+        Custom: <i className="fas fa-asterisk"></i>,
+
+      };
     if (this.props.experience && this.props.experience.Activities) {
 
       activityIndexItems = Object.values(this.props.experience.Activities).map(activity => {
