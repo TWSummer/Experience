@@ -5,7 +5,9 @@ class NewExperience extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      imgUrls: [],
+      files: new FormData()
+,
+      // imgUrls: [],
       title: "",
       description: "",
       count: 1,
@@ -42,6 +44,12 @@ class NewExperience extends React.Component {
       }
     });
 
+    if (!bool) {
+      console.log("save validation failed");
+      console.log(experience);
+    }
+
+    return bool;
   }
 
   handleBuild(e) {
@@ -53,7 +61,7 @@ class NewExperience extends React.Component {
       Duration: 0,
       Score: 1,
       Activities: {},
-      files: [],
+
     };
     if (this.validateExperience(experience)) {
       this.setState({
@@ -65,6 +73,7 @@ class NewExperience extends React.Component {
       });
     } else {
       console.log("experience validation failed");
+      console.log(experience);
     }
 
   }
@@ -116,8 +125,8 @@ class NewExperience extends React.Component {
       Description: this.state.description,
       Title: this.state.title,
       ImageUrl: this.state.ImageUrl,
-      lat: this.state.lat,
-      lng: this.state.lng,
+      Lat: this.state.lat,
+      Lng: this.state.lng,
       Duration: parseInt(this.state.duration),
     };
     if (this.validateActivity(activity)) {
@@ -128,8 +137,8 @@ class NewExperience extends React.Component {
         experience,
         count: this.state.count + 1,
         duration: "",
-        lat: "",
-        lng: "",
+        Lat: "",
+        Lng: "",
         title: "",
         description: "",
         form: "",
@@ -139,6 +148,12 @@ class NewExperience extends React.Component {
 
       });
       this.resetMap();
+      this.setState({
+        imgUrls: undefined,
+        lat: undefined,
+        lng: undefined,
+        name: ""
+      });
     } else {
       console.log("activity validation failed");
       console.log(activity);
@@ -154,18 +169,22 @@ class NewExperience extends React.Component {
   }
 
   setFile(e) {
+
     e.preventDefault();
     e.persist();
-    let experience = this.state.experience;
+    let files = this.state.files;
+    files.append('file', e.target.files[0]);
+    files.append('data', this.state.count);
     let reader = new FileReader();
     reader.onload = () => {
-      experience.files.push(e.target.files[0]);
+
       this.setState({
-        experience,
+        files,
         file: reader.result,
         ImageUrl: reader.result,
       });
     };
+
     reader.readAsDataURL(e.target.files[0]);
   }
 
@@ -173,15 +192,15 @@ class NewExperience extends React.Component {
     e.preventDefault();
     let experience = this.state.experience;
     experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
-    this.props.createExperience(experience);
+
+    this.props.createExperience(experience, this.state.files).then(experience2 => {
+
+      this.props.history.push(`/experience/${experience2.ID}`);
+    });
   }
 
  render() {
-   const icons = {
-     Food: <i className="fas fa-utensils"></i>,
-     Transit: <i className="fas fa-car"></i>,
-     Views: <i className="far fa-image"></i>,
-   };
+
 
 
    return (
@@ -216,6 +235,66 @@ class NewExperience extends React.Component {
         <input className={`google-maps-search ${this.state.activity ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
         <div className={this.state.activity && this.state.form !== "Custom"? "" : "hidden"} id="map">This is the map</div>
         {this.state.activity && <form className="create-activity-form">
+          {this.state.imgUrls && <span className="photos-header">Choose a photo</span>}
+
+          {this.state.imgUrls ? <div className="hide-scrollbar-div">
+          <ul className="google-maps-photos" style={{overflowX: "scroll"}}>
+
+
+            {this.state.imgUrls &&
+              this.state.imgUrls.map((ImageUrl, index) => {
+
+              return (<li
+                key={index}
+                className="google-maps-photo"><img
+                src={ImageUrl}
+                onClick={(e) => this.setImageUrl(ImageUrl)}
+                className="location-preview-image"/></li>
+            );})
+
+          }</ul>
+          <div className="gradient-overlay">
+          </div>
+        </div> : ""}
+        {this.state.imgUrls && <label className="file-input">
+            ...or upload your own
+            <span className="file-input btn">Upload Image</span>
+            <input
+              onChange={(e) => this.setFile(e)}
+              className="file-input"
+              type="file"></input>
+              {this.state.file && <img className="custom-preview" src={this.state.file}></img>}
+
+
+          </label>}
+          {this.state.form === "Custom" && <label className="file-input">
+              <span className="file-input btn">Upload Image</span>
+              <input
+                onChange={(e) => this.setFile(e)}
+                className="file-input"
+                type="file"></input>
+                {this.state.file && <img className="custom-preview" src={this.state.file}></img>}
+
+
+            </label>}
+
+          <label className="duration-input">
+            Duration (minutes):
+            <input
+
+              onChange={(e) => {
+
+                e.preventDefault();
+
+                if (!e.target.value || ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ""].includes(e.target.value[e.target.value.length - 1])) {
+
+                  this.update("duration")(e);
+                }
+              }}
+              value={this.state.duration}
+              className="duration-input"
+              type="text"></input>
+          </label>
 
           <input type="text" ></input>
 
@@ -235,33 +314,8 @@ class NewExperience extends React.Component {
               type="text"
               value={this.state.description}></textarea>
 
-          <label className="duration-input">
-            <span className="duration-input">Duration (minutes): </span>
-            <input
-              onChange={(e) => {
-
-                e.preventDefault();
-
-                if (!e.target.value || ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ""].includes(e.target.value[e.target.value.length - 1])) {
-
-                  this.update("duration")(e);
-                }
-              }}
-              value={this.state.duration}
-              className="duration-input"
-              type="text"></input>
-          </label>
-
-          <label className="file-input">
-            {this.state.file && <img src={this.state.file}></img>}
-            <span className="file-input">Upload Image: </span>
-            <input
-              onChange={(e) => this.setFile(e)}
-              className="file-input"
-              type="file"></input>
 
 
-          </label>
 
           <button
             onClick={(e) => this.createActivity(e, this.state.form)}
@@ -270,21 +324,6 @@ class NewExperience extends React.Component {
           </button>
 
 
-          <p>Place: {this.state.name}</p>
-          <ul className="google-maps-photos">{
-            this.state.imgUrls &&
-              this.state.imgUrls.map((ImageUrl, index) => {
-
-              return (<li
-                key={index}
-                className="google-maps-photo"><img
-                src={ImageUrl}
-                onClick={(e) => this.setImageUrl(ImageUrl)}
-                className="location-preview-image"/></li>
-            );})
-          }</ul>
-          <p>Latitude {this.state.lat}</p>
-          <p>Longitude {this.state.lng}</p>
         </form>}
       </section>
     </main>
@@ -295,7 +334,269 @@ class NewExperience extends React.Component {
     var mapOptions = {
       center: {lat: 37.7749, lng: -122.4194},
       zoom: 11,
-      scrollwheel: true
+      scrollwheel: true,
+      mapTypeControl: false,
+      scaleControl: false,
+      streetViewControl: false,
+      rotateControl: false,
+      fullscreenControl: false,
+      styles: [
+    {
+        "featureType": "administrative",
+        "elementType": "all",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.country",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.province",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "color": "#939393"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            },
+            {
+                "color": "#797979"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.neighborhood",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            },
+            {
+                "color": "#8d8c8c"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.land_parcel",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "hue": "#dddddd"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -3
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.attraction",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "hue": "#bbbbbb"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 26
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "hue": "#ffffff"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "all",
+        "stylers": [
+            {
+                "hue": "#ffffff"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 100
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "hue": "#ffffff"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 100
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    }
+]
     };
     var map = new google.maps.Map(document.getElementById('map'),
       mapOptions);
@@ -333,7 +634,7 @@ class NewExperience extends React.Component {
       infowindow.close();
       var place = autocomplete.getPlace();
       this.setState({
-        imgUrls: [],
+        imgUrls: undefined,
         lat: undefined,
         lng: undefined,
         name: ""

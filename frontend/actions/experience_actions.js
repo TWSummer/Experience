@@ -1,8 +1,9 @@
 import * as APIUtil from '../util/experiences_util';
-
+import {uploadFiles} from '../util/upload_util'
 export const RECEIVE_EXPERIENCES = "RECEIVE_EXPERIENCES";
 export const RECEIVE_EXPERIENCE_ERRORS = "RECEIVE_EXPERIENCE_ERRORS";
 export const RECEIVE_EXPERIENCE = "RECEIVE_EXPERIENCE";
+export const RECEIVE_EXPERIENCE_VOTE = "RECEIVE_EXPERIENCE_VOTE";
 
 const receiveExperiences = experiences => ({
   type: RECEIVE_EXPERIENCES,
@@ -19,6 +20,13 @@ const receiveErrors = errors => ({
   errors
 });
 
+//not currently in use, here for when we want to change the
+//user state to include their voted on experiences
+const receiveExperienceVote = experience => ({
+  type: RECEIVE_EXPERIENCE_VOTE,
+  experience
+});
+
 export const fetchExperiences = (quantity, offset) => dispatch => {
   return (
     APIUtil.fetchExperiences(quantity, offset)
@@ -29,11 +37,18 @@ export const fetchExperiences = (quantity, offset) => dispatch => {
   );
 };
 
-export const createExperience = (exp) => dispatch => {
+export const createExperience = (exp, files) => dispatch => {
   return (
     APIUtil.createExperience(exp)
       .then(
-        experience => dispatch(receiveExperience(experience)),
+        experience => {
+          dispatch(receiveExperience(experience));
+          console.log(files);
+          console.log(files.getAll('data'));
+          console.log(files.getAll('file'));
+          dispatch(uploadImages(experience.ID, files));
+          return experience;
+        },
         errors => dispatch(receiveErrors(errors))
       )
   );
@@ -46,5 +61,28 @@ export const fetchExperience = (expID) => dispatch => {
         experience => dispatch(receiveExperience(experience)),
         errors => dispatch(receiveErrors(errors))
       )
+  );
+};
+
+export const voteOnExperience = (expID, vote) => dispatch => {
+  return (
+    APIUtil.voteOnExperience(expID, vote)
+      .then(
+        experience => dispatch(receiveExperience(experience)),
+        errors => dispatch(receiveErrors(errors))
+      )
+  );
+};
+
+export const uploadImages = (expID, files) => dispatch => {
+  return (
+    uploadFiles(expID, files).then(
+      experience => {
+        console.log(experience);
+        dispatch(receiveExperience(experience));
+        return experience;
+      },
+      errors => dispatch(receiveErrors(errors))
+    )
   );
 };

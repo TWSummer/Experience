@@ -27,6 +27,16 @@
   font-size: 2vw;
 }
 
+.vote-buttons svg:hover {
+  cursor: pointer;
+}
+
+.vote-count {
+  user-select: none;
+  transform: rotate(90deg);
+
+}
+
 .small-exp-title {
   padding-left: 70px;
   font-size: 22px;
@@ -35,8 +45,21 @@
   font-weight: 700;
 }
 
+.small-exp-title:hover {
+  cursor: pointer;
+}
+
 .experience-ribbon {
+  display: flex;
   height: 84.44444444444%;
   width: 100%;
   background: url("https://images.fineartamerica.com/images-medium-large-5/color-explosion-abstract-art-ann-powell.jpg")
+}
+
+.small-exp-activity {
+  display: flex;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transition: width .4s;
 }
