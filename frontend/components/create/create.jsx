@@ -5,7 +5,8 @@ class NewExperience extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: [],
+      files: new FormData()
+,
       imgUrls: [],
       title: "",
       description: "",
@@ -43,6 +44,12 @@ class NewExperience extends React.Component {
       }
     });
 
+    if (!bool) {
+      console.log("save validation failed");
+      console.log(experience);
+    }
+
+    return bool;
   }
 
   handleBuild(e) {
@@ -66,6 +73,7 @@ class NewExperience extends React.Component {
       });
     } else {
       console.log("experience validation failed");
+      console.log(experience);
     }
 
   }
@@ -144,7 +152,7 @@ class NewExperience extends React.Component {
       console.log("activity validation failed");
       console.log(activity);
     }
-    console.log("state", this.state);
+
   }
 
 
@@ -156,18 +164,22 @@ class NewExperience extends React.Component {
   }
 
   setFile(e) {
+
     e.preventDefault();
     e.persist();
     let files = this.state.files;
+    files.append('file', e.target.files[0]);
+    files.append('data', this.state.count);
     let reader = new FileReader();
     reader.onload = () => {
-      files.push([this.state.count, e.target.files[0]]);
+
       this.setState({
         files,
         file: reader.result,
         ImageUrl: reader.result,
       });
     };
+
     reader.readAsDataURL(e.target.files[0]);
   }
 
@@ -175,9 +187,11 @@ class NewExperience extends React.Component {
     e.preventDefault();
     let experience = this.state.experience;
     experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
-    console.log(this.state.experience);
-    console.log(experience);
-    this.props.createExperience(experience, this.state.files);
+
+    this.props.createExperience(experience, this.state.files).then(experience2 => {
+
+      this.props.history.push(`/experience/${experience2.ID}`);
+    });
   }
 
  render() {
@@ -306,7 +320,7 @@ class NewExperience extends React.Component {
 
     var input = /** @type {HTMLInputElement} */(
         document.getElementById('pac-input'));
-    console.log(input);
+
     // Create the autocomplete helper, and associate it with
     // an HTML text input box.
     var autocomplete = new google.maps.places.Autocomplete(input);
@@ -343,7 +357,7 @@ class NewExperience extends React.Component {
         const newImgUrls = place.photos.map(photo => {
           return photo.getUrl({'maxWidth': 1000, 'maxHeight': 1000});
         });
-        console.log(place.photos.length);
+
         this.setState({imgUrls: newImgUrls});
       }
       if (!place.geometry) {

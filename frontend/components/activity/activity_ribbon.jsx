@@ -35,9 +35,9 @@ class ActivityRibbon extends React.Component {
       Views: <i className="far fa-image"></i>,
     };
     if (this.props.experience && this.props.experience.Activities) {
-      console.log(this.props);
+
       activityIndexItems = Object.values(this.props.experience.Activities).map(activity => {
-        console.log(activity);
+
             // let activity = this.props.experience.Activities[activityId];
             activity.style = {
               height: `${activity.Duration/this.props.experience.Duration * 100}%`,
@@ -70,11 +70,12 @@ class ActivityRibbon extends React.Component {
     return (
       <div className="activity-ribbon-container">
         <ul className="activity-ribbon-list">
-          <Link to="/create" className="create-experience btn">Create an Experience</Link>
-          {activityIndexItems}
-          <button
+          { this.props.handleSave ? <button
             onClick={(e) => this.props.handleSave(e)}
-            className="save-experience btn">Save your Experience</button>
+            className="save-experience btn">Save your Experience</button> :
+          <Link to="/create"><button className="create-experience btn">Create an Experience</button></Link> }
+          {activityIndexItems}
+
         </ul>
       </div>
 

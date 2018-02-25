@@ -29,9 +29,7 @@ window.fbAsyncInit = function() {
     let rootComponent = <Root store={store} />;
     // }
     window.store = store;
-    // setTimeout(() => {
-      ReactDOM.render(rootComponent, root);
-    // }, 500);
+    ReactDOM.render(rootComponent, root);
   });
 
 };

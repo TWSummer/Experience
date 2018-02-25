@@ -1,6 +1,6 @@
-export const uploadFiles = (fileData) => {
+export const uploadFiles = (expID, fileData) => {
   return $.ajax({
-    url: 'api/test',
+    url: `api/experience/${expID}/upload`,
     method: 'POST',
     data: fileData,
     contentType: false,

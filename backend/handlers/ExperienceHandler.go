@@ -45,7 +45,6 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	fmt.Printf("experiment: %+v\n", c.PostForm("activities"))
 	exp.Activities = postgres.Jsonb{(json.RawMessage(c.PostForm("ActivitiesString")))}
 
-	fmt.Printf("exp, %+v \n", exp)
 
 	fmt.Printf("exp.Activities, %+v \n", exp.Activities)
 	// exp.Activities = postgres.Jsonb{exp.Activities}
@@ -58,13 +57,13 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 
 func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
-	db.Where("ID = ?", expID := c.Param("ID")).First(&exp)
+	db.Where("ID = ?", c.Param("expID")).First(&exp)
 
 	var foo interface{}
 	activitiesRaw := exp.Activities.RawMessage
 	json.Unmarshal(activitiesRaw, &foo)
 	activitiesMap := foo.(map[string]interface{})
-	activityMap := activitiesMap["1"].(map[string]interface{})
+
 
 	dotEnvErr := godotenv.Load()
 	if dotEnvErr != nil {
@@ -73,15 +72,16 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 	form, formErr := c.MultipartForm()
 	if formErr != nil {
 		fmt.Printf("form err, %+v\n", formErr)
+		fmt.Printf("c:, %+v\n", c)
+
+		return
 	}
 
 
 
 	//data is an array containing activity ids for the files
 	data := form.Value["data"]
-	fmt.Printf("data: %+v\n", data)
 	files := form.File["file"]
-	fmt.Printf("files, %+v\n", files)
 	bucket := "experience.images"
 
 	sess, err := session.NewSession(&aws.Config{
@@ -95,13 +95,10 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 	for index, file := range files {
 		log.Println(file.Filename)
 		filename := file.Filename
-		fmt.Printf("index: %v\n", index)
-		//http://experience.images.s3.amazonaws.com
 
 		// Create S3 service client
 		// svc := s3.New(sess)
-		fileBody, err := file.Open()
-		fmt.Printf("fileOpen err, %+v\n", err)
+		fileBody, _ := file.Open()
 
 		uploader := s3manager.NewUploader(sess)
 		var uploadOutput, err2 = uploader.Upload(&s3manager.UploadInput{
@@ -118,26 +115,18 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 		activityMap["ImageUrl"] = uploadOutput.Location
 		activitiesMap[data[index]] = activityMap
 
-		marshalM, err := json.Marshal(activitiesMap)
-		fmt.Printf("err, %+v\n", err)
+
 
 
 
 		fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket)
 	}
+	marshalM, err := json.Marshal(activitiesMap)
+	fmt.Printf("err, %+v\n", err)
 	exp.Activities = postgres.Jsonb{json.RawMessage(marshalM)}
 	fmt.Printf("exp, %+v\n", exp)
-
-	// c.String(http.StatusOK, "Uploaded...")
-	// dog := []byte
-	// json.RawMessage(m)
-	fmt.Printf("err, %+v\n", err)
-	//
-	fmt.Printf("c, %+v \n", c)
-	fmt.Printf("c.params, %+v \n", c)
-
-	// fmt.Printf("File: %+v \n", file)
-	fmt.Println("success?")
+	db.Save(&exp)
+	c.JSON(200, exp)
 
 }
 
