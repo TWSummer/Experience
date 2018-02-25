@@ -123,7 +123,6 @@ class NewExperience extends React.Component {
     if (this.validateActivity(activity)) {
       experience.Duration = experience.Duration + parseInt(this.state.duration);
       experience.Activities[this.state.count] = activity;
-      console.log("experience", experience);
       this.setState({
         activity: undefined,
         experience,
@@ -139,11 +138,11 @@ class NewExperience extends React.Component {
         ImageUrl: ""
 
       });
+      this.resetMap();
     } else {
       console.log("activity validation failed");
       console.log(activity);
     }
-    console.log("state", this.state);
   }
 
 
@@ -174,8 +173,6 @@ class NewExperience extends React.Component {
     e.preventDefault();
     let experience = this.state.experience;
     experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
-    console.log(this.state.experience);
-    console.log(experience);
     this.props.createExperience(experience);
   }
 
@@ -305,10 +302,9 @@ class NewExperience extends React.Component {
 
     var input = /** @type {HTMLInputElement} */(
         document.getElementById('pac-input'));
-    console.log(input);
     // Create the autocomplete helper, and associate it with
     // an HTML text input box.
-    var autocomplete = new google.maps.places.Autocomplete(input);
+    let autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', map);
 
     map.controls[google.maps.ControlPosition.TOP].push(input);
@@ -317,6 +313,7 @@ class NewExperience extends React.Component {
     var marker = new google.maps.Marker({
       map: map
     });
+
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.open(map, marker);
     });
@@ -325,13 +322,16 @@ class NewExperience extends React.Component {
     // list of suggestions.
     google.maps.event.addListener(autocomplete, 'place_changed',
       this.autocompleteCallback(infowindow, autocomplete, map, marker));
+    this.setState({map});
+    this.setState({autocomplete});
+    this.setState({ marker });
+    this.setState({ input });
   }
 
   autocompleteCallback(infowindow, autocomplete, map, marker) {
     return () => {
       infowindow.close();
       var place = autocomplete.getPlace();
-      console.log(place);
       this.setState({
         imgUrls: [],
         lat: undefined,
@@ -342,7 +342,6 @@ class NewExperience extends React.Component {
         const newImgUrls = place.photos.map(photo => {
           return photo.getUrl({'maxWidth': 1000, 'maxHeight': 1000});
         });
-        console.log(place.photos.length);
         this.setState({imgUrls: newImgUrls});
       }
       if (!place.geometry) {
@@ -374,6 +373,29 @@ class NewExperience extends React.Component {
 
       infowindow.open(map, marker);
     };
+  }
+
+  resetMap() {
+    this.state.map.setCenter({lat: 37.7749, lng: -122.4194});
+    this.state.map.setZoom(11);
+    let autocomplete = new google.maps.places.Autocomplete(this.state.input);
+    autocomplete.bindTo('bounds', this.state.map);
+
+    map.controls[google.maps.ControlPosition.TOP].push(this.state.input);
+
+    let infowindow = new google.maps.InfoWindow();
+    let marker = new google.maps.Marker({
+      map: this.state.map
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(this.state.map, marker);
+    });
+
+    // Get the full place details when the user selects a place from the
+    // list of suggestions.
+    google.maps.event.addListener(autocomplete, 'place_changed',
+      this.autocompleteCallback(infowindow, autocomplete, this.state.map, marker));
   }
 }
 export default NewExperience;
