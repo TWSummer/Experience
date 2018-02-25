@@ -21,6 +21,7 @@ class NewExperience extends React.Component {
     this.validateActivity = this.validateActivity.bind(this);
     this.validateExperience = this.validateExperience.bind(this);
     this.validateSave = this.validateSave.bind(this);
+    this.handleSave= this.handleSave.bind(this);
   }
 
   componentDidMount() {
@@ -96,28 +97,28 @@ class NewExperience extends React.Component {
   }
 
   validateActivity(activity) {
-    return (activity.id &&
-      activity.genre &&
-        activity.title &&
-          activity.description &&
+    return (activity.ID &&
+      activity.Genre &&
+        activity.Title &&
+          activity.Description &&
             activity.imageUrl &&
               // activity.lat &&
               //   activity.lng &&
-                  activity.duration > 0);
+                  activity.Duration > 0);
   }
 
-  createActivity(e, genre) {
+  createActivity(e, Genre) {
     e.preventDefault();
     let experience = this.state.experience;
     let activity = {
-      id: this.state.count,
-      genre,
-      description: this.state.description,
-      title: this.state.title,
+      ID: this.state.count,
+      Genre,
+      Description: this.state.description,
+      Title: this.state.title,
       imageUrl: this.state.imageUrl,
       lat: this.state.lat,
       lng: this.state.lng,
-      duration: parseInt(this.state.duration),
+      Duration: parseInt(this.state.duration),
     };
     if (this.validateActivity(activity)) {
       experience.Duration = experience.Duration + parseInt(this.state.duration);
@@ -169,6 +170,15 @@ class NewExperience extends React.Component {
     reader.readAsDataURL(e.target.files[0]);
   }
 
+  handleSave(e) {
+    e.preventDefault();
+    let experience = this.state.experience;
+    experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
+    console.log(this.state.experience);
+    console.log(experience);
+    this.props.createExperience(experience);
+  }
+
  render() {
    const icons = {
      Food: <i className="fas fa-utensils"></i>,
@@ -179,7 +189,7 @@ class NewExperience extends React.Component {
 
    return (
      <main className="create-page">
-      <ActivityRibbon experience={this.state.experience}/>
+      <ActivityRibbon handleSave={this.handleSave} experience={this.state.experience}/>
 
       <section className={'create-activity-form-container'}>
         <div className="form-header">

@@ -66,8 +66,8 @@ func seedExp(db *gorm.DB) {
 	fmt.Println("Duration is", a2["duration"])
 	b2, err2 := a2.Value()
 
-	fmt.Printf("err2 is %v", err2)
-	fmt.Printf("b2 is %v", b2)
+	fmt.Printf("err2 is %v\n", err2)
+	fmt.Printf("b2 is %v\n", b2)
 
 	a3 := postgres.Jsonb{json.RawMessage(`{"1": {
 		"lat": 37.9,
@@ -75,6 +75,17 @@ func seedExp(db *gorm.DB) {
 		"imageUrl": "https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png",
 		"title": "Meet at Gregoire's"
 		}}`)}
+
+	a4 := json.RawMessage(`{"1": {
+		"lat": 37.9,
+		"lng": -122.5,
+		"imageUrl": "https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png",
+		"title": "Meet at Gregoire's"
+		}}`)
+		fmt.Printf("a3 is %v \n", a3)
+
+		fmt.Printf("a4 is %+v \n", a4)
+
 
 	db.Create(&Experience{UserID: "1", Title: "Test1", Genre: "Test1", Description: "Test1", Duration: 120, Activities: a3})
 	db.Create(&Experience{UserID: "2", Title: "Test2", Genre: "Test2", Description: "Test2", Duration: 120})

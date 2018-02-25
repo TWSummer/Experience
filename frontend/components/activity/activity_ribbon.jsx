@@ -39,22 +39,22 @@ class ActivityRibbon extends React.Component {
       activityIndexItems = Object.keys(this.props.experience.Activities).map(activityId => {
             let activity = this.props.experience.Activities[activityId];
             activity.style = {
-              height: `${activity.duration/this.props.experience.Duration * 100}%`,
+              height: `${activity.Duration/this.props.experience.Duration * 100}%`,
               // backgroundImage: `linear-gradient(to bottom right, ${this.state.vibrant.DarkVibrant.getHex()}, ${this.state.vibrant.LightMuted.getHex()})`
             };
 
             return (<li
-              onMouseEnter={(e) => this.props.handleMouseEnter(e, activity.id)}
-              onMouseLeave={(e) => this.props.handleMouseLeave(e, activity.id)}
-              onClick={(e) => this.props.handleClick(e, activity.id)}
-              key={activity.id}
+              onMouseEnter={(e) => this.props.handleMouseEnter(e, activity.ID)}
+              onMouseLeave={(e) => this.props.handleMouseLeave(e, activity.ID)}
+              onClick={(e) => this.props.handleClick(e, activity.ID)}
+              key={activity.ID}
               style={activity.style}
-              className={"activity-index-item " + (this.props.clicked === activity.id ? "selected" : "")} >
+              className={"activity-index-item " + (this.props.clicked === activity.ID ? "selected" : "")} >
               <div className="activity-overlay">
-                {icons[activity.genre]}
+                {icons[activity.Genre]}
               </div>
               <span className="activity-index-item title">
-                {activity.title}
+                {activity.Title}
               </span>
               <img src={activity.imageUrl}>
               </img>
@@ -71,7 +71,9 @@ class ActivityRibbon extends React.Component {
         <ul className="activity-ribbon-list">
           <Link to="/create" className="create-experience btn">Create an Experience</Link>
           {activityIndexItems}
-          <button className="save-experience btn">Save your Experience</button>
+          <button
+            onClick={(e) => this.props.handleSave(e)}
+            className="save-experience btn">Save your Experience</button>
         </ul>
       </div>
 

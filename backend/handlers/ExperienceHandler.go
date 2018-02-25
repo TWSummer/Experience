@@ -3,8 +3,11 @@ package handlers
 import (
 	"flex_project/backend/data"
 	"strconv"
+	"encoding/json"
+
+	"github.com/jinzhu/gorm/dialects/postgres"
+
 	// "log"
-<<<<<<< HEAD
 	// // "net/http"
 	// "github.com/aws/aws-sdk-go/aws"
 	// "github.com/aws/aws-sdk-go/aws/session"
@@ -12,10 +15,9 @@ import (
 	// "github.com/aws/aws-sdk-go/aws/credentials"
 	// "github.com/aws/aws-sdk-go/service/s3/s3manager"
 	// "os"
-=======
->>>>>>> d38c9eabc9d5f0bd476a8fda22ff20b8a21eb239
 	"fmt"
-	"net/http"
+	// "net/http"
+
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -23,24 +25,24 @@ import (
 
 func CreateExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
-<<<<<<< HEAD
 
-=======
 	// form, _ := c.MultipartForm()
-	file, _ := c.FormFile("file")
-	fmt.Println(file.Filename)
-	// files := form.File["upload[]"]
-	//
-	// for _, file := range files {
-	// 	log.Println(file.Filename)
-	// }
-	c.String(http.StatusOK, "Uploaded...")
->>>>>>> d38c9eabc9d5f0bd476a8fda22ff20b8a21eb239
+	// file, _ := c.FormFile("file")
+	// fmt.Println(file.Filename)
+	// // files := form.File["upload[]"]
+	// //
+	// // for _, file := range files {
+	// // 	log.Println(file.Filename)
+	// // }
+	// c.String(http.StatusOK, "Uploaded...")
+	fmt.Printf("c: %+v \n", c)
 	err := c.Bind(&exp)
 	//Hopefully, after some frontend magic, the context also contains activities
 
 
 	if err != nil {
+		fmt.Printf("err: %+v \n", err)
+
 		c.JSON(400, gin.H{"error": exp})
 		return
 	}
@@ -93,12 +95,17 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	// c.String(http.StatusOK, "Uploaded...")
 	fmt.Printf("err, %+v\n", err)
 	//
+	fmt.Printf("experiment: %T\n", json.RawMessage(c.PostForm("ActivitiesString")))
+	fmt.Printf("experiment: %+v\n", c.PostForm("activities"))
+	exp.Activities = postgres.Jsonb{(json.RawMessage(c.PostForm("ActivitiesString")))}
+
 	fmt.Printf("exp, %+v \n", exp)
-	fmt.Printf("exp.activities, %+v \n", exp.Activities)
 
+
+	fmt.Printf("exp.Activities, %+v \n", exp.Activities)
+	// exp.Activities = postgres.Jsonb{exp.Activities}
 	// fmt.Printf("File: %+v \n", file)
-	fmt.Println("success?")
-
+	// fmt.Println("success?")
 	db.Create(&exp)
 	c.JSON(200, exp)
 }

@@ -43,7 +43,7 @@ class DetailDisplay extends React.Component {
   computeMapOptions(props) {
     let minLat, minLng, maxLat, maxLng, startLat, startLng, endLat, endLng;
     let waypoints = [];
-    let activities = props.experience.activities;
+    let activities = Object.values(props.experience.Activities);
     activities.forEach((activity) => {
       if (minLat === undefined || activity.lat < minLat) {
         minLat = activity.lat;
@@ -127,8 +127,8 @@ class DetailDisplay extends React.Component {
     return (
       <div className="detail-display">
         <div className="detail-display-header">
-          <h1>{itemToDisplay.title}</h1>
-          <span>Time: {this.props.precisionRound(itemToDisplay.duration/60, 1)} hours</span>
+          <h1>{itemToDisplay.Title}</h1>
+          <span>Time: {this.props.precisionRound(itemToDisplay.Duration/60, 1)} hours</span>
         </div>
         <div id="show-map">
 
@@ -137,7 +137,7 @@ class DetailDisplay extends React.Component {
         <ul className="details-details-details">
           <span className="label">Details:</span>
           <li>
-            Genre: {itemToDisplay.genre}
+            Genre: {itemToDisplay.Genre}
 
           </li>
 
@@ -147,7 +147,7 @@ class DetailDisplay extends React.Component {
             Description:
           </span>
           <p>
-            {itemToDisplay.description}
+            {itemToDisplay.Description}
           </p>
         </div>
 
