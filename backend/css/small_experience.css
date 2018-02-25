@@ -27,6 +27,16 @@
   font-size: 2vw;
 }
 
+.vote-buttons svg:hover {
+  cursor: pointer;
+}
+
+.vote-count {
+  user-select: none;
+  transform: rotate(90deg);
+
+}
+
 .small-exp-title {
   padding-left: 70px;
   font-size: 22px;

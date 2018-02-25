@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"encoding/json"
 	"flex_project/backend/data"
 	"strconv"
-	"encoding/json"
 
 	"github.com/jinzhu/gorm/dialects/postgres"
 
@@ -17,7 +17,6 @@ import (
 	// "os"
 	"fmt"
 	// "net/http"
-
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -39,7 +38,6 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	err := c.Bind(&exp)
 	//Hopefully, after some frontend magic, the context also contains activities
 
-
 	if err != nil {
 		fmt.Printf("err: %+v \n", err)
 
@@ -52,11 +50,11 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	// form, err := c.MultipartForm()
 	// fmt.Printf("err, %+v\n", err)
 	// fmt.Printf("form, %+v\n", form)
-  //
-  //
+	//
+	//
 	// files := form.File["file"]
 	// fmt.Printf("files, %+v\n", files)
-  //
+	//
 	// sess, err := session.NewSession(&aws.Config{
 	// 		Region: aws.String("us-west-1"),
 	// 		Credentials: credentials.NewStaticCredentials(
@@ -64,14 +62,14 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	// 			 os.Getenv("AWS_SECRET_ACCESS_KEY"),
 	// 			 "",
 	// 			 )})
-  //
-  //
+	//
+	//
 	// for _, file := range files {
 	// 	log.Println(file.Filename)
 	// 	filename := file.Filename
-  //
+	//
 	// 	//http://experience.images.s3.amazonaws.com
-  //
+	//
 	// 	// Create S3 service client
 	// 	// svc := s3.New(sess)
 	// 	fileBody, err := file.Open()
@@ -86,9 +84,9 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	// 			fmt.Printf("Unable to upload %q to %q, %v", filename, bucket, err)
 	// 	} else {
 	// 		fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket)
-  //
+	//
 	// 	}
-  //
+	//
 	// 	// var imageURL = uploadOutput.Location
 	// 	// fmt.Printf("URL: %v \n", imageURL)
 	// }
@@ -101,11 +99,11 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 
 	fmt.Printf("exp, %+v \n", exp)
 
-
 	fmt.Printf("exp.Activities, %+v \n", exp.Activities)
 	// exp.Activities = postgres.Jsonb{exp.Activities}
 	// fmt.Printf("File: %+v \n", file)
 	// fmt.Println("success?")
+	exp.Score = 1
 	db.Create(&exp)
 	c.JSON(200, exp)
 }
@@ -153,25 +151,17 @@ func GetExperiences(c *gin.Context, db *gorm.DB) {
 		c.JSON(400, gin.H{"error": "invalid offset"})
 	}
 	if offset == 0 {
-		db.Limit(quantity).Find(&exps).Order("Score desc")
+		db.Limit(quantity).Order("Score desc").Find(&exps)
 	} else {
-		db.Offset(offset).Limit(quantity).Find(&exps).Order("Score desc")
+		db.Offset(offset).Limit(quantity).Order("Score desc").Find(&exps)
 	}
 	c.JSON(200, exps)
 }
 
 func GetExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
-	err := c.Bind(&exp)
-	if err != nil {
-		c.JSON(400, gin.H{"error": exp})
-		return
-	}
-	fmt.Printf("data.experience %v", exp)
-
-	db.Where("ID = ?", exp.ID).First(&exp)
-	fmt.Printf("data.experience %v", exp)
-	
+	expID := c.Param("expID")
+	db.Where("ID = ?", expID).First(&exp)
 	c.JSON(200, exp)
 }
 
@@ -181,4 +171,20 @@ func UpdateExperience(c *gin.Context, db *gorm.DB) {
 
 func DeleteExperience(c *gin.Context, db *gorm.DB) {
 
+}
+
+func VoteExperience(c *gin.Context, db *gorm.DB) {
+	exp := data.Experience{}
+	expID, err := strconv.Atoi(c.Param("expID"))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "invalid experience id"})
+	}
+	vote, err := strconv.Atoi(c.PostForm("voteValue"))
+	if err != nil || vote != 1 && vote != -1 {
+		c.JSON(400, gin.H{"error": "invalid vote value"})
+	}
+	db.Where("ID = ?", expID).First(&exp)
+	exp.Score += vote
+	db.Save(&exp)
+	c.JSON(200, exp)
 }
