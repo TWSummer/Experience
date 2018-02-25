@@ -38,12 +38,14 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	//Session Routes
 	r.POST("/api/session", wrapHandler(handlers.NewSession, db))
 	//Experience routes
-	r.POST("/api/experiences", wrapHandler(handlers.CreateExperience, db))
-	r.DELETE("/api/experiences", wrapHandler(handlers.DeleteExperience, db))
-	r.PUT("/api/experiences", wrapHandler(handlers.UpdateExperience, db))
+	r.POST("/api/experience", wrapHandler(handlers.CreateExperience, db))
+	r.DELETE("/api/experience", wrapHandler(handlers.DeleteExperience, db))
+	r.PUT("/api/experience", wrapHandler(handlers.UpdateExperience, db))
 	r.GET("/api/experiences", wrapHandler(handlers.GetExperiences, db))
 	r.GET("/api/experience", wrapHandler(handlers.GetExperience, db))
 	r.POST("/api/experiences/:ID/upload", wrapHandler(handlers.UploadActivityPhotos, db))
+	r.GET("/api/experience/:expID", wrapHandler(handlers.GetExperience, db))
+	r.POST("/api/experience/:expID/vote", wrapHandler(handlers.VoteExperience, db))
 	r.POST("/api/test", func(c *gin.Context) {
 		bucket := "experience.images"
 		// file, err := c.FormFile("file")

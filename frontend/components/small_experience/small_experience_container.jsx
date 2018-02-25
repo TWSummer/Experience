@@ -1,6 +1,7 @@
 import SmallExperience from './small_experience';
 import { connect } from 'react-redux';
-import { fetchExperiences } from '../../actions/experience_actions';
+import { fetchExperiences,
+        voteOnExperience } from '../../actions/experience_actions';
 
 const mapStateToProps = (state, ownProps) => {
   return ({
@@ -11,7 +12,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return ({
     fetchExperiences: (quantity, offset) =>
-      dispatch(fetchExperiences(quantity, offset))
+      dispatch(fetchExperiences(quantity, offset)),
+    voteOnExperience: (expID, vote) =>
+      dispatch(voteOnExperience(expID, vote))
   });
 };
 

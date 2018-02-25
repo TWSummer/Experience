@@ -9,7 +9,7 @@ export const createExperience = (exp) => {
   console.log("ASDFKLSADHFLKASHDFSAFD", exp);
   return $.ajax({
     method: "POST",
-    url:"/api/experiences",
+    url:"/api/experience",
     data: exp,
     // dataType: 'json',
     // contentType: "application/json",
@@ -19,7 +19,14 @@ export const createExperience = (exp) => {
 export const fetchExperience = (expID) => (
   $.ajax({
     method: "GET",
-    url:`/api/experience/`,
-    data: { ID: expID }
+    url:`/api/experience/${expID}`
+  })
+);
+
+export const voteOnExperience = (expID, vote) => (
+  $.ajax({
+    method: "POST",
+    url: `/api/experience/${expID}/vote`,
+    data: { voteValue: vote }
   })
 );

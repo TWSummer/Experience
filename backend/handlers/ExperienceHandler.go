@@ -1,9 +1,9 @@
 package handlers
 
 import (
+	"encoding/json"
 	"flex_project/backend/data"
 	"strconv"
-	"encoding/json"
 
 	"github.com/jinzhu/gorm/dialects/postgres"
 
@@ -20,7 +20,6 @@ import (
 	"fmt"
 	// "net/http"
 
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )
@@ -32,7 +31,6 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 
 	fmt.Printf("c: %+v \n", c)
 	err := c.Bind(&exp)
-
 
 	if err != nil {
 		fmt.Printf("err: %+v \n", err)
@@ -49,51 +47,34 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 
 	fmt.Printf("exp, %+v \n", exp)
 
-
 	fmt.Printf("exp.Activities, %+v \n", exp.Activities)
 	// exp.Activities = postgres.Jsonb{exp.Activities}
 	// fmt.Printf("File: %+v \n", file)
 	// fmt.Println("success?")
+	exp.Score = 1
 	db.Create(&exp)
 	c.JSON(200, exp)
 }
 
 func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
-  // Below returns a string, must be converted
-	// c.Params["ID"]
-	db.Where("ID = ?", 1).First(&exp)
-	fmt.Printf("exp, %+v\n", exp)
+	db.Where("ID = ?", expID := c.Param("ID")).First(&exp)
+
 	var foo interface{}
-
-	activities := exp.Activities.RawMessage
-	fmt.Printf("activities, %+v\n", activities)
-	fmt.Printf("activities type, %T\n", activities)
-	// fmt.Printf("activities err, %+v\n", err)
-	// activities = []byte(activities)
-
-
-	json.Unmarshal(activities, &foo)
-	m := foo.(map[string]interface{})
-	fmt.Printf("m, %+v\n", m)
-	fmt.Printf("m, %+v\n", "sdfkjsdhfkjsdhfkjsdhf")
-
-	fmt.Printf("m:1, %+v \n", m["1"])
-	n := m["1"].(map[string]interface{})
-	fmt.Printf("m:1, %+v \n", n)
-
-
-
-
+	activitiesRaw := exp.Activities.RawMessage
+	json.Unmarshal(activitiesRaw, &foo)
+	activitiesMap := foo.(map[string]interface{})
+	activityMap := activitiesMap["1"].(map[string]interface{})
 
 	dotEnvErr := godotenv.Load()
 	if dotEnvErr != nil {
 		log.Fatal("Error loading .env file")
 	}
 	form, formErr := c.MultipartForm()
+	if formErr != nil {
+		fmt.Printf("form err, %+v\n", formErr)
+	}
 
-	fmt.Printf("form err, %+v\n", formErr)
-	fmt.Printf("form, %+v\n", form)
 
 
 	//data is an array containing activity ids for the files
@@ -128,25 +109,16 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 			Key:    aws.String(fmt.Sprintf("%v%v", rand.Int(), filename)),
 			Body:   fileBody,
 		})
-		fmt.Printf("uploadOutput err, %+v\n", err2)
+		if err2 != nil {
+			fmt.Printf("uploadOutput err, %+v\n", err2)
 
-
-		fmt.Printf("imgUrl, %v\n", uploadOutput.Location)
-		n := m[data[index]].(map[string]interface{})
-		n["ImageUrl"] = uploadOutput.Location
-		if err != nil {
-			// Print the error and exit.
-			// exitErrorf("Unable to upload %q to %q, %v", filename, bucket, err)
 		}
-		m[data[index]] = n
-		// exp.Activities =
+		fmt.Printf("imgUrl, %v\n", uploadOutput.Location)
+		activityMap := activitiesMap[data[index]].(map[string]interface{})
+		activityMap["ImageUrl"] = uploadOutput.Location
+		activitiesMap[data[index]] = activityMap
 
-		// var imageURL = uploadOutput.Location
-		// fmt.Printf("URL: %v \n", imageURL)
-		fmt.Printf("activity, %+v\n", n)
-
-		fmt.Printf("activities, %+v\n", m)
-		marshalM, err := json.Marshal(m)
+		marshalM, err := json.Marshal(activitiesMap)
 		fmt.Printf("err, %+v\n", err)
 
 
@@ -180,25 +152,17 @@ func GetExperiences(c *gin.Context, db *gorm.DB) {
 		c.JSON(400, gin.H{"error": "invalid offset"})
 	}
 	if offset == 0 {
-		db.Limit(quantity).Find(&exps).Order("Score desc")
+		db.Limit(quantity).Order("Score desc").Find(&exps)
 	} else {
-		db.Offset(offset).Limit(quantity).Find(&exps).Order("Score desc")
+		db.Offset(offset).Limit(quantity).Order("Score desc").Find(&exps)
 	}
 	c.JSON(200, exps)
 }
 
 func GetExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
-	err := c.Bind(&exp)
-	if err != nil {
-		c.JSON(400, gin.H{"error": exp})
-		return
-	}
-	fmt.Printf("data.experience %v", exp)
-
-	db.Where("ID = ?", exp.ID).First(&exp)
-	fmt.Printf("data.experience %v", exp)
-
+	expID := c.Param("expID")
+	db.Where("ID = ?", expID).First(&exp)
 	c.JSON(200, exp)
 }
 
@@ -208,4 +172,20 @@ func UpdateExperience(c *gin.Context, db *gorm.DB) {
 
 func DeleteExperience(c *gin.Context, db *gorm.DB) {
 
+}
+
+func VoteExperience(c *gin.Context, db *gorm.DB) {
+	exp := data.Experience{}
+	expID, err := strconv.Atoi(c.Param("expID"))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "invalid experience id"})
+	}
+	vote, err := strconv.Atoi(c.PostForm("voteValue"))
+	if err != nil || vote != 1 && vote != -1 {
+		c.JSON(400, gin.H{"error": "invalid vote value"})
+	}
+	db.Where("ID = ?", expID).First(&exp)
+	exp.Score += vote
+	db.Save(&exp)
+	c.JSON(200, exp)
 }

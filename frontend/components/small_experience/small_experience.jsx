@@ -5,6 +5,25 @@ class SmallExperience extends React.Component {
     super(props);
     this.props = props;
     console.log(this.props.experience);
+    this.votes = this.votes.bind(this);
+  }
+
+  votes() {
+    return (
+      <aside className="vote-buttons">
+        <div className="up-vote-button"
+          onClick={e => this.props.voteOnExperience(this.props.experience.ID, 1)}>
+          <i className="fas fa-angle-up"></i>
+        </div>
+        <div className="vote-count">
+          {this.props.experience.Score}
+        </div>
+        <div className="down-vote-button"
+          onClick={e => this.props.voteOnExperience(this.props.experience.ID, -1)}>
+          <i className="fas fa-angle-down"></i>
+        </div>
+      </aside>
+    );
   }
 
    render() {
@@ -15,11 +34,10 @@ class SmallExperience extends React.Component {
              {this.props.experience.Title.toUpperCase()}
            </div>
            <div className="small-exp-ribbion-box">
-             <aside className="vote-buttons">
-               <i className="fas fa-angle-up"></i>
-               <i className="fas fa-angle-down"></i>
-             </aside>
-             <section className="experience-ribbon"></section>
+             {this.votes()}
+             <section className="experience-ribbon">
+               
+             </section>
            </div>
          </section>
        </div>
