@@ -98,9 +98,11 @@ class SmallExperience extends React.Component {
      return (
        <div className="experience-index-item">
          <section>
-           <div className="small-exp-title">
-             {this.props.experience.Title.toUpperCase()}
-           </div>
+           <a href={`#/experience/${this.props.experience.ID}`}>
+             <div className="small-exp-title">
+               {this.props.experience.Title.toUpperCase()}
+             </div>
+           </a>
            <div className="small-exp-ribbion-box">
              {this.votes()}
              <section className="experience-ribbon">

@@ -11,6 +11,7 @@ class NavBar extends React.Component {
 
     this.update = this.update.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillReceiveProps() {
@@ -38,9 +39,11 @@ class NavBar extends React.Component {
     this.props.logoutUser();
   }
 
-
-
-
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.searchExperiences(this.state.searchQuery);
+    
+  }
 
   render() {
     const display = this.props.currentUser ? (

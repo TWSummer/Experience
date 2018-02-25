@@ -1,5 +1,6 @@
 import * as APIUtil from '../util/experiences_util';
-import {uploadFiles} from '../util/upload_util'
+import * as SearchUtil from '../util/search_util';
+import {uploadFiles} from '../util/upload_util';
 export const RECEIVE_EXPERIENCES = "RECEIVE_EXPERIENCES";
 export const RECEIVE_EXPERIENCE_ERRORS = "RECEIVE_EXPERIENCE_ERRORS";
 export const RECEIVE_EXPERIENCE = "RECEIVE_EXPERIENCE";
@@ -82,6 +83,15 @@ export const uploadImages = (expID, files) => dispatch => {
         dispatch(receiveExperience(experience));
         return experience;
       },
+      errors => dispatch(receiveErrors(errors))
+    )
+  );
+};
+
+export const searchExperiences = query => dispatch => {
+  return (
+    SearchUtil.fetchSearchResults(query).then(
+      experiences => dispatch(receiveExperiences(experiences)),
       errors => dispatch(receiveErrors(errors))
     )
   );
