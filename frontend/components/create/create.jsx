@@ -627,6 +627,7 @@ class NewExperience extends React.Component {
     this.setState({autocomplete});
     this.setState({ marker });
     this.setState({ input });
+    this.setState({ infowindow });
   }
 
   autocompleteCallback(infowindow, autocomplete, map, marker) {
@@ -679,24 +680,10 @@ class NewExperience extends React.Component {
   resetMap() {
     this.state.map.setCenter({lat: 37.7749, lng: -122.4194});
     this.state.map.setZoom(11);
-    let autocomplete = new google.maps.places.Autocomplete(this.state.input);
-    autocomplete.bindTo('bounds', this.state.map);
+    this.state.marker.setVisible(false);
+    this.state.infowindow.close();
+    this.state.input.value = "";
 
-    map.controls[google.maps.ControlPosition.TOP].push(this.state.input);
-
-    let infowindow = new google.maps.InfoWindow();
-    let marker = new google.maps.Marker({
-      map: this.state.map
-    });
-
-    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.open(this.state.map, marker);
-    });
-
-    // Get the full place details when the user selects a place from the
-    // list of suggestions.
-    google.maps.event.addListener(autocomplete, 'place_changed',
-      this.autocompleteCallback(infowindow, autocomplete, this.state.map, marker));
   }
 }
 export default NewExperience;
