@@ -3,18 +3,16 @@ import { RECEIVE_EXPERIENCES,
          RECEIVE_EXPERIENCE
        } from '../actions/experience_actions';
 
-const experiencesReducer = (state = [], action) => {
+const experiencesReducer = (state = {}, action) => {
   Object.freeze(state);
-  let newArr = [];
+  let newState;
   switch(action.type) {
     case RECEIVE_EXPERIENCES:
-      newArr = state.slice(0);
-      newArr = newArr.concat(action.experiences);
-      return newArr;
+      newState = merge({}, state, action.experiences);
+      return newState;
     case RECEIVE_EXPERIENCE:
-      newArr = state.slice(0);
-      newArr = newArr.concat(action.experience);
-      return newArr;
+      newState = merge({}, state, {[action.experience.ID]: action.experience});
+      return newState;
     default:
       return state;
   }
