@@ -45,26 +45,26 @@ class DetailDisplay extends React.Component {
     let waypoints = [];
     let activities = props.experience.activities;
     activities.forEach((activity) => {
-      if (minLat === undefined || activity.lat < minLat) {
-        minLat = activity.lat;
+      if (minLat === undefined || activity.Lat < minLat) {
+        minLat = activity.Lat;
       }
-      if (minLng === undefined || activity.lng < minLng) {
-        minLng = activity.lng;
+      if (minLng === undefined || activity.Lng < minLng) {
+        minLng = activity.Lng;
       }
-      if (maxLat === undefined || activity.lat > maxLat) {
-        maxLat = activity.lat;
+      if (maxLat === undefined || activity.Lat > maxLat) {
+        maxLat = activity.Lat;
       }
-      if (maxLng === undefined || activity.lng > maxLng) {
-        maxLng = activity.lng;
+      if (maxLng === undefined || activity.Lng > maxLng) {
+        maxLng = activity.Lng;
       }
       if (startLat === undefined || startLng === undefined) {
-        startLat = activity.lat;
-        startLng = activity.lng;
+        startLat = activity.Lat;
+        startLng = activity.Lng;
       }
-      if (activity.lat !== undefined && activity.lng!== undefined) {
-        waypoints.push({location: new google.maps.LatLng(activity.lat, activity.lng)});
-        endLat = activity.lat;
-        endLng = activity.lng;
+      if (activity.Lat !== undefined && activity.Lng!== undefined) {
+        waypoints.push({location: new google.maps.LatLng(activity.Lat, activity.Lng)});
+        endLat = activity.Lat;
+        endLng = activity.Lng;
       }
     });
     waypoints = waypoints.slice(1, waypoints.length - 1);
@@ -103,11 +103,11 @@ class DetailDisplay extends React.Component {
         this.setupMap(newProps);
       }
       if (this.state.map && newProps.experience) {
-        if (newProps.selectedActivity && newProps.selectedActivity.lat &&
-        newProps.selectedActivity.lng) {
+        if (newProps.selectedActivity && newProps.selectedActivity.Lat &&
+        newProps.selectedActivity.Lng) {
           this.state.map.panTo({
-            lat: newProps.selectedActivity.lat,
-            lng: newProps.selectedActivity.lng
+            lat: newProps.selectedActivity.Lat,
+            lng: newProps.selectedActivity.Lng
           });
           this.state.map.setZoom(16);
         } else {
@@ -127,8 +127,8 @@ class DetailDisplay extends React.Component {
     return (
       <div className="detail-display">
         <div className="detail-display-header">
-          <h1>{itemToDisplay.title}</h1>
-          <span>Time: {this.props.precisionRound(itemToDisplay.duration/60, 1)} hours</span>
+          <h1>{itemToDisplay.Title}</h1>
+          <span>Time: {this.props.precisionRound(itemToDisplay.Duration/60, 1)} hours</span>
         </div>
         <div id="show-map">
 
@@ -137,7 +137,7 @@ class DetailDisplay extends React.Component {
         <ul className="details-details-details">
           <span className="label">Details:</span>
           <li>
-            Genre: {itemToDisplay.genre}
+            Genre: {itemToDisplay.Genre}
 
           </li>
 
@@ -147,7 +147,7 @@ class DetailDisplay extends React.Component {
             Description:
           </span>
           <p>
-            {itemToDisplay.description}
+            {itemToDisplay.Description}
           </p>
         </div>
 

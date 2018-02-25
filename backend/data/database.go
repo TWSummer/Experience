@@ -32,40 +32,44 @@ func SetupDB() *gorm.DB {
 func seedExp(db *gorm.DB) {
 
 	activities1 := postgres.Jsonb{json.RawMessage(`{"1": {
-				"lat": 37.9,
-				"lng": -122.6,
-				"imageUrl": "https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png",
-				"title": "Meet at Gregoire's",
-				"genre": "Food",
-				"duration": 60,
-				"description": "Meet up at this famous French takeout spot to pick up the materials for a tasty picnic. You can't afford to miss out on their delightful potato puffs!"
+				"ID": 1,
+				"Lat": 37.9,
+				"Lng": -122.6,
+				"ImageUrl": "https://b.zmtcdn.com/data/pictures/3/16844183/011d85755f62ab6ef3b8841f11f1c31f.png",
+				"Title": "Meet at Gregoire's",
+				"Genre": "Food",
+				"Duration": 60,
+				"Description": "Meet up at this famous French takeout spot to pick up the materials for a tasty picnic. You can't afford to miss out on their delightful potato puffs!"
 			},
 			"2": {
-				"lat": 37.9,
-				"lng": -122.55,
-				"imageUrl": "https://www.cycleworld.com/sites/cycleworld.com/files/styles/2000_1x_/public/images/2017/10/2018-suzuki-gsx-s750-hero.jpg?itok=9oc76nHH&fc=50,50",
-				"title": "Motorcycle Ride to the Berkeley Hills",
-				"genre": "Transit",
-				"duration": 20,
-				"description": "Take your date on a thrilling ride up into Berkeley's famous hills, just north of UC Berkeley's campus. Enjoy a fantastc view of both sides of the Bay."
+				"ID": 2,
+				"Lat": 37.9,
+				"Lng": -122.55,
+				"ImageUrl": "https://www.cycleworld.com/sites/cycleworld.com/files/styles/2000_1x_/public/images/2017/10/2018-suzuki-gsx-s750-hero.jpg?itok=9oc76nHH&fc=50,50",
+				"Title": "Motorcycle Ride to the Berkeley Hills",
+				"Genre": "Transit",
+				"Duration": 20,
+				"Description": "Take your date on a thrilling ride up into Berkeley's famous hills, just north of UC Berkeley's campus. Enjoy a fantastc view of both sides of the Bay."
 			},
 			"3": {
-				"lat": 37.7747,
-				"lng": -122.43,
-				"imageUrl": "http://2.bp.blogspot.com/-W8wEx8paoU4/VgIr838Bb8I/AAAAAAAAIdI/4z58zv36hrQ/s1600/wtd90.jpg",
-				"title": "Hiking in the Berkeley Hills",
-				"genre": "Views",
-				"duration": 60,
-				"description": "Climb up a variety of scenic trails in the cool Berkeley air. My personal favorite route is (Andrew tell me what it is because I didn't do any of this at Cal)"
+				"ID": 3,
+				"Lat": 37.7747,
+				"Lng": -122.43,
+				"ImageUrl": "http://2.bp.blogspot.com/-W8wEx8paoU4/VgIr838Bb8I/AAAAAAAAIdI/4z58zv36hrQ/s1600/wtd90.jpg",
+				"Title": "Hiking in the Berkeley Hills",
+				"Genre": "Views",
+				"Duration": 60,
+				"Description": "Climb up a variety of scenic trails in the cool Berkeley air. My personal favorite route is (Andrew tell me what it is because I didn't do any of this at Cal)"
 			},
 			"4": {
-				"lat": 37.79,
-				"lng": -121.95,
-				"imageUrl": "https://www.phillymag.com/wp-content/uploads/sites/3/2016/05/picnic.jpg",
-				"title": "Hillside Picnic",
-				"genre": "Food",
-				"duration": 40,
-				"description": "Dig in to the food you picked up earlier in the day. Hope you were patient! In these unfortunately drought filled times, at least you're likely to get a clear view wherever you look!"
+				"ID": "4",
+				"Lat": 37.79,
+				"Lng": -121.95,
+				"ImageUrl": "https://www.phillymag.com/wp-content/uploads/sites/3/2016/05/picnic.jpg",
+				"Title": "Hillside Picnic",
+				"Genre": "Food",
+				"Duration": 40,
+				"Description": "Dig in to the food you picked up earlier in the day. Hope you were patient! In these unfortunately drought filled times, at least you're likely to get a clear view wherever you look!"
 			}
 		}`)}
 
