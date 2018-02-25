@@ -95,7 +95,7 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 	// c.String(http.StatusOK, "Uploaded...")
 	fmt.Printf("err, %+v\n", err)
 	//
-	fmt.Printf("experiment: %T\n", json.RawMessage(c.PostForm("ActivitiesString")))
+	fmt.Printf("experiment: %T\n", json.RawMessage(c.PostForm("files")))
 	fmt.Printf("experiment: %+v\n", c.PostForm("activities"))
 	exp.Activities = postgres.Jsonb{(json.RawMessage(c.PostForm("ActivitiesString")))}
 
@@ -171,7 +171,7 @@ func GetExperience(c *gin.Context, db *gorm.DB) {
 
 	db.Where("ID = ?", exp.ID).First(&exp)
 	fmt.Printf("data.experience %v", exp)
-	
+
 	c.JSON(200, exp)
 }
 

@@ -116,8 +116,8 @@ class NewExperience extends React.Component {
       Description: this.state.description,
       Title: this.state.title,
       ImageUrl: this.state.ImageUrl,
-      lat: this.state.lat,
-      lng: this.state.lng,
+      Lat: this.state.lat,
+      Lng: this.state.lng,
       Duration: parseInt(this.state.duration),
     };
     if (this.validateActivity(activity)) {
@@ -129,8 +129,8 @@ class NewExperience extends React.Component {
         experience,
         count: this.state.count + 1,
         duration: "",
-        lat: "",
-        lng: "",
+        Lat: "",
+        Lng: "",
         title: "",
         description: "",
         form: "",
