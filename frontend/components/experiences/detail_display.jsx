@@ -19,8 +19,271 @@ class DetailDisplay extends React.Component {
       let map = new google.maps.Map(document.getElementById('show-map'), {
         zoom: 10,
         scrollwheel: true,
-        center: mapOptions.center  // Australia.
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
+        center: mapOptions.center,  // Australia.
+        styles:[
+    {
+        "featureType": "administrative",
+        "elementType": "all",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.country",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.province",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "color": "#939393"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            },
+            {
+                "color": "#797979"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.neighborhood",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "simplified"
+            },
+            {
+                "color": "#8d8c8c"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.land_parcel",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "hue": "#dddddd"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -3
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.attraction",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "hue": "#bbbbbb"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 26
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "hue": "#ffffff"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "all",
+        "stylers": [
+            {
+                "hue": "#ffffff"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 100
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "hue": "#ffffff"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 100
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "hue": "#000000"
+            },
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": -100
+            },
+            {
+                "visibility": "off"
+            }
+        ]
+    }
+]
       });
+
       this.setState({ map });
 
       let directionsService = new google.maps.DirectionsService;
@@ -37,8 +300,8 @@ class DetailDisplay extends React.Component {
         directionsService, directionsDisplay, mapOptions.waypoints);
 
     }
-
   }
+
 
   computeMapOptions(props) {
     let minLat, minLng, maxLat, maxLng, startLat, startLng, endLat, endLng;
