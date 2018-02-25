@@ -62,7 +62,7 @@ func seedExp(db *gorm.DB) {
 				"Description": "Climb up a variety of scenic trails in the cool Berkeley air. My personal favorite route is (Andrew tell me what it is because I didn't do any of this at Cal)"
 			},
 			"4": {
-				"ID": "4",
+				"ID": 4,
 				"Lat": 37.79,
 				"Lng": -121.95,
 				"ImageUrl": "https://www.phillymag.com/wp-content/uploads/sites/3/2016/05/picnic.jpg",
