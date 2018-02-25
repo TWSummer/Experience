@@ -101,7 +101,7 @@ class NewExperience extends React.Component {
       activity.Genre &&
         activity.Title &&
           activity.Description &&
-            activity.imageUrl &&
+            activity.ImageUrl &&
               // activity.lat &&
               //   activity.lng &&
                   activity.Duration > 0);
@@ -115,7 +115,7 @@ class NewExperience extends React.Component {
       Genre,
       Description: this.state.description,
       Title: this.state.title,
-      imageUrl: this.state.imageUrl,
+      ImageUrl: this.state.ImageUrl,
       lat: this.state.lat,
       lng: this.state.lng,
       Duration: parseInt(this.state.duration),
@@ -136,7 +136,7 @@ class NewExperience extends React.Component {
         form: "",
         imgUrls: [],
         file: undefined,
-        imageUrl: ""
+        ImageUrl: ""
 
       });
     } else {
@@ -148,9 +148,9 @@ class NewExperience extends React.Component {
 
 
 
-  setImageUrl(imageUrl) {
+  setImageUrl(ImageUrl) {
     this.setState({
-      imageUrl
+      ImageUrl
     });
   }
 
@@ -164,7 +164,7 @@ class NewExperience extends React.Component {
       this.setState({
         experience,
         file: reader.result,
-        imageUrl: reader.result,
+        ImageUrl: reader.result,
       });
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -276,13 +276,13 @@ class NewExperience extends React.Component {
           <p>Place: {this.state.name}</p>
           <ul className="google-maps-photos">{
             this.state.imgUrls &&
-              this.state.imgUrls.map((imageUrl, index) => {
+              this.state.imgUrls.map((ImageUrl, index) => {
 
               return (<li
                 key={index}
                 className="google-maps-photo"><img
-                src={imageUrl}
-                onClick={(e) => this.setImageUrl(imageUrl)}
+                src={ImageUrl}
+                onClick={(e) => this.setImageUrl(ImageUrl)}
                 className="location-preview-image"/></li>
             );})
           }</ul>

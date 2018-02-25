@@ -2,10 +2,11 @@ import ExperienceShow from './experience_show';
 import { connect } from 'react-redux';
 import { fetchExperience,
          createExperience } from '../../actions/experience_actions';
+import { singleExperience } from '../../reducers/selectors';
 
 const mapStateToProps = (state, ownProps) => {
   return ({
-    experiences: state.entities.experiences
+    experience: singleExperience(state, ownProps)
   });
 };
 

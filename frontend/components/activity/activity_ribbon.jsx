@@ -36,8 +36,9 @@ class ActivityRibbon extends React.Component {
     };
     if (this.props.experience && this.props.experience.Activities) {
       console.log(this.props);
-      activityIndexItems = Object.keys(this.props.experience.Activities).map(activityId => {
-            let activity = this.props.experience.Activities[activityId];
+      activityIndexItems = Object.values(this.props.experience.Activities).map(activity => {
+        console.log(activity);
+            // let activity = this.props.experience.Activities[activityId];
             activity.style = {
               height: `${activity.Duration/this.props.experience.Duration * 100}%`,
               // backgroundImage: `linear-gradient(to bottom right, ${this.state.vibrant.DarkVibrant.getHex()}, ${this.state.vibrant.LightMuted.getHex()})`
@@ -56,7 +57,7 @@ class ActivityRibbon extends React.Component {
               <span className="activity-index-item title">
                 {activity.Title}
               </span>
-              <img src={activity.imageUrl}>
+              <img src={activity.ImageUrl}>
               </img>
             </li>);
         }

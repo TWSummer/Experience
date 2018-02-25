@@ -162,13 +162,16 @@ func GetExperiences(c *gin.Context, db *gorm.DB) {
 
 func GetExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
-	fmt.Printf("data.experience %v", exp)
 	err := c.Bind(&exp)
 	if err != nil {
 		c.JSON(400, gin.H{"error": exp})
 		return
 	}
+	fmt.Printf("data.experience %v", exp)
+
 	db.Where("ID = ?", exp.ID).First(&exp)
+	fmt.Printf("data.experience %v", exp)
+	
 	c.JSON(200, exp)
 }
 
