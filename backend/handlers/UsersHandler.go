@@ -20,6 +20,7 @@ func ValidateAuthToken(UserID, OAuthID string) bool {
 		log.Fatal("Error loading .env file")
 	}
 	secret := os.Getenv("FACEBOOK_APP_SECRET")
+
 	url := fmt.Sprintf("https://graph.facebook.com/debug_token?input_token=%v&access_token=867019043470476|%v", OAuthID, secret)
 	resp, _ := http.Get(url)
 	defer resp.Body.Close()

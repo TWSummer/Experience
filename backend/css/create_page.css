@@ -1,8 +1,12 @@
 .create-page {
+  font-family: 'Open Sans Condensed', sans-serif;
+
   display: flex;
 }
 
 .create-activity-ribbon {
+  font-family: 'Open Sans Condensed', sans-serif;
+
   width: 25%;
   border: 1px solid #ddd;
   margin: 5px;
@@ -12,7 +16,7 @@
   box-shadow: 0 2px 4px -1px rgba(0,0,0,.1),0 2px 2px -2px rgba(0,0,0,.02),0 1px 4px 0 rgba(0,0,0,.04);
 
   padding: 30px;
-
+  width: 60%;
 }
 
 .experience-form {
@@ -22,11 +26,11 @@
 }
 
 input.title-input, textarea.description-input {
-  border: 1px solid #57BC90;
+  border: 1px solid #000;
 
   border-radius: 5px;
   padding: 5px 10px;
-  width: 500px;
+  width: 100%;
   background: #fff;
   margin-bottom: 30px;
 }
@@ -41,7 +45,7 @@ textarea.description-input {
 }
 
 .create-activity-form {
-  width: 100%;
+  width: 80%%;
   /* margin: 5px; */
   /* border: 1px solid #ccc; */
   display: flex;
