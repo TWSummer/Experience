@@ -132,7 +132,6 @@ class NewExperience extends React.Component {
     if (this.validateActivity(activity)) {
       experience.Duration = experience.Duration + parseInt(this.state.duration);
       experience.Activities[this.state.count] = activity;
-      console.log("experience", experience);
       this.setState({
         activity: undefined,
         experience,
@@ -148,6 +147,7 @@ class NewExperience extends React.Component {
         ImageUrl: ""
 
       });
+      this.resetMap();
       this.setState({
         imgUrls: undefined,
         lat: undefined,
@@ -158,7 +158,6 @@ class NewExperience extends React.Component {
       console.log("activity validation failed");
       console.log(activity);
     }
-
   }
 
 
@@ -604,10 +603,9 @@ class NewExperience extends React.Component {
 
     var input = /** @type {HTMLInputElement} */(
         document.getElementById('pac-input'));
-
     // Create the autocomplete helper, and associate it with
     // an HTML text input box.
-    var autocomplete = new google.maps.places.Autocomplete(input);
+    let autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', map);
 
     map.controls[google.maps.ControlPosition.TOP].push(input);
@@ -616,6 +614,7 @@ class NewExperience extends React.Component {
     var marker = new google.maps.Marker({
       map: map
     });
+
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.open(map, marker);
     });
@@ -624,13 +623,17 @@ class NewExperience extends React.Component {
     // list of suggestions.
     google.maps.event.addListener(autocomplete, 'place_changed',
       this.autocompleteCallback(infowindow, autocomplete, map, marker));
+    this.setState({map});
+    this.setState({autocomplete});
+    this.setState({ marker });
+    this.setState({ input });
+    this.setState({ infowindow });
   }
 
   autocompleteCallback(infowindow, autocomplete, map, marker) {
     return () => {
       infowindow.close();
       var place = autocomplete.getPlace();
-      console.log(place);
       this.setState({
         imgUrls: undefined,
         lat: undefined,
@@ -641,7 +644,6 @@ class NewExperience extends React.Component {
         const newImgUrls = place.photos.map(photo => {
           return photo.getUrl({'maxWidth': 1000, 'maxHeight': 1000});
         });
-
         this.setState({imgUrls: newImgUrls});
       }
       if (!place.geometry) {
@@ -673,6 +675,15 @@ class NewExperience extends React.Component {
 
       infowindow.open(map, marker);
     };
+  }
+
+  resetMap() {
+    this.state.map.setCenter({lat: 37.7749, lng: -122.4194});
+    this.state.map.setZoom(11);
+    this.state.marker.setVisible(false);
+    this.state.infowindow.close();
+    this.state.input.value = "";
+
   }
 }
 export default NewExperience;
