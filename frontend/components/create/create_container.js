@@ -1,5 +1,6 @@
 import Create from './create';
 import { connect } from 'react-redux';
+import {createExperience} from "../../actions/experience_actions";
 
 const mapStateToProps = (state, ownProps) => {
   return ({
@@ -10,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 
   return ({
-
+    createExperience: (experience) => dispatch(createExperience(experience)),
   });
 };
 

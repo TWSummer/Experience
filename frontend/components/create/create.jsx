@@ -21,6 +21,7 @@ class NewExperience extends React.Component {
     this.validateActivity = this.validateActivity.bind(this);
     this.validateExperience = this.validateExperience.bind(this);
     this.validateSave = this.validateSave.bind(this);
+    this.handleSave= this.handleSave.bind(this);
   }
 
   componentDidMount() {
@@ -28,11 +29,11 @@ class NewExperience extends React.Component {
   }
 
   validateExperience(experience) {
-    return experience.title && experience.description;
+    return experience.Title && experience.Description;
   }
 
   validateSave(experience) {
-    let activities = Object.values(experience.activities);
+    let activities = Object.values(experience.Activities);
     let bool = true;
     bool = this.validateExperience(experience);
     activities.forEach(activity => {
@@ -46,12 +47,12 @@ class NewExperience extends React.Component {
   handleBuild(e) {
     e.preventDefault();
     let experience = {
-      user_id: this.props.currentUser.id,
-      title: this.state.title,
-      description: this.state.description,
-      duration: 0,
-      score: 1,
-      activities: {},
+      User_ID: this.props.currentUser.id,
+      Title: this.state.title,
+      Description: this.state.description,
+      Duration: 0,
+      Score: 1,
+      Activities: {},
       files: [],
     };
     if (this.validateExperience(experience)) {
@@ -96,32 +97,32 @@ class NewExperience extends React.Component {
   }
 
   validateActivity(activity) {
-    return (activity.id &&
-      activity.genre &&
-        activity.title &&
-          activity.description &&
-            activity.imageUrl &&
-              activity.lat &&
-                activity.lng &&
-                  activity.duration > 0);
+    return (activity.ID &&
+      activity.Genre &&
+        activity.Title &&
+          activity.Description &&
+            activity.ImageUrl &&
+              // activity.lat &&
+              //   activity.lng &&
+                  activity.Duration > 0);
   }
 
-  createActivity(e, genre) {
+  createActivity(e, Genre) {
     e.preventDefault();
     let experience = this.state.experience;
     let activity = {
-      id: this.state.count,
-      genre,
-      description: this.state.description,
-      title: this.state.title,
-      imageUrl: this.state.imageUrl,
+      ID: this.state.count,
+      Genre,
+      Description: this.state.description,
+      Title: this.state.title,
+      ImageUrl: this.state.ImageUrl,
       lat: this.state.lat,
       lng: this.state.lng,
-      duration: parseInt(this.state.duration),
+      Duration: parseInt(this.state.duration),
     };
     if (this.validateActivity(activity)) {
-      experience.duration = experience.duration + parseInt(this.state.duration);
-      experience.activities[this.state.count] = activity;
+      experience.Duration = experience.Duration + parseInt(this.state.duration);
+      experience.Activities[this.state.count] = activity;
       console.log("experience", experience);
       this.setState({
         activity: undefined,
@@ -135,7 +136,7 @@ class NewExperience extends React.Component {
         form: "",
         imgUrls: [],
         file: undefined,
-        imageUrl: ""
+        ImageUrl: ""
 
       });
     } else {
@@ -147,14 +148,15 @@ class NewExperience extends React.Component {
 
 
 
-  setImageUrl(imageUrl) {
+  setImageUrl(ImageUrl) {
     this.setState({
-      imageUrl
+      ImageUrl
     });
   }
 
   setFile(e) {
     e.preventDefault();
+    e.persist();
     let experience = this.state.experience;
     let reader = new FileReader();
     reader.onload = () => {
@@ -162,10 +164,19 @@ class NewExperience extends React.Component {
       this.setState({
         experience,
         file: reader.result,
-        imageUrl: reader.result,
+        ImageUrl: reader.result,
       });
     };
     reader.readAsDataURL(e.target.files[0]);
+  }
+
+  handleSave(e) {
+    e.preventDefault();
+    let experience = this.state.experience;
+    experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
+    console.log(this.state.experience);
+    console.log(experience);
+    this.props.createExperience(experience);
   }
 
  render() {
@@ -178,11 +189,11 @@ class NewExperience extends React.Component {
 
    return (
      <main className="create-page">
-      <ActivityRibbon experience={this.state.experience}/>
+      <ActivityRibbon handleSave={this.handleSave} experience={this.state.experience}/>
 
       <section className={'create-activity-form-container'}>
         <div className="form-header">
-        <h1 className="form-title">{this.state.experience ? this.state.experience.title : "Create an Experience"}</h1>
+        <h1 className="form-title">{this.state.experience ? this.state.experience.Title : "Create an Experience"}</h1>
         </div>
         {!this.state.experience && <div className="experience-form"><input
           onChange={this.update("title")}
@@ -265,13 +276,13 @@ class NewExperience extends React.Component {
           <p>Place: {this.state.name}</p>
           <ul className="google-maps-photos">{
             this.state.imgUrls &&
-              this.state.imgUrls.map((imageUrl, index) => {
+              this.state.imgUrls.map((ImageUrl, index) => {
 
               return (<li
                 key={index}
                 className="google-maps-photo"><img
-                src={imageUrl}
-                onClick={(e) => this.setImageUrl(imageUrl)}
+                src={ImageUrl}
+                onClick={(e) => this.setImageUrl(ImageUrl)}
                 className="location-preview-image"/></li>
             );})
           }</ul>

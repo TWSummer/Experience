@@ -8,7 +8,7 @@ import (
 type Experience struct {
 	gorm.Model
 	Title       string         `gorm:"NOT NULL" json:"Title"`
-	UserID      string         `gorm:"UNIQUE;NOT NULL" json:"UserID"`
+	UserID      string         `gorm:"NOT NULL" json:"UserID"`
 	Description string         `json:"Description"`
 	Genre       string         `json:"Genre"`
 	Score       int            `gorm:"default:1;NOT NULL" json:"-"`

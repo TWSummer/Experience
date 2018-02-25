@@ -4,7 +4,7 @@ import { fetchExperiences } from '../../actions/experience_actions';
 
 const mapStateToProps = (state, ownProps) => {
   return ({
-    experiences: state.entities.experiences
+    experiences: Object.values(state.entities.experiences)
   });
 };
 

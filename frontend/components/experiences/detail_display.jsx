@@ -43,7 +43,7 @@ class DetailDisplay extends React.Component {
   computeMapOptions(props) {
     let minLat, minLng, maxLat, maxLng, startLat, startLng, endLat, endLng;
     let waypoints = [];
-    let activities = props.experience.activities;
+    let activities = Object.values(props.experience.Activities);
     activities.forEach((activity) => {
       if (minLat === undefined || activity.Lat < minLat) {
         minLat = activity.Lat;

@@ -13,7 +13,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return ({
     fetchExperience: (expID) => dispatch(fetchExperience(expID)),
-    createExperience: (exp) => dispatch(fetchExperience(exp))
+    createExperience: (exp) => dispatch(createExperience(exp))
   });
 };
 

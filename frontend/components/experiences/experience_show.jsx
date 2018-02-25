@@ -64,6 +64,7 @@ class ExperienceShow extends React.Component {
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    // this.props.createExperience(experience);
 
   }
 
@@ -127,7 +128,7 @@ class ExperienceShow extends React.Component {
             handleMouseLeave={this.handleMouseLeave}
             handleMouseEnter={this.handleMouseEnter}
             handleClick={this.handleClick}
-            activities={this.props.experience.activities}/>
+            />
           <DetailDisplay
             experience={this.props.experience}
             precisionRound={this.precisionRound}

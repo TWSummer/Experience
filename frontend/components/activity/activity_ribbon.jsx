@@ -34,10 +34,11 @@ class ActivityRibbon extends React.Component {
       Transit: <i className="fas fa-car"></i>,
       Views: <i className="far fa-image"></i>,
     };
-    if (this.props.experience && this.props.experience.activities) {
+    if (this.props.experience && this.props.experience.Activities) {
       console.log(this.props);
-      activityIndexItems = Object.keys(this.props.experience.activities).map(activityId => {
-            let activity = this.props.experience.activities[activityId];
+      activityIndexItems = Object.values(this.props.experience.Activities).map(activity => {
+        console.log(activity);
+            // let activity = this.props.experience.Activities[activityId];
             activity.style = {
               height: `${activity.Duration/this.props.experience.Duration * 100}%`,
               // backgroundImage: `linear-gradient(to bottom right, ${this.state.vibrant.DarkVibrant.getHex()}, ${this.state.vibrant.LightMuted.getHex()})`
@@ -71,7 +72,9 @@ class ActivityRibbon extends React.Component {
         <ul className="activity-ribbon-list">
           <Link to="/create" className="create-experience btn">Create an Experience</Link>
           {activityIndexItems}
-          <button className="save-experience btn">Save your Experience</button>
+          <button
+            onClick={(e) => this.props.handleSave(e)}
+            className="save-experience btn">Save your Experience</button>
         </ul>
       </div>
 

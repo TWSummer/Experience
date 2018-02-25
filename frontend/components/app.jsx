@@ -14,6 +14,7 @@ const App = () => (
     <Switch>
       <Route path="/home" component={HomePageContainer} />
       <ProtectedRoute path="/create" component={CreateContainer} />
+      <Route path="/activitytest" component={ExperienceShowContainer}/>
       <Route path="/experience/:id" component={ExperienceShowContainer}/>
     </Switch>
   </div>

@@ -5,13 +5,16 @@ export const fetchExperiences = (quantity, offset) => (
   })
 );
 
-export const createExperience = (exp) => (
-  $.ajax({
+export const createExperience = (exp) => {
+  console.log("ASDFKLSADHFLKASHDFSAFD", exp);
+  return $.ajax({
     method: "POST",
     url:"/api/experiences",
-    data: exp
-  })
-);
+    data: exp,
+    // dataType: 'json',
+    // contentType: "application/json",
+  });
+};
 
 export const fetchExperience = (expID) => (
   $.ajax({
