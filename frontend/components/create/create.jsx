@@ -5,6 +5,7 @@ class NewExperience extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      files: [],
       imgUrls: [],
       title: "",
       description: "",
@@ -53,7 +54,7 @@ class NewExperience extends React.Component {
       Duration: 0,
       Score: 1,
       Activities: {},
-      files: [],
+
     };
     if (this.validateExperience(experience)) {
       this.setState({
@@ -157,12 +158,12 @@ class NewExperience extends React.Component {
   setFile(e) {
     e.preventDefault();
     e.persist();
-    let experience = this.state.experience;
+    let files = this.state.files;
     let reader = new FileReader();
     reader.onload = () => {
-      experience.files.push(e.target.files[0]);
+      files.push([this.state.count, e.target.files[0]]);
       this.setState({
-        experience,
+        files,
         file: reader.result,
         ImageUrl: reader.result,
       });
@@ -176,7 +177,7 @@ class NewExperience extends React.Component {
     experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
     console.log(this.state.experience);
     console.log(experience);
-    this.props.createExperience(experience);
+    this.props.createExperience(experience, this.state.files);
   }
 
  render() {

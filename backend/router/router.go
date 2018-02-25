@@ -43,12 +43,14 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	r.PUT("/api/experiences", wrapHandler(handlers.UpdateExperience, db))
 	r.GET("/api/experiences", wrapHandler(handlers.GetExperiences, db))
 	r.GET("/api/experience", wrapHandler(handlers.GetExperience, db))
+	r.POST("/api/experiences/:ID/upload", wrapHandler(handlers.UploadActivityPhotos, db))
 	r.POST("/api/test", func(c *gin.Context) {
 		bucket := "experience.images"
 		// file, err := c.FormFile("file")
 		form, err := c.MultipartForm()
 		fmt.Printf("err, %+v\n", err)
 		fmt.Printf("form, %+v\n", form)
+		fmt.Printf("file: %+v\n", form.Value["meta"][1])
 
 		files := form.File["file"]
 		fmt.Printf("files, %+v\n", files)
