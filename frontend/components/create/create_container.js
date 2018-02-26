@@ -4,7 +4,8 @@ import {createExperience} from "../../actions/experience_actions";
 import {receiveFormErrors, clearFormErrors} from "../../actions/form_error_actions";
 const mapStateToProps = (state, ownProps) => {
   return ({
-    currentUser: state.session.currentUser
+    currentUser: state.session.currentUser,
+    errors: state.errors.formErrors,
   });
 };
 
