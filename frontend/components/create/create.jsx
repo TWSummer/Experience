@@ -12,6 +12,8 @@ class NewExperience extends React.Component {
       description: "",
       count: 1,
       duration: "",
+      genres: "",
+      genre: "",
       // experience: {}
     };
     this.handleBuild = this.handleBuild.bind(this);
@@ -24,14 +26,31 @@ class NewExperience extends React.Component {
     this.validateExperience = this.validateExperience.bind(this);
     this.validateSave = this.validateSave.bind(this);
     this.handleSave= this.handleSave.bind(this);
+    this.addGenre = this.addGenre.bind(this);
   }
 
   componentDidMount() {
     this.setupMap();
   }
 
+  addGenre(e) {
+    e.preventDefault();
+    if ( !this.state.genre || this.state.genres.search(this.state.genre) < 0) {
+      this.setState({
+        genres: this.state.genres + `|*|${this.state.genre}`,
+        genre: "",
+      });
+      console.log(this.state.genre);
+      console.log(this.state.genres);
+
+    } else {
+      console.log("no blank or duplicate genre's please");
+    }
+
+  }
+
   validateExperience(experience) {
-    return experience.Title && experience.Description;
+    return experience.Title && experience.Description && experience.Genres;
   }
 
   validateSave(experience) {
@@ -58,6 +77,7 @@ class NewExperience extends React.Component {
       User_ID: this.props.currentUser.id,
       Title: this.state.title,
       Description: this.state.description,
+      Genres: this.state.genres,
       Duration: 0,
       Score: 1,
       Activities: {},
@@ -132,6 +152,7 @@ class NewExperience extends React.Component {
     if (this.validateActivity(activity)) {
       experience.Duration = experience.Duration + parseInt(this.state.duration);
       experience.Activities[this.state.count] = activity;
+      console.log("experience", experience);
       this.setState({
         activity: undefined,
         experience,
@@ -142,7 +163,7 @@ class NewExperience extends React.Component {
         title: "",
         description: "",
         form: "",
-        imgUrls: [],
+        imgUrls: undefined,
         file: undefined,
         ImageUrl: ""
 
@@ -158,6 +179,7 @@ class NewExperience extends React.Component {
       console.log("activity validation failed");
       console.log(activity);
     }
+
   }
 
 
@@ -205,13 +227,41 @@ class NewExperience extends React.Component {
 
    return (
      <main className="create-page">
-      <ActivityRibbon handleSave={this.handleSave} experience={this.state.experience}/>
+      <ActivityRibbon
+        handleMouseEnter={()=>{}}
+        handleMouseLeave={()=>{}}
+        handleClick={()=>{}}
+        handleSave={this.handleSave}
+        experience={this.state.experience}/>
 
       <section className={'create-activity-form-container'}>
         <div className="form-header">
-        <h1 className="form-title">{this.state.experience ? this.state.experience.Title : "Create an Experience"}</h1>
+          <h1 className="form-title">{this.state.experience ? this.state.experience.Title : "Create an Experience"}</h1>
+            <ul className="genre-tags">
+              {this.state.genres && this.state.genres.split("|*|").map(genre => {
+                if (genre) {
+                  return (<li
+                    key={genre}
+                    className="genre-tag"
+                    >#{genre}</li>);
+                }
+              })}
+            </ul>
         </div>
-        {!this.state.experience && <div className="experience-form"><input
+        {!this.state.experience && <div className="experience-form">
+          <div className="genre-container">
+
+            <input
+            onChange={this.update("genre")}
+            className="genre-input"
+            placeholder="Add a Genre"
+            type="text"
+            value={this.state.genre}></input>
+            <button
+             onClick={(e) => this.addGenre(e)}>
+             <i className="fas fa-plus-square"></i></button>
+          </div>
+          <input
           onChange={this.update("title")}
           className="title-input"
           placeholder="Add a Title"
@@ -229,15 +279,17 @@ class NewExperience extends React.Component {
           onClick={(e) => this.handleBuild(e)}>Build your Experience</button></div>}
         {this.state.experience &&
           <ActivityMenu showForm={this.showForm}/>
-
-
         }
-        <input className={`google-maps-search ${this.state.activity ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
+        <div className="maps-header">
+          {this.state.activity && this.state.form !== "Custom" && !this.state.imgUrls ? "Search the Map to Find Photos": ""}
+        </div>
+        <input className={`google-maps-search ${this.state.activity && this.state.form !== "Custom" ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
         <div className={this.state.activity && this.state.form !== "Custom"? "" : "hidden"} id="map">This is the map</div>
         {this.state.activity && <form className="create-activity-form">
-          {this.state.imgUrls && <span className="photos-header">Choose a photo</span>}
+          {this.state.file && <div className="custom-preview"><img src={this.state.file}></img></div>}
+          {this.state.imgUrls && !this.state.file && <span className="photos-header">Choose a photo</span>}
 
-          {this.state.imgUrls ? <div className="hide-scrollbar-div">
+          {this.state.imgUrls && !this.state.file ? <div className="hide-scrollbar-div">
           <ul className="google-maps-photos" style={{overflowX: "scroll"}}>
 
 
@@ -256,17 +308,16 @@ class NewExperience extends React.Component {
           <div className="gradient-overlay">
           </div>
         </div> : ""}
-        {this.state.imgUrls && <label className="file-input">
-            ...or upload your own
-            <span className="file-input btn">Upload Image</span>
+        <label className="file-input">
+            <span className="file-input btn">Or Upload Your Own</span>
             <input
               onChange={(e) => this.setFile(e)}
               className="file-input"
               type="file"></input>
-              {this.state.file && <img className="custom-preview" src={this.state.file}></img>}
 
 
-          </label>}
+
+          </label>
           {this.state.form === "Custom" && <label className="file-input">
               <span className="file-input btn">Upload Image</span>
               <input
@@ -279,9 +330,9 @@ class NewExperience extends React.Component {
             </label>}
 
           <label className="duration-input">
-            Duration (minutes):
-            <input
 
+            <input
+              placeholder="Add a Duration (minutes)"
               onChange={(e) => {
 
                 e.preventDefault();
@@ -296,7 +347,7 @@ class NewExperience extends React.Component {
               type="text"></input>
           </label>
 
-          <input type="text" ></input>
+
 
             <input
               onChange={this.update("title")}
@@ -603,9 +654,10 @@ class NewExperience extends React.Component {
 
     var input = /** @type {HTMLInputElement} */(
         document.getElementById('pac-input'));
+
     // Create the autocomplete helper, and associate it with
     // an HTML text input box.
-    let autocomplete = new google.maps.places.Autocomplete(input);
+    var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', map);
 
     map.controls[google.maps.ControlPosition.TOP].push(input);
@@ -614,7 +666,6 @@ class NewExperience extends React.Component {
     var marker = new google.maps.Marker({
       map: map
     });
-
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.open(map, marker);
     });
@@ -634,6 +685,7 @@ class NewExperience extends React.Component {
     return () => {
       infowindow.close();
       var place = autocomplete.getPlace();
+      console.log(place);
       this.setState({
         imgUrls: undefined,
         lat: undefined,
@@ -644,6 +696,7 @@ class NewExperience extends React.Component {
         const newImgUrls = place.photos.map(photo => {
           return photo.getUrl({'maxWidth': 1000, 'maxHeight': 1000});
         });
+
         this.setState({imgUrls: newImgUrls});
       }
       if (!place.geometry) {
@@ -676,13 +729,13 @@ class NewExperience extends React.Component {
       infowindow.open(map, marker);
     };
   }
-
   resetMap() {
     this.state.map.setCenter({lat: 37.7749, lng: -122.4194});
     this.state.map.setZoom(11);
     this.state.marker.setVisible(false);
     this.state.infowindow.close();
     this.state.input.value = "";
+
 
   }
 }
