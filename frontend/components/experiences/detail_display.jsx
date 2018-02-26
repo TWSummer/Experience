@@ -344,21 +344,33 @@ class DetailDisplay extends React.Component {
       waypoints: waypoints,
       travelMode: 'DRIVING',
       avoidTolls: false
-    }, function(response, status) {
+    }, (response, status) => {
       if (status === 'OK') {
         display.setDirections(response);
       } else {
-        alert('Could not display directions due to: ' + status);
+        service.route({
+          origin: origin,
+          destination: destination,
+          waypoints: waypoints,
+          travelMode: 'WALKING',
+          avoidTolls: false
+        }, (res2, stat2) => {
+          if (stat2 === 'OK') {
+            display.setDirections(res2);
+          } else {
+            alert('Could not display directions due to: ' + stat2);
+          }
+        });
       }
     });
   }
 
   componentWillReceiveProps(newProps) {
     if (this.state.map && !this.state.defaultZoom) {
-      if (this.state.map.getZoom() < 16) {
+      if (this.state.map.getZoom() < 15) {
         this.setState({defaultZoom: this.state.map.getZoom()});
       } else {
-        this.setState({defaultZoom: 16});
+        this.setState({defaultZoom: 15});
       }
     }
     if (this.state.mounted) {
@@ -372,7 +384,7 @@ class DetailDisplay extends React.Component {
             lat: newProps.selectedActivity.Lat,
             lng: newProps.selectedActivity.Lng
           });
-          this.state.map.setZoom(16);
+          this.state.map.setZoom(15);
         } else {
           let mapOptions = this.computeMapOptions(newProps);
           this.state.map.panTo(mapOptions.center);
