@@ -53,13 +53,14 @@ class NewExperience extends React.Component {
 
   validateExperience(experience) {
     const errors = [];
+    console.log(experience);
     if (!experience.Title) {
       errors.Title = ("Please include a title.");
     }
     if (!experience.Description) {
       errors.Description = ("Please include a description.");
     }
-    if (!experience.Genres) {
+    if (!experience.Genre) {
       errors.Genres = ("Please include at least one tag.");
     }
     this.props.receiveFormErrors(errors);
