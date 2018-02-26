@@ -94,7 +94,11 @@
 .small-exp-word:nth-child(even) {
   letter-spacing: -4px;
   opacity: 0.8;
-  color: lightblue;
+  color: rgba(87, 118, 168, 0.8);
+  /* background-image: linear-gradient(to top, darkblue 60%, lightblue);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text; */
 }
 
 .small-exp-selected-title {

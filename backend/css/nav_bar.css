@@ -151,3 +151,33 @@ a:link:visited {
   display: flex;
   align-items: center;
 }
+
+.nav-create-exp {
+  display: flex;
+  position: relative;
+  margin-right: 60px;
+}
+
+.nav-create-exp a svg{
+  position: absolute;
+  font-size: 16px;
+  right: -12px;
+  bottom: 3px;
+}
+
+.nav-create-exp a img{
+  height: 32px;
+  width: 32px;
+}
+
+.nav-create-exp div svg{
+  position: absolute;
+  font-size: 16px;
+  right: -12px;
+  bottom: 3px;
+}
+
+.nav-create-exp div img{
+  height: 32px;
+  width: 32px;
+}

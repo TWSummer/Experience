@@ -43,9 +43,6 @@ export const createExperience = (exp, files) => dispatch => {
       .then(
         experience => {
           dispatch(receiveExperience(experience));
-          console.log(files);
-          console.log(files.getAll('data'));
-          console.log(files.getAll('file'));
           dispatch(uploadImages(experience.ID, files));
           return experience;
         },
@@ -78,7 +75,6 @@ export const uploadImages = (expID, files) => dispatch => {
   return (
     uploadFiles(expID, files).then(
       experience => {
-        console.log(experience);
         dispatch(receiveExperience(experience));
         return experience;
       },

@@ -17,8 +17,7 @@ class ExperienceShow extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchExperience(this.props.match.params.id)
-      .then((result) => console.log(result));
+    this.props.fetchExperience(this.props.match.params.id);
   }
 
   componentWillReceiveProps(newProps, oldProps) {

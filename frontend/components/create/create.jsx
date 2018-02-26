@@ -75,12 +75,6 @@ class NewExperience extends React.Component {
         bool = this.validateActivity(activity);
       }
     });
-
-    if (!bool) {
-      console.log("save validation failed");
-      console.log(experience);
-    }
-
     return bool;
   }
 
@@ -103,14 +97,8 @@ class NewExperience extends React.Component {
         title: "",
         description: "",
         // activity: {},
-
       });
-
-    } else {
-      console.log("experience validation failed");
-      console.log(experience);
     }
-
   }
 
   update(attribute) {
@@ -178,7 +166,6 @@ class NewExperience extends React.Component {
     if (this.validateActivity(activity)) {
       experience.Duration = experience.Duration + parseInt(this.state.duration);
       experience.Activities[this.state.count] = activity;
-      console.log("experience", experience);
       this.setState({
         activity: undefined,
         experience,
@@ -202,11 +189,7 @@ class NewExperience extends React.Component {
         name: ""
       });
       this.props.clearFormErrors();
-    } else {
-      console.log("activity validation failed");
-      console.log(activity);
     }
-
   }
 
 
@@ -725,7 +708,6 @@ class NewExperience extends React.Component {
     return () => {
       infowindow.close();
       var place = autocomplete.getPlace();
-      console.log(place);
       this.setState({
         imgUrls: undefined,
         lat: undefined,

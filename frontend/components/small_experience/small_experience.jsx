@@ -48,8 +48,8 @@ class SmallExperience extends React.Component {
         let selectedActDur = acts[id].Duration;
         let title = curAct.Title.split(" ");
         let description = "";
-        title = title.map(word => (
-          <div className="small-exp-word">{ word.toUpperCase() }</div>
+        title = title.map((word, idx) => (
+          <div key={idx} className="small-exp-word">{ word.toUpperCase() }</div>
         ));
         if (type === 'shrink') {
           actStyle = {
@@ -102,8 +102,8 @@ class SmallExperience extends React.Component {
     actHTMLArr = Object.keys(acts).map(key => {
       let curAct = acts[key];
       let title = curAct.Title.split(" ");
-      title = title.map(word => (
-        <div className="small-exp-word">{ word.toUpperCase() }</div>
+      title = title.map((word, idx) => (
+        <div key={idx} className="small-exp-word">{ word.toUpperCase() }</div>
       ));
       return(
         <div
