@@ -56,7 +56,6 @@ class NavBar extends React.Component {
       <button
         className="logout-button btn"
         onClick={(e) => {
-          console.log("click");
           this.handleLogout(e);
         }}>
         <i className="fab fa-facebook-square"></i>
@@ -68,7 +67,6 @@ class NavBar extends React.Component {
       <button
         className="login-button btn"
         onClick={(e) => {
-          console.log("click");
           this.handleLogin(e);
         }}>
         <i className="fab fa-facebook-square"></i> Login

@@ -35,14 +35,14 @@ class NewExperience extends React.Component {
 
   addGenre(e) {
     e.preventDefault();
-    if ( this.state.genre && (this.state.genres.search(this.state.genre) < 0)) {
+    if ( this.state.genre && !(this.state.genres.split("|*|").includes(this.state.genre))) {
 
       this.setState({
         genres: this.state.genres + `|*|${this.state.genre}`,
         genre: "",
         genreError: false,
       });
-    } else if (this.state.genres.search(this.state.genre) >= 0) {
+    } else if (this.state.genres.split("|*|").includes(this.state.genre)) {
 
       this.setState({
         genreError: true
@@ -75,12 +75,6 @@ class NewExperience extends React.Component {
         bool = this.validateActivity(activity);
       }
     });
-
-    if (!bool) {
-      console.log("save validation failed");
-      console.log(experience);
-    }
-
     return bool;
   }
 
@@ -91,7 +85,7 @@ class NewExperience extends React.Component {
       User_ID: this.props.currentUser.id,
       Title: this.state.title,
       Description: this.state.description,
-      Genres: this.state.genres,
+      Genre: this.state.genres,
       Duration: 0,
       Score: 1,
       Activities: {},
@@ -106,9 +100,6 @@ class NewExperience extends React.Component {
 
       });
 
-    } else {
-      console.log("experience validation failed");
-      console.log(experience);
     }
 
   }
@@ -178,7 +169,7 @@ class NewExperience extends React.Component {
     if (this.validateActivity(activity)) {
       experience.Duration = experience.Duration + parseInt(this.state.duration);
       experience.Activities[this.state.count] = activity;
-      console.log("experience", experience);
+
       this.setState({
         activity: undefined,
         experience,
@@ -202,9 +193,6 @@ class NewExperience extends React.Component {
         name: ""
       });
       this.props.clearFormErrors();
-    } else {
-      console.log("activity validation failed");
-      console.log(activity);
     }
 
   }
@@ -733,7 +721,7 @@ class NewExperience extends React.Component {
     return () => {
       infowindow.close();
       var place = autocomplete.getPlace();
-      console.log(place);
+
       this.setState({
         imgUrls: undefined,
         lat: undefined,

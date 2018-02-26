@@ -412,7 +412,16 @@ class DetailDisplay extends React.Component {
         <ul className="details-details-details">
           <span className="label">Details:</span>
           <li>
-            Genre: {itemToDisplay.Genre}
+            <ul className="genre-tags">
+              {itemToDisplay && itemToDisplay.Genre.split("|*|").map(genre => {
+                if (genre) {
+                  return (<li
+                    key={genre}
+                    className="genre-tag"
+                    >#{genre}</li>);
+                }
+              })}
+            </ul>
 
           </li>
 
