@@ -1,7 +1,3 @@
-# Xperience City
-
-Get ready to have your mind blown!
-
 [Xperience City](http://ec2-18-222-35-87.us-east-2.compute.amazonaws.com/#/create)
 ======
 
@@ -46,4 +42,4 @@ Future updates to the app will include:
   * Expand geographic coverage of experiences.
   * Increase interactivity and responsiveness of User interface
   * User Profiles
-  * Update and Delete actions lol. 
+  * Update and Delete actions lol.
