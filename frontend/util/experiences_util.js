@@ -6,7 +6,6 @@ export const fetchExperiences = (quantity, offset) => (
 );
 
 export const createExperience = (exp) => {
-  console.log("ASDFKLSADHFLKASHDFSAFD", exp);
   return $.ajax({
     method: "POST",
     url:"/api/experience",

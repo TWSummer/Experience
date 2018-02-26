@@ -4,7 +4,6 @@ class SmallExperience extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
-    console.log(this.props.experience.Activities);
     this.votes = this.votes.bind(this);
     this.resizeActivity = this.resizeActivity.bind(this);
     this.state = {
