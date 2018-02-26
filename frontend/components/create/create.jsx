@@ -53,7 +53,6 @@ class NewExperience extends React.Component {
 
   validateExperience(experience) {
     const errors = [];
-    console.log(experience);
     if (!experience.Title) {
       errors.Title = ("Please include a title.");
     }
