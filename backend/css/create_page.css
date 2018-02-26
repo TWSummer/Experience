@@ -130,6 +130,10 @@ input.file-input {
   bottom: 0px;
 }
 
+span.file-input:hover {
+  cursor: pointer;
+}
+
 textarea.description-input {
   height: 100px;
   border: 1px solid #000;
@@ -200,7 +204,7 @@ li.activity-menu-button svg[class^="svg"] {
 li.activity-menu-button:hover,
 li.activity-menu-button:hover span {
   cursor: pointer;
-  background: #ccc;
+  background: #c9c9c9;
 }
 
 .maps-header {
