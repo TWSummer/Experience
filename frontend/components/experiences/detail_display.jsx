@@ -367,10 +367,10 @@ class DetailDisplay extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (this.state.map && !this.state.defaultZoom) {
-      if (this.state.map.getZoom() < 16) {
+      if (this.state.map.getZoom() < 15) {
         this.setState({defaultZoom: this.state.map.getZoom()});
       } else {
-        this.setState({defaultZoom: 16});
+        this.setState({defaultZoom: 15});
       }
     }
     if (this.state.mounted) {
@@ -384,7 +384,7 @@ class DetailDisplay extends React.Component {
             lat: newProps.selectedActivity.Lat,
             lng: newProps.selectedActivity.Lng
           });
-          this.state.map.setZoom(16);
+          this.state.map.setZoom(15);
         } else {
           let mapOptions = this.computeMapOptions(newProps);
           this.state.map.panTo(mapOptions.center);
