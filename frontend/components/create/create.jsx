@@ -163,7 +163,7 @@ class NewExperience extends React.Component {
         title: "",
         description: "",
         form: "",
-        imgUrls: [],
+        imgUrls: undefined,
         file: undefined,
         ImageUrl: ""
 
@@ -735,6 +735,7 @@ class NewExperience extends React.Component {
     this.state.marker.setVisible(false);
     this.state.infowindow.close();
     this.state.input.value = "";
+
 
   }
 }
