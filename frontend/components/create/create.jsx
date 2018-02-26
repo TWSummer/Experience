@@ -35,14 +35,14 @@ class NewExperience extends React.Component {
 
   addGenre(e) {
     e.preventDefault();
-    if ( this.state.genre && (this.state.genres.search(this.state.genre) < 0)) {
+    if ( this.state.genre && !(this.state.genres.split("|*|").includes(this.state.genre))) {
 
       this.setState({
         genres: this.state.genres + `|*|${this.state.genre}`,
         genre: "",
         genreError: false,
       });
-    } else if (this.state.genres.search(this.state.genre) >= 0) {
+    } else if (this.state.genres.split("|*|").includes(this.state.genre)) {
 
       this.setState({
         genreError: true
@@ -85,7 +85,7 @@ class NewExperience extends React.Component {
       User_ID: this.props.currentUser.id,
       Title: this.state.title,
       Description: this.state.description,
-      Genres: this.state.genres,
+      Genre: this.state.genres,
       Duration: 0,
       Score: 1,
       Activities: {},
