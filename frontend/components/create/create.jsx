@@ -35,22 +35,35 @@ class NewExperience extends React.Component {
 
   addGenre(e) {
     e.preventDefault();
-    if ( !this.state.genre || this.state.genres.search(this.state.genre) < 0) {
+    if ( this.state.genre && (this.state.genres.search(this.state.genre) < 0)) {
+
       this.setState({
         genres: this.state.genres + `|*|${this.state.genre}`,
         genre: "",
+        genreError: false,
       });
-      console.log(this.state.genre);
-      console.log(this.state.genres);
+    } else if (this.state.genres.search(this.state.genre) >= 0) {
 
-    } else {
-      console.log("no blank or duplicate genre's please");
+      this.setState({
+        genreError: true
+      });
     }
 
   }
 
   validateExperience(experience) {
-    return experience.Title && experience.Description && experience.Genres;
+    const errors = [];
+    if (!experience.Title) {
+      errors.Title = ("Please include a title.");
+    }
+    if (!experience.Description) {
+      errors.Description = ("Please include a description.");
+    }
+    if (!experience.Genres) {
+      errors.Genres = ("Please include at least one tag.");
+    }
+    this.props.receiveFormErrors(errors);
+    return !(Object.keys(errors).length > 0);
   }
 
   validateSave(experience) {
@@ -72,6 +85,7 @@ class NewExperience extends React.Component {
   }
 
   handleBuild(e) {
+    this.props.clearFormErrors();
     e.preventDefault();
     let experience = {
       User_ID: this.props.currentUser.id,
@@ -91,6 +105,7 @@ class NewExperience extends React.Component {
         // activity: {},
 
       });
+
     } else {
       console.log("experience validation failed");
       console.log(experience);
@@ -126,17 +141,28 @@ class NewExperience extends React.Component {
   }
 
   validateActivity(activity) {
-    return (activity.ID &&
-      activity.Genre &&
-        activity.Title &&
-          activity.Description &&
-            activity.ImageUrl &&
-              // activity.lat &&
-              //   activity.lng &&
-                  activity.Duration > 0);
+    const errors = {};
+    if (!activity.Title) {
+      errors.Title = "Please include a title.";
+    }
+    if (!activity.Description) {
+      errors.Description = "Please include a description.";
+    }
+    if (!activity.ImageUrl) {
+      errors.ImageUrl = "Please select an image.";
+
+    }
+    if (!activity.Duration) {
+      errors.Duration = "Please provide a duration.";
+    }
+
+    this.props.receiveFormErrors(errors);
+    return !(Object.keys(errors).length > 0);
   }
 
   createActivity(e, Genre) {
+    this.props.clearFormErrors();
+
     e.preventDefault();
     let experience = this.state.experience;
     let activity = {
@@ -175,6 +201,7 @@ class NewExperience extends React.Component {
         lng: undefined,
         name: ""
       });
+      this.props.clearFormErrors();
     } else {
       console.log("activity validation failed");
       console.log(activity);
@@ -211,6 +238,8 @@ class NewExperience extends React.Component {
   }
 
   handleSave(e) {
+    this.props.clearFormErrors();
+
     e.preventDefault();
     let experience = this.state.experience;
     experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
@@ -237,6 +266,7 @@ class NewExperience extends React.Component {
       <section className={'create-activity-form-container'}>
         <div className="form-header">
           <h1 className="form-title">{this.state.experience ? this.state.experience.Title : "Create an Experience"}</h1>
+
             <ul className="genre-tags">
               {this.state.genres && this.state.genres.split("|*|").map(genre => {
                 if (genre) {
@@ -246,11 +276,14 @@ class NewExperience extends React.Component {
                     >#{genre}</li>);
                 }
               })}
+              {this.state.genreError && <div className="genre-tag-errors">Please don't duplicate tags</div>}
+              <div className="error-container">
+                {this.props.errors.Genres && this.props.errors.Genres}
+              </div>
             </ul>
         </div>
         {!this.state.experience && <div className="experience-form">
           <div className="genre-container">
-
             <input
             onChange={this.update("genre")}
             className="genre-input"
@@ -261,12 +294,18 @@ class NewExperience extends React.Component {
              onClick={(e) => this.addGenre(e)}>
              <i className="fas fa-plus-square"></i></button>
           </div>
+        <div className="error-container">
+          {this.props.errors.Title && this.props.errors.Title}
+        </div>
           <input
           onChange={this.update("title")}
           className="title-input"
           placeholder="Add a Title"
           type="text"
           value={this.state.title}></input>
+          <div className="error-container">
+            {this.props.errors.Description && this.props.errors.Description}
+          </div>
         <textarea
           onChange={this.update("description")}
 
@@ -322,6 +361,7 @@ class NewExperience extends React.Component {
               <span className="file-input btn">Upload Image</span>
               <input
                 onChange={(e) => this.setFile(e)}
+                accept="image/*"
                 className="file-input"
                 type="file"></input>
                 {this.state.file && <img className="custom-preview" src={this.state.file}></img>}
