@@ -77,8 +77,6 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
-
-
 	//data is an array containing activity ids for the files
 	data := form.Value["data"]
 	files := form.File["file"]

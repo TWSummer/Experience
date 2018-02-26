@@ -41,7 +41,7 @@ class SmallExperience extends React.Component {
             width: (dur/this.state.totalDur) * 100 + '%',
             backgroundImage: act.props.style.backgroundImage
           };
-        } else if (id === act.key && type === 'grow') {
+        } else if (id == act.key && type === 'grow') {
           actStyle = {
             width: '65%',
             backgroundImage: act.props.style.backgroundImage
