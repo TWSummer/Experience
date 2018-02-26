@@ -3,29 +3,41 @@ package data
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"os"
 
 	"github.com/jinzhu/gorm"
 	"github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 )
 
 func SetupDB() *gorm.DB {
 	//for OSX docker container
 	// postgresOptions := fmt.Sprintf("host=%v user=postgres password=password dbname=flexproject sslmode=disable", os.Getenv("DB_HOST"))
 	// db, err := gorm.Open("postgres", postgresOptions)
+	dotEnvErr := godotenv.Load()
+	if dotEnvErr != nil {
+		log.Fatal("Error loading .env file")
+	}
+	migrate := os.Getenv("MIGRATE")
+	fmt.Printf("Migrate is equal to: %v ", migrate)
+
 	db, err := gorm.Open("postgres", "user=postgres password=password dbname=flexproject sslmode=disable")
 	if err != nil {
 		panic(fmt.Sprintf("Cannot connect to DB %v", err))
 	}
-	db.DropTable(&User{})
-	db.CreateTable(&User{})
-	db.AutoMigrate(&User{})
-	db.DropTable(&Experience{})
-	db.CreateTable(&Experience{})
-	db.AutoMigrate(&Experience{})
-	db.DropTable(&Vote{})
-	db.CreateTable(&Vote{})
-	db.AutoMigrate(&Vote{})
-	seedExp(db)
+	if migrate == "TRUE" {
+		db.DropTable(&User{})
+		db.CreateTable(&User{})
+		db.AutoMigrate(&User{})
+		db.DropTable(&Experience{})
+		db.CreateTable(&Experience{})
+		db.AutoMigrate(&Experience{})
+		db.DropTable(&Vote{})
+		db.CreateTable(&Vote{})
+		db.AutoMigrate(&Vote{})
+		seedExp(db)
+	}
 	return db
 }
 
