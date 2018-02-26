@@ -334,7 +334,7 @@ class NewExperience extends React.Component {
           <div className="gradient-overlay">
           </div>
         </div> : ""}
-        <label className="file-input">
+        {this.state.form !== "Custom" && <label className="file-input">
             <span className="file-input btn">Or Upload Your Own</span>
             <input
               onChange={(e) => this.setFile(e)}
@@ -343,7 +343,7 @@ class NewExperience extends React.Component {
 
 
 
-          </label>
+          </label>}
           {this.state.form === "Custom" && <label className="file-input">
               <span className="file-input btn">Upload Image</span>
               <input
