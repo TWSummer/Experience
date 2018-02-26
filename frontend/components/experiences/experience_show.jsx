@@ -7,7 +7,7 @@ import DetailDisplay from './detail_display';
 class ExperienceShow extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {};
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
@@ -37,7 +37,7 @@ class ExperienceShow extends React.Component {
   handleMouseLeave(e, activityId) {
 
     if (!this.state.clicked) {
-      // this.setState({selected: undefined});
+      this.setState({selected: undefined});
     } else {
       this.setState({selected: this.props.experience.activities[this.state.clicked - 1]});
     }
