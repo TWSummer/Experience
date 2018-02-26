@@ -156,18 +156,50 @@ func DeleteExperience(c *gin.Context, db *gorm.DB) {
 
 func VoteExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
+	user := data.User{}
+	subtractScore := 0.0
 	expID, err := strconv.Atoi(c.Param("expID"))
 	if err != nil {
 		c.JSON(400, gin.H{"error": "invalid experience id"})
+	} else {
+		vote, err := strconv.Atoi(c.PostForm("voteValue"))
+		if err != nil || vote != 1 && vote != -1 {
+			c.JSON(400, gin.H{"error": "invalid vote value"})
+		} else {
+			userID := c.PostForm("userID")
+			if userID == "" {
+				c.JSON(400, gin.H{"error": "must be logged in to vote"})
+			} else {
+				db.Where("user_id = ?", userID).First(&user)
+				var foo interface{}
+				userRaw := user.Votes.RawMessage
+				json.Unmarshal(userRaw, &foo)
+				var votes postgres.Jsonb
+				if foo == nil {
+					votes = postgres.Jsonb{json.RawMessage(fmt.Sprintf(`{"%v": %v}`, expID, vote))}
+				} else {
+					userMap := foo.(map[string]interface{})
+					if userMap[c.Param("expID")] != nil {
+						subtractScore = userMap[c.Param("expID")].(float64)
+					}
+					userMap[c.Param("expID")] = vote
+					marshalM, err := json.Marshal(userMap)
+					if err != nil {
+						votes = postgres.Jsonb{userRaw}
+						fmt.Println("YOU HAVE ENCOUNTERED AN ERROR!")
+					} else {
+						votes = postgres.Jsonb{json.RawMessage(marshalM)}
+					}
+				}
+				user.Votes = votes
+				db.Where("ID = ?", expID).First(&exp)
+				exp.Score += vote - int(subtractScore)
+				db.Save(&user)
+				db.Save(&exp)
+				c.JSON(200, exp)
+			}
+		}
 	}
-	vote, err := strconv.Atoi(c.PostForm("voteValue"))
-	if err != nil || vote != 1 && vote != -1 {
-		c.JSON(400, gin.H{"error": "invalid vote value"})
-	}
-	db.Where("ID = ?", expID).First(&exp)
-	exp.Score += vote
-	db.Save(&exp)
-	c.JSON(200, exp)
 }
 
 func Search(c *gin.Context, db *gorm.DB) {

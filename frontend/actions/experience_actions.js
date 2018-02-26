@@ -64,9 +64,9 @@ export const fetchExperience = (expID) => dispatch => {
   );
 };
 
-export const voteOnExperience = (expID, vote) => dispatch => {
+export const voteOnExperience = (expID, vote, userID) => dispatch => {
   return (
-    APIUtil.voteOnExperience(expID, vote)
+    APIUtil.voteOnExperience(expID, vote, userID)
       .then(
         experience => dispatch(receiveExperience(experience)),
         errors => dispatch(receiveErrors(errors))

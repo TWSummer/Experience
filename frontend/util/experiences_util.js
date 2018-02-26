@@ -23,10 +23,10 @@ export const fetchExperience = (expID) => (
   })
 );
 
-export const voteOnExperience = (expID, vote) => (
+export const voteOnExperience = (expID, vote, userID) => (
   $.ajax({
     method: "POST",
     url: `/api/experience/${expID}/vote`,
-    data: { voteValue: vote }
+    data: { voteValue: vote, userID }
   })
 );
