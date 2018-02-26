@@ -79,7 +79,14 @@ input.title-input, textarea.description-input {
 }
 
 label.file-input {
+  display: flex;
+  align-items: center;
+  margin: 20px;
+}
 
+span.file-input-label-text {
+  font-size: 20px;
+  margin-right: 10px;
 }
 
 input.file-input {
@@ -155,7 +162,13 @@ li.activity-menu-button svg[class^="svg"] {
 li.activity-menu-button:hover,
 li.activity-menu-button:hover span {
   cursor: pointer;
-  background: gray;
+  background: #ccc;
+}
+
+.maps-header {
+  height: 30px;
+  min-width: 1px;
+  font-size: 24px;
 }
 
 #map {
@@ -208,12 +221,32 @@ li.activity-menu-button:hover span {
   background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.7))
 }
 
+span.photos-header {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
 .google-maps-photos {
   display: flex;
   padding-bottom: 15px;
   /* border-radius: 5px; */
   /* overflow-x: scroll; */
 
+}
+
+.custom-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  min-width: 250px;
+  height: 150px;
+}
+
+.custom-preview img {
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%;
 }
 
 .google-maps-photo {

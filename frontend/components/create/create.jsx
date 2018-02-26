@@ -168,6 +168,7 @@ class NewExperience extends React.Component {
         ImageUrl: ""
 
       });
+      this.resetMap();
       this.setState({
         imgUrls: undefined,
         lat: undefined,
@@ -226,7 +227,12 @@ class NewExperience extends React.Component {
 
    return (
      <main className="create-page">
-      <ActivityRibbon handleSave={this.handleSave} experience={this.state.experience}/>
+      <ActivityRibbon
+        handleMouseEnter={()=>{}}
+        handleMouseLeave={()=>{}}
+        handleClick={()=>{}}
+        handleSave={this.handleSave}
+        experience={this.state.experience}/>
 
       <section className={'create-activity-form-container'}>
         <div className="form-header">
@@ -274,13 +280,16 @@ class NewExperience extends React.Component {
         {this.state.experience &&
           <ActivityMenu showForm={this.showForm}/>
         }
-        <div className="maps-header">Search the map to find photos</div>
-        <input className={`google-maps-search ${this.state.activity ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
+        <div className="maps-header">
+          {this.state.activity && this.state.form !== "Custom" && !this.state.imgUrls ? "Search the Map to Find Photos": ""}
+        </div>
+        <input className={`google-maps-search ${this.state.activity && this.state.form !== "Custom" ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
         <div className={this.state.activity && this.state.form !== "Custom"? "" : "hidden"} id="map">This is the map</div>
         {this.state.activity && <form className="create-activity-form">
-          {this.state.imgUrls && <span className="photos-header">Choose a photo</span>}
+          {this.state.file && <div className="custom-preview"><img src={this.state.file}></img></div>}
+          {this.state.imgUrls && !this.state.file && <span className="photos-header">Choose a photo</span>}
 
-          {this.state.imgUrls ? <div className="hide-scrollbar-div">
+          {this.state.imgUrls && !this.state.file ? <div className="hide-scrollbar-div">
           <ul className="google-maps-photos" style={{overflowX: "scroll"}}>
 
 
@@ -299,17 +308,16 @@ class NewExperience extends React.Component {
           <div className="gradient-overlay">
           </div>
         </div> : ""}
-        {this.state.imgUrls && <label className="file-input">
-            ...or upload your own
-            <span className="file-input btn">Upload Image</span>
+        <label className="file-input">
+            <span className="file-input btn">Or Upload Your Own</span>
             <input
               onChange={(e) => this.setFile(e)}
               className="file-input"
               type="file"></input>
-              {this.state.file && <img className="custom-preview" src={this.state.file}></img>}
 
 
-          </label>}
+
+          </label>
           {this.state.form === "Custom" && <label className="file-input">
               <span className="file-input btn">Upload Image</span>
               <input
@@ -666,6 +674,11 @@ class NewExperience extends React.Component {
     // list of suggestions.
     google.maps.event.addListener(autocomplete, 'place_changed',
       this.autocompleteCallback(infowindow, autocomplete, map, marker));
+    this.setState({map});
+    this.setState({autocomplete});
+    this.setState({ marker });
+    this.setState({ input });
+    this.setState({ infowindow });
   }
 
   autocompleteCallback(infowindow, autocomplete, map, marker) {
@@ -715,6 +728,14 @@ class NewExperience extends React.Component {
 
       infowindow.open(map, marker);
     };
+  }
+  resetMap() {
+    this.state.map.setCenter({lat: 37.7749, lng: -122.4194});
+    this.state.map.setZoom(11);
+    this.state.marker.setVisible(false);
+    this.state.infowindow.close();
+    this.state.input.value = "";
+
   }
 }
 export default NewExperience;
