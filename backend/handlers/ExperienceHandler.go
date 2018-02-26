@@ -172,5 +172,9 @@ func VoteExperience(c *gin.Context, db *gorm.DB) {
 
 func Search(c *gin.Context, db *gorm.DB) {
 	query := c.Param("query")
-	fmt.Printf("Search query is %v", query)
+	query = "%" + query + "%"
+	exps := []data.Experience{}
+	quantity := 25
+	db.Where("Title LIKE ? OR Description LIKE ? OR Genre LIKE ?", query, query, query).Limit(quantity).Order("Score desc").Find(&exps)
+	c.JSON(200, exps)
 }
