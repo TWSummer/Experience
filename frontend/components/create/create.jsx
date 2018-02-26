@@ -27,6 +27,7 @@ class NewExperience extends React.Component {
     this.validateSave = this.validateSave.bind(this);
     this.handleSave= this.handleSave.bind(this);
     this.addGenre = this.addGenre.bind(this);
+    console.log(this.props.currentUser);
   }
 
   componentDidMount() {
@@ -83,6 +84,8 @@ class NewExperience extends React.Component {
     e.preventDefault();
     let experience = {
       User_ID: this.props.currentUser.id,
+      UserName: this.props.currentUser.name,
+      UserPictureURL: this.props.currentUser.pictureURL,
       Title: this.state.title,
       Description: this.state.description,
       Genre: this.state.genres,
@@ -225,6 +228,7 @@ class NewExperience extends React.Component {
 
     e.preventDefault();
     let experience = this.state.experience;
+    console.log(experience);
     experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
 
     this.props.createExperience(experience, this.state.files).then(experience2 => {
