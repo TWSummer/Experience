@@ -326,8 +326,10 @@ class NewExperience extends React.Component {
         <div className={this.state.activity && this.state.form !== "Custom"? "" : "hidden"} id="map">This is the map</div>
         {this.state.activity && <form className="create-activity-form">
           {this.state.file && <div className="custom-preview"><img src={this.state.file}></img></div>}
-          {this.state.imgUrls && !this.state.file && <span className="photos-header">Choose a photo</span>}
-
+          {!this.props.ImageUrl && this.state.imgUrls && !this.state.file && <span className="photos-header">Choose a photo</span>}
+          <div className="error-container img">
+            {this.props.errors.ImageUrl && this.props.errors.ImageUrl}
+          </div>
           {this.state.imgUrls && !this.state.file ? <div className="hide-scrollbar-div">
           <ul className="google-maps-photos" style={{overflowX: "scroll"}}>
 
@@ -368,7 +370,9 @@ class NewExperience extends React.Component {
 
 
             </label>}
-
+            <div className="error-container">
+              {this.props.errors.Duration && this.props.errors.Duration}
+            </div>
           <label className="duration-input">
 
             <input
@@ -388,7 +392,9 @@ class NewExperience extends React.Component {
           </label>
 
 
-
+          <div className="error-container">
+            {this.props.errors.Title && this.props.errors.Title}
+          </div>
             <input
               onChange={this.update("title")}
               className="title-input"
@@ -397,7 +403,9 @@ class NewExperience extends React.Component {
               value={this.state.title}></input>
 
 
-
+              <div className="error-container">
+                {this.props.errors.Description && this.props.errors.Description}
+              </div>
             <textarea
               onChange={this.update("description")}
               className="description-input"
