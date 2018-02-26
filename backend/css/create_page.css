@@ -177,13 +177,17 @@ li.activity-menu-button {
   flex-direction: column;
   align-items: center;
   font-size: 24px;
-
   justify-content: space-around;
-  border: 1px solid black;
+  border-right: 1px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   box-sizing: border-box;
   width: 14%;
   padding: 2% 5px;
+}
 
+li.activity-menu-button:first-child {
+  border-left: 1px solid black;
 }
 
 li.activity-menu-button svg[class^="svg"] {

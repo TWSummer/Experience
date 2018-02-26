@@ -50,6 +50,12 @@ class NavBar extends React.Component {
   render() {
     const display = this.props.currentUser ? (
     <div className="user-info" onClick={this.toggleDropdown}>
+      <div className="nav-create-exp">
+        <Link to="/create">
+          <img src="http://www.pvhc.net/img242/rjaiuxatkezwbzzpnzth.jpg"></img>
+          <i className="fas fa-plus"></i>
+        </Link>
+      </div>
       <img className="profile-picture" src={this.props.currentUser.pictureURL}>
       </img>
       <span className="username">{this.props.currentUser.name.toUpperCase()}</span>
@@ -64,6 +70,12 @@ class NavBar extends React.Component {
     </div>
   ) : (
     <div className="session-controls">
+      <div className="nav-create-exp">
+        <div onClick={(e) => {this.handleLogin(e);}}>
+          <img src="http://www.pvhc.net/img242/rjaiuxatkezwbzzpnzth.jpg"></img>
+          <i className="fas fa-plus"></i>
+        </div>
+      </div>
       <button
         className="login-button btn"
         onClick={(e) => {

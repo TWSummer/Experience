@@ -33,12 +33,11 @@ class ActivityRibbon extends React.Component {
       const icons = {
         Food: <i className="fas fa-utensils"></i>,
         Transit: <i className="fas fa-car"></i>,
-        Views: <i className="far fa-image"></i>,
+        Views: <i className="fas fa-eye"></i>,
         Outdoors: <i className="fas fa-tree"></i>,
         Venues: <i className="fas fa-users"></i>,
         Explore: <i className="fas fa-map-marker-alt"></i>,
         Custom: <i className="fas fa-asterisk"></i>,
-
       };
     if (this.props.experience && this.props.experience.Activities) {
 

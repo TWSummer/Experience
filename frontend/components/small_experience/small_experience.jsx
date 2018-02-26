@@ -10,6 +10,15 @@ class SmallExperience extends React.Component {
       actHTMLArr: [],
       totalDur: 0
     };
+    this.icons = {
+      Food: <i className="fa fa-utensils small-exp-icon"></i>,
+      Transit: <i className="fas fa-car small-exp-icon"></i>,
+      Views: <i className="fas fa-eye small-exp-icon"></i>,
+      Outdoors: <i className="fas fa-tree small-exp-icon"></i>,
+      Venues: <i className="fas fa-users small-exp-icon"></i>,
+      Explore: <i className="fas fa-map-marker-alt small-exp-icon"></i>,
+      Custom: <i className="fas fa-asterisk small-exp-icon"></i>,
+    };
   }
 
   votes() {
@@ -31,34 +40,50 @@ class SmallExperience extends React.Component {
   }
 
   resizeActivity(id, type) {
-    this.setState({actHTMLArr: this.state.actHTMLArr.map(act => {
+    let acts = this.props.experience.Activities;
+    this.setState({actHTMLArr: Object.keys(acts).map(key => {
+        let curAct = acts[key];
         let actStyle;
-        let dur = act.props.data;
-        let selectedActDur = this.props.experience.Activities[id].Duration;
+        let dur = curAct.Duration;
+        let selectedActDur = acts[id].Duration;
+        let title = curAct.Title.split(" ");
+        let description = "";
+        title = title.map((word, idx) => (
+          <div key={idx} className="small-exp-word">{ word.toUpperCase() }</div>
+        ));
         if (type === 'shrink') {
           actStyle = {
             width: (dur/this.state.totalDur) * 100 + '%',
-            backgroundImage: act.props.style.backgroundImage
+            backgroundImage: 'url(' + curAct.ImageUrl + ')'
           };
-        } else if (id == act.key && type === 'grow') {
+        } else if (id == curAct.ID && type === 'grow') {
           actStyle = {
             width: '65%',
-            backgroundImage: act.props.style.backgroundImage
+            backgroundImage: 'url(' + curAct.ImageUrl + ')'
           };
-        } else if (type === 'grow') {
+          title = <div className="small-exp-selected-title">
+                    { curAct.Title.toUpperCase() }
+                 </div>;
+          description = curAct.Description;
+        } else if (id !== curAct.ID && type === 'grow') {
           actStyle = {
             width: (dur/(this.state.totalDur - selectedActDur)) * 35 + '%',
-            backgroundImage: act.props.style.backgroundImage
+            backgroundImage: 'url(' + curAct.ImageUrl + ')'
           };
         }
         return (
           <div
-            key={ act.key }
+            key={ curAct.ID }
             data={ dur }
             className="small-exp-activity"
-            onMouseEnter={(e) => this.resizeActivity(act.key, 'grow')}
-            onMouseLeave={(e) => this.resizeActivity(act.key, 'shrink')}
+            onMouseEnter={(e) => this.resizeActivity(curAct.ID, 'grow')}
+            onMouseLeave={(e) => this.resizeActivity(curAct.ID, 'shrink')}
             style={ actStyle }>
+            <div className="small-exp-text-box">
+              { title }
+            </div>
+            <div className="small-exp-description">
+            </div>
           </div>
         );
       })
@@ -76,6 +101,10 @@ class SmallExperience extends React.Component {
     });
     actHTMLArr = Object.keys(acts).map(key => {
       let curAct = acts[key];
+      let title = curAct.Title.split(" ");
+      title = title.map((word, idx) => (
+        <div key={idx} className="small-exp-word">{ word.toUpperCase() }</div>
+      ));
       return(
         <div
           key={ curAct.ID }
@@ -84,9 +113,13 @@ class SmallExperience extends React.Component {
           onMouseEnter={(e) => this.resizeActivity(curAct.ID, 'grow')}
           onMouseLeave={(e) => this.resizeActivity(curAct.ID, 'shrink')}
           style={{
-            width: curAct.Duration/totalDur * 100 + '%',
+            width: (curAct.Duration/totalDur) * 100 + '%',
             backgroundImage: 'url(' + curAct.ImageUrl + ')'
           }}>
+          <div className="small-exp-text-box">
+            { title }
+          </div>
+          <div className="small-exp-description"></div>
         </div>
       );
     });

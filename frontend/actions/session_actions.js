@@ -42,4 +42,4 @@ export const logoutUser = () => dispatch => {
   FB.api("/me/permissions", "delete", function(response){
     dispatch(removeUser(response));
   });
-}
+};

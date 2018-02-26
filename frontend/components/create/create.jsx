@@ -97,11 +97,8 @@ class NewExperience extends React.Component {
         title: "",
         description: "",
         // activity: {},
-
       });
-
     }
-
   }
 
   update(attribute) {
@@ -169,7 +166,6 @@ class NewExperience extends React.Component {
     if (this.validateActivity(activity)) {
       experience.Duration = experience.Duration + parseInt(this.state.duration);
       experience.Activities[this.state.count] = activity;
-
       this.setState({
         activity: undefined,
         experience,
@@ -194,7 +190,6 @@ class NewExperience extends React.Component {
       });
       this.props.clearFormErrors();
     }
-
   }
 
 
@@ -273,11 +268,13 @@ class NewExperience extends React.Component {
         {!this.state.experience && <div className="experience-form">
           <div className="genre-container">
             <input
-            onChange={this.update("genre")}
-            className="genre-input"
-            placeholder="Add a Genre"
-            type="text"
-            value={this.state.genre}></input>
+              onChange={this.update("genre")}
+              className="genre-input"
+              placeholder="Add a Genre"
+              type="text"
+              value={this.state.genre}
+              onKeyPress={e => {if (e.key === 'Enter') this.addGenre(e);}}>
+            </input>
             <button
              onClick={(e) => this.addGenre(e)}>
              <i className="fas fa-plus-square"></i></button>
@@ -721,7 +718,6 @@ class NewExperience extends React.Component {
     return () => {
       infowindow.close();
       var place = autocomplete.getPlace();
-
       this.setState({
         imgUrls: undefined,
         lat: undefined,

@@ -75,7 +75,6 @@ export const uploadImages = (expID, files) => dispatch => {
   return (
     uploadFiles(expID, files).then(
       experience => {
-        
         dispatch(receiveExperience(experience));
         return experience;
       },
