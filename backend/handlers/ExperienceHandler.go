@@ -41,10 +41,10 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 
 	fmt.Printf("err, %+v\n", err)
 
-	fmt.Printf("experiment: %+v\n", c.PostForm("activities"))
+
 	exp.Activities = postgres.Jsonb{(json.RawMessage(c.PostForm("ActivitiesString")))}
 
-	fmt.Printf("exp.Activities, %+v \n", exp.Activities)
+
 	// exp.Activities = postgres.Jsonb{exp.Activities}
 	// fmt.Printf("File: %+v \n", file)
 	// fmt.Println("success?")
@@ -115,7 +115,7 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 	marshalM, err := json.Marshal(activitiesMap)
 	fmt.Printf("err, %+v\n", err)
 	exp.Activities = postgres.Jsonb{json.RawMessage(marshalM)}
-	fmt.Printf("exp, %+v\n", exp)
+	
 	db.Save(&exp)
 	c.JSON(200, exp)
 
@@ -207,6 +207,6 @@ func Search(c *gin.Context, db *gorm.DB) {
 	query = "%" + query + "%"
 	exps := []data.Experience{}
 	quantity := 25
-	db.Where("Title LIKE ? OR Description LIKE ? OR Genre LIKE ?", query, query, query).Limit(quantity).Order("Score desc").Find(&exps)
+	db.Where("UPPER(Title) LIKE UPPER(?) OR UPPER(Description) LIKE UPPER(?) OR UPPER(Genre) LIKE UPPER(?)", query, query, query).Limit(quantity).Order("Score desc").Find(&exps)
 	c.JSON(200, exps)
 }
