@@ -78,6 +78,7 @@
   color: #fff;
   background: #000;
   margin-right: 10px;
+  white-space: nowrap;
 }
 
 .genre-container svg[class^="svg"]{

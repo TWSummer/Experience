@@ -75,10 +75,9 @@ class ActivityRibbon extends React.Component {
     return (
       <div className="activity-ribbon-container">
         <ul className="activity-ribbon-list">
-          { this.props.handleSave ? <button
+          { this.props.handleSave && <button
             onClick={(e) => this.props.handleSave(e)}
-            className="save-experience btn">Save your Experience</button> :
-          <Link to="/create"><button className="create-experience btn">Create an Experience</button></Link> }
+            className="save-experience btn">Save your Experience</button> }
           {activityIndexItems}
 
         </ul>
