@@ -1,16 +1,11 @@
 package router
 
 import (
-
 	"flex_project/backend/data"
 	"flex_project/backend/handlers"
 
-
-
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-
 )
 
 var db *gorm.DB
@@ -42,6 +37,7 @@ func SetupRouterAndDB() (*gin.Engine, *gorm.DB) {
 	r.POST("/api/experience/:expID/upload", wrapHandler(handlers.UploadActivityPhotos, db))
 	r.GET("/api/experience/:expID", wrapHandler(handlers.GetExperience, db))
 	r.POST("/api/experience/:expID/vote", wrapHandler(handlers.VoteExperience, db))
+	r.GET("/api/search/:query", wrapHandler(handlers.Search, db))
 	return r, db
 }
 
