@@ -344,11 +344,23 @@ class DetailDisplay extends React.Component {
       waypoints: waypoints,
       travelMode: 'DRIVING',
       avoidTolls: false
-    }, function(response, status) {
+    }, (response, status) => {
       if (status === 'OK') {
         display.setDirections(response);
       } else {
-        alert('Could not display directions due to: ' + status);
+        service.route({
+          origin: origin,
+          destination: destination,
+          waypoints: waypoints,
+          travelMode: 'WALKING',
+          avoidTolls: false
+        }, (res2, stat2) => {
+          if (stat2 === 'OK') {
+            display.setDirections(res2);
+          } else {
+            alert('Could not display directions due to: ' + stat2);
+          }
+        });
       }
     });
   }
