@@ -268,11 +268,13 @@ class NewExperience extends React.Component {
         {!this.state.experience && <div className="experience-form">
           <div className="genre-container">
             <input
-            onChange={this.update("genre")}
-            className="genre-input"
-            placeholder="Add a Genre"
-            type="text"
-            value={this.state.genre}></input>
+              onChange={this.update("genre")}
+              className="genre-input"
+              placeholder="Add a Genre"
+              type="text"
+              value={this.state.genre}
+              onKeyPress={e => {if (e.key === 'Enter') this.addGenre(e);}}>
+            </input>
             <button
              onClick={(e) => this.addGenre(e)}>
              <i className="fas fa-plus-square"></i></button>
