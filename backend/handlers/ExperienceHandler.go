@@ -41,10 +41,10 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 
 	fmt.Printf("err, %+v\n", err)
 
-	fmt.Printf("experiment: %+v\n", c.PostForm("activities"))
+
 	exp.Activities = postgres.Jsonb{(json.RawMessage(c.PostForm("ActivitiesString")))}
 
-	fmt.Printf("exp.Activities, %+v \n", exp.Activities)
+
 	// exp.Activities = postgres.Jsonb{exp.Activities}
 	// fmt.Printf("File: %+v \n", file)
 	// fmt.Println("success?")
@@ -115,7 +115,7 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 	marshalM, err := json.Marshal(activitiesMap)
 	fmt.Printf("err, %+v\n", err)
 	exp.Activities = postgres.Jsonb{json.RawMessage(marshalM)}
-	fmt.Printf("exp, %+v\n", exp)
+	
 	db.Save(&exp)
 	c.JSON(200, exp)
 
