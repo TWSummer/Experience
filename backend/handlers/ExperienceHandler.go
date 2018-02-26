@@ -12,12 +12,13 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	// "github.com/aws/aws-sdk-go/service/s3"
+	"fmt"
+	"math/rand"
+	"os"
+
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/joho/godotenv"
-	"math/rand"
-	"os"
-	"fmt"
 	// "net/http"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +28,6 @@ import (
 func CreateExperience(c *gin.Context, db *gorm.DB) {
 
 	exp := data.Experience{}
-
 
 	fmt.Printf("c: %+v \n", c)
 	err := c.Bind(&exp)
@@ -39,12 +39,10 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
-
 	fmt.Printf("err, %+v\n", err)
 
 	fmt.Printf("experiment: %+v\n", c.PostForm("activities"))
 	exp.Activities = postgres.Jsonb{(json.RawMessage(c.PostForm("ActivitiesString")))}
-
 
 	fmt.Printf("exp.Activities, %+v \n", exp.Activities)
 	// exp.Activities = postgres.Jsonb{exp.Activities}
@@ -63,7 +61,6 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 	activitiesRaw := exp.Activities.RawMessage
 	json.Unmarshal(activitiesRaw, &foo)
 	activitiesMap := foo.(map[string]interface{})
-
 
 	dotEnvErr := godotenv.Load()
 	if dotEnvErr != nil {
@@ -112,10 +109,6 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 		activityMap := activitiesMap[data[index]].(map[string]interface{})
 		activityMap["ImageUrl"] = uploadOutput.Location
 		activitiesMap[data[index]] = activityMap
-
-
-
-
 
 		fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket)
 	}
@@ -175,4 +168,13 @@ func VoteExperience(c *gin.Context, db *gorm.DB) {
 	exp.Score += vote
 	db.Save(&exp)
 	c.JSON(200, exp)
+}
+
+func Search(c *gin.Context, db *gorm.DB) {
+	query := c.Param("query")
+	query = "%" + query + "%"
+	exps := []data.Experience{}
+	quantity := 25
+	db.Where("Title LIKE ? OR Description LIKE ? OR Genre LIKE ?", query, query, query).Limit(quantity).Order("Score desc").Find(&exps)
+	c.JSON(200, exps)
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {withRouter} from "react-router-dom";
 
 class NavBar extends React.Component {
 
@@ -11,6 +12,7 @@ class NavBar extends React.Component {
 
     this.update = this.update.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillReceiveProps() {
@@ -38,9 +40,12 @@ class NavBar extends React.Component {
     this.props.logoutUser();
   }
 
-
-
-
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.resetSearch();
+    this.props.searchExperiences(this.state.searchQuery);
+    this.props.history.push(`/search/${this.state.searchQuery}`);
+  }
 
   render() {
     const display = this.props.currentUser ? (
