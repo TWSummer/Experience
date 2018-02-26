@@ -43,6 +43,13 @@
   margin-bottom: 10px;
 }
 
+.genre-tags.errors {
+  background: #ffe6e6;
+  color: #c86e6e;
+  border: 1px solid #f5c8c8;
+
+}
+
 .genre-tag {
   padding: 2px 8px;
   font-size: 18px;

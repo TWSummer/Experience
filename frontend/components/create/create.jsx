@@ -35,22 +35,35 @@ class NewExperience extends React.Component {
 
   addGenre(e) {
     e.preventDefault();
-    if ( !this.state.genre || this.state.genres.search(this.state.genre) < 0) {
+    if ( this.state.genre && (this.state.genres.search(this.state.genre) < 0)) {
+
       this.setState({
         genres: this.state.genres + `|*|${this.state.genre}`,
         genre: "",
+        genreError: false,
       });
-      console.log(this.state.genre);
-      console.log(this.state.genres);
+    } else if (this.state.genres.search(this.state.genre) < 0) {
 
-    } else {
-      console.log("no blank or duplicate genre's please");
+      this.setState({
+        genreError: true
+      });
     }
 
   }
 
   validateExperience(experience) {
-    return experience.Title && experience.Description && experience.Genres;
+    const errors = [];
+    if (!experience.Title) {
+      errors.push("Please include a title.");
+    }
+    if (!experience.Description) {
+      errors.push("Please include a description.");
+    }
+    if (!experience.Genres) {
+      errors.push("Please include at least one tag.");
+    }
+    this.props.receiveFormErrors(errors);
+    return errors.length > 0;
   }
 
   validateSave(experience) {
@@ -126,14 +139,23 @@ class NewExperience extends React.Component {
   }
 
   validateActivity(activity) {
-    return (activity.ID &&
-      activity.Genre &&
-        activity.Title &&
-          activity.Description &&
-            activity.ImageUrl &&
-              // activity.lat &&
-              //   activity.lng &&
-                  activity.Duration > 0);
+    const errors = [];
+    if (!activity.Title) {
+      errors.push("Please include a title.");
+    }
+    if (!activity.Description) {
+      errors.push("Please include a description.");
+    }
+    if (!activity.ImageUrl) {
+      errors.push("Please select an image.");
+
+    }
+    if (!activity.Duration) {
+      errors.push("Please provide a duration.");
+    }
+
+    this.props.receiveFormErrors(errors);
+    return errors.length > 0;
   }
 
   createActivity(e, Genre) {
@@ -175,6 +197,7 @@ class NewExperience extends React.Component {
         lng: undefined,
         name: ""
       });
+      this.props.clearFormErrors();
     } else {
       console.log("activity validation failed");
       console.log(activity);
@@ -237,6 +260,7 @@ class NewExperience extends React.Component {
       <section className={'create-activity-form-container'}>
         <div className="form-header">
           <h1 className="form-title">{this.state.experience ? this.state.experience.Title : "Create an Experience"}</h1>
+            {!this.state.genreError ?
             <ul className="genre-tags">
               {this.state.genres && this.state.genres.split("|*|").map(genre => {
                 if (genre) {
@@ -246,7 +270,7 @@ class NewExperience extends React.Component {
                     >#{genre}</li>);
                 }
               })}
-            </ul>
+            </ul> : <div className="genre-tags errors">Please don't duplicate tags</div>}
         </div>
         {!this.state.experience && <div className="experience-form">
           <div className="genre-container">
@@ -280,15 +304,10 @@ class NewExperience extends React.Component {
         {this.state.experience &&
           <ActivityMenu showForm={this.showForm}/>
         }
-<<<<<<< HEAD
-        <div className="maps-header">Search the map to find photos</div>
-        <input className={`google-maps-search ${this.state.activity ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
-=======
         <div className="maps-header">
           {this.state.activity && this.state.form !== "Custom" && !this.state.imgUrls ? "Search the Map to Find Photos": ""}
         </div>
         <input className={`google-maps-search ${this.state.activity && this.state.form !== "Custom" ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
->>>>>>> ff577ab76c4800ba7033e698b701be18cc504351
         <div className={this.state.activity && this.state.form !== "Custom"? "" : "hidden"} id="map">This is the map</div>
         {this.state.activity && <form className="create-activity-form">
           {this.state.file && <div className="custom-preview"><img src={this.state.file}></img></div>}
@@ -679,6 +698,11 @@ class NewExperience extends React.Component {
     // list of suggestions.
     google.maps.event.addListener(autocomplete, 'place_changed',
       this.autocompleteCallback(infowindow, autocomplete, map, marker));
+    this.setState({map});
+    this.setState({autocomplete});
+    this.setState({ marker });
+    this.setState({ input });
+    this.setState({ infowindow });
   }
 
   autocompleteCallback(infowindow, autocomplete, map, marker) {
