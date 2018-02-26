@@ -42,7 +42,7 @@ class NewExperience extends React.Component {
         genre: "",
         genreError: false,
       });
-    } else if (this.state.genres.search(this.state.genre) < 0) {
+    } else if (this.state.genres.search(this.state.genre) >= 0) {
 
       this.setState({
         genreError: true
@@ -54,16 +54,16 @@ class NewExperience extends React.Component {
   validateExperience(experience) {
     const errors = [];
     if (!experience.Title) {
-      errors.push("Please include a title.");
+      errors.Title = ("Please include a title.");
     }
     if (!experience.Description) {
-      errors.push("Please include a description.");
+      errors.Description = ("Please include a description.");
     }
     if (!experience.Genres) {
-      errors.push("Please include at least one tag.");
+      errors.Genres = ("Please include at least one tag.");
     }
     this.props.receiveFormErrors(errors);
-    return errors.length > 0;
+    return !(Object.keys(errors).length > 0);
   }
 
   validateSave(experience) {
@@ -85,6 +85,7 @@ class NewExperience extends React.Component {
   }
 
   handleBuild(e) {
+    this.props.clearFormErrors();
     e.preventDefault();
     let experience = {
       User_ID: this.props.currentUser.id,
@@ -104,6 +105,7 @@ class NewExperience extends React.Component {
         // activity: {},
 
       });
+
     } else {
       console.log("experience validation failed");
       console.log(experience);
@@ -139,26 +141,28 @@ class NewExperience extends React.Component {
   }
 
   validateActivity(activity) {
-    const errors = [];
+    const errors = {};
     if (!activity.Title) {
-      errors.push("Please include a title.");
+      errors.Title = "Please include a title.";
     }
     if (!activity.Description) {
-      errors.push("Please include a description.");
+      errors.Description = "Please include a description.";
     }
     if (!activity.ImageUrl) {
-      errors.push("Please select an image.");
+      errors.ImageUrl = "Please select an image.";
 
     }
     if (!activity.Duration) {
-      errors.push("Please provide a duration.");
+      errors.Duration = "Please provide a duration.";
     }
 
     this.props.receiveFormErrors(errors);
-    return errors.length > 0;
+    return !(Object.keys(errors).length > 0);
   }
 
   createActivity(e, Genre) {
+    this.props.clearFormErrors();
+
     e.preventDefault();
     let experience = this.state.experience;
     let activity = {
@@ -234,6 +238,8 @@ class NewExperience extends React.Component {
   }
 
   handleSave(e) {
+    this.props.clearFormErrors();
+
     e.preventDefault();
     let experience = this.state.experience;
     experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
@@ -260,7 +266,7 @@ class NewExperience extends React.Component {
       <section className={'create-activity-form-container'}>
         <div className="form-header">
           <h1 className="form-title">{this.state.experience ? this.state.experience.Title : "Create an Experience"}</h1>
-            {!this.state.genreError ?
+
             <ul className="genre-tags">
               {this.state.genres && this.state.genres.split("|*|").map(genre => {
                 if (genre) {
@@ -270,11 +276,14 @@ class NewExperience extends React.Component {
                     >#{genre}</li>);
                 }
               })}
-            </ul> : <div className="genre-tags errors">Please don't duplicate tags</div>}
+              {this.state.genreError && <div className="genre-tag-errors">Please don't duplicate tags</div>}
+              <div className="error-container">
+                {this.props.errors.Genres && this.props.errors.Genres}
+              </div>
+            </ul>
         </div>
         {!this.state.experience && <div className="experience-form">
           <div className="genre-container">
-
             <input
             onChange={this.update("genre")}
             className="genre-input"
@@ -285,12 +294,18 @@ class NewExperience extends React.Component {
              onClick={(e) => this.addGenre(e)}>
              <i className="fas fa-plus-square"></i></button>
           </div>
+        <div className="error-container">
+          {this.props.errors.Title && this.props.errors.Title}
+        </div>
           <input
           onChange={this.update("title")}
           className="title-input"
           placeholder="Add a Title"
           type="text"
           value={this.state.title}></input>
+          <div className="error-container">
+            {this.props.errors.Description && this.props.errors.Description}
+          </div>
         <textarea
           onChange={this.update("description")}
 
@@ -346,6 +361,7 @@ class NewExperience extends React.Component {
               <span className="file-input btn">Upload Image</span>
               <input
                 onChange={(e) => this.setFile(e)}
+                accept="image/*"
                 className="file-input"
                 type="file"></input>
                 {this.state.file && <img className="custom-preview" src={this.state.file}></img>}

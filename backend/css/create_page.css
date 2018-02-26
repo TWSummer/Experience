@@ -31,7 +31,7 @@
   display: flex;
   width: 100%;
   /* margin: 30px 0; */
-  margin-bottom: 30px;
+
 
 
 }
@@ -39,15 +39,33 @@
 .genre-tags {
   display: flex;
   height: 30px;
-  width: 1px;
+  min-width: 1px;
   margin-bottom: 10px;
 }
 
-.genre-tags.errors {
-  background: #ffe6e6;
-  color: #c86e6e;
-  border: 1px solid #f5c8c8;
+.genre-tag-errors {
+  width: 175px;
+  /* background: #ffe6e6; */
+  color: #cc0000;
+  /* border: 1px solid #f5c8c8; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
 
+  margin-left: 10px;
+}
+
+.error-container:first-of-type {
+  align-items: flex-end;
+}
+
+.error-container {
+  height: 30px;
+  color: #cc0000;
+  font-size: 18px;
+
+  width: 100%
 }
 
 .genre-tag {
@@ -80,9 +98,13 @@ input.title-input, textarea.description-input {
   padding: 5px 10px;
   width: 100%;
   background: #fff;
-  margin-bottom: 30px;
+
   box-sizing: border-box;
 
+}
+
+textarea.description-input {
+  margin-bottom: 30px;
 }
 
 label.file-input {
@@ -126,7 +148,7 @@ input.duration-input {
   background: #fff;
   width: 150px;
   /* margin-left: 10px; */
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 .form-title {

@@ -3,14 +3,15 @@ import { RECEIVE_FORM_ERRORS,
          CLEAR_FORM_ERRORS
        } from '../actions/form_error_actions';
 
-const formErrorsReducer = (state = [], action) => {
+const formErrorsReducer = (state = {}, action) => {
   Object.freeze(state);
-  // let newState;
+  let newState;
   switch(action.type) {
     case RECEIVE_FORM_ERRORS:
-      return action.errors;
+      newState = merge({}, state, action.errors);
+      return newState;
     case CLEAR_FORM_ERRORS:
-      return [];
+      return {};
     default:
       return state;
   }
