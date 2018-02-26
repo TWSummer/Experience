@@ -25,14 +25,14 @@ class SmallExperience extends React.Component {
     return (
       <aside className="vote-buttons">
         <div className="up-vote-button"
-          onClick={e => this.props.voteOnExperience(this.props.experience.ID, 1)}>
+          onClick={e => this.props.voteOnExperience(this.props.experience.ID, 1, this.props.userID)}>
           <i className="fas fa-angle-up"></i>
         </div>
         <div className="vote-count">
           {this.props.experience.Score}
         </div>
         <div className="down-vote-button"
-          onClick={e => this.props.voteOnExperience(this.props.experience.ID, -1)}>
+          onClick={e => this.props.voteOnExperience(this.props.experience.ID, -1, this.props.userID)}>
           <i className="fas fa-angle-down"></i>
         </div>
       </aside>
@@ -130,9 +130,11 @@ class SmallExperience extends React.Component {
      return (
        <div className="experience-index-item">
          <section>
-           <div className="small-exp-title">
-             {this.props.experience.Title.toUpperCase()}
-           </div>
+           <a href={`#/experience/${this.props.experience.ID}`}>
+             <div className="small-exp-title">
+               {this.props.experience.Title.toUpperCase()}
+             </div>
+           </a>
            <div className="small-exp-ribbion-box">
              {this.votes()}
              <section className="experience-ribbon">

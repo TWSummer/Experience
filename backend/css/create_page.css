@@ -14,7 +14,7 @@
 
 .create-activity-form-container {
   margin-top: 50px;
-  margin-left: 50px;ß
+  margin-left: 50px;
   box-shadow: 0 2px 4px -1px rgba(0,0,0,.1),0 2px 2px -2px rgba(0,0,0,.02),0 1px 4px 0 rgba(0,0,0,.04);
 
   padding: 30px;
@@ -25,6 +25,45 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.genre-container {
+  display: flex;
+  width: 100%;
+  /* margin: 30px 0; */
+  margin-bottom: 30px;
+
+
+}
+
+.genre-tags {
+  display: flex;
+  height: 30px;
+  width: 1px;
+  margin-bottom: 10px;
+}
+
+.genre-tag {
+  padding: 2px 8px;
+  font-size: 18px;
+  color: #fff;
+  background: #000;
+  margin-right: 10px;
+}
+
+.genre-container svg[class^="svg"]{
+  font-size: 29px;
+  margin-left: 10px;
+}
+
+input.genre-input {
+  border: 1px solid #000;
+
+  border-radius: 5px;
+  padding: 5px 10px;
+
+  background: #fff;
+  box-sizing: border-box;
 }
 
 input.title-input, textarea.description-input {
@@ -40,7 +79,14 @@ input.title-input, textarea.description-input {
 }
 
 label.file-input {
+  display: flex;
+  align-items: center;
+  margin: 20px;
+}
 
+span.file-input-label-text {
+  font-size: 20px;
+  margin-right: 10px;
 }
 
 input.file-input {
@@ -71,13 +117,13 @@ input.duration-input {
   border-radius: 5px;
   padding: 5px 5px;
   background: #fff;
-  width: 50px;
-  margin-left: 20px;
+  width: 150px;
+  /* margin-left: 10px; */
+  margin-bottom: 30px;
 }
 
 .form-title {
   font-size: 28px;
-  margin-bottom: 30px;
 }
 
 .create-activity-form {
@@ -113,9 +159,16 @@ li.activity-menu-button svg[class^="svg"] {
   margin-bottom: 5px;
 }
 
-li.activity-menu-button:hover, li.activity-menu-button:hover span {
+li.activity-menu-button:hover,
+li.activity-menu-button:hover span {
   cursor: pointer;
-  background: gray;
+  background: #ccc;
+}
+
+.maps-header {
+  height: 30px;
+  min-width: 1px;
+  font-size: 24px;
 }
 
 #map {
@@ -168,12 +221,32 @@ li.activity-menu-button:hover, li.activity-menu-button:hover span {
   background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.7))
 }
 
+span.photos-header {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
 .google-maps-photos {
   display: flex;
   padding-bottom: 15px;
   /* border-radius: 5px; */
   /* overflow-x: scroll; */
 
+}
+
+.custom-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  min-width: 250px;
+  height: 150px;
+}
+
+.custom-preview img {
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%;
 }
 
 .google-maps-photo {

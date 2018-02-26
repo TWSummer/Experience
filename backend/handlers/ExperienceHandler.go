@@ -12,12 +12,13 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	// "github.com/aws/aws-sdk-go/service/s3"
+	"fmt"
+	"math/rand"
+	"os"
+
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/joho/godotenv"
-	"math/rand"
-	"os"
-	"fmt"
 	// "net/http"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +28,6 @@ import (
 func CreateExperience(c *gin.Context, db *gorm.DB) {
 
 	exp := data.Experience{}
-
 
 	fmt.Printf("c: %+v \n", c)
 	err := c.Bind(&exp)
@@ -39,12 +39,10 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 		return
 	}
 
-
 	fmt.Printf("err, %+v\n", err)
 
 	fmt.Printf("experiment: %+v\n", c.PostForm("activities"))
 	exp.Activities = postgres.Jsonb{(json.RawMessage(c.PostForm("ActivitiesString")))}
-
 
 	fmt.Printf("exp.Activities, %+v \n", exp.Activities)
 	// exp.Activities = postgres.Jsonb{exp.Activities}
@@ -64,7 +62,6 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 	json.Unmarshal(activitiesRaw, &foo)
 	activitiesMap := foo.(map[string]interface{})
 
-
 	dotEnvErr := godotenv.Load()
 	if dotEnvErr != nil {
 		log.Fatal("Error loading .env file")
@@ -76,8 +73,6 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 
 		return
 	}
-
-
 
 	//data is an array containing activity ids for the files
 	data := form.Value["data"]
@@ -114,10 +109,6 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 		activityMap := activitiesMap[data[index]].(map[string]interface{})
 		activityMap["ImageUrl"] = uploadOutput.Location
 		activitiesMap[data[index]] = activityMap
-
-
-
-
 
 		fmt.Printf("Successfully uploaded %q to %q\n", filename, bucket)
 	}
@@ -165,16 +156,57 @@ func DeleteExperience(c *gin.Context, db *gorm.DB) {
 
 func VoteExperience(c *gin.Context, db *gorm.DB) {
 	exp := data.Experience{}
+	user := data.User{}
+	subtractScore := 0.0
 	expID, err := strconv.Atoi(c.Param("expID"))
 	if err != nil {
 		c.JSON(400, gin.H{"error": "invalid experience id"})
+	} else {
+		vote, err := strconv.Atoi(c.PostForm("voteValue"))
+		if err != nil || vote != 1 && vote != -1 {
+			c.JSON(400, gin.H{"error": "invalid vote value"})
+		} else {
+			userID := c.PostForm("userID")
+			if userID == "" {
+				c.JSON(400, gin.H{"error": "must be logged in to vote"})
+			} else {
+				db.Where("user_id = ?", userID).First(&user)
+				var foo interface{}
+				userRaw := user.Votes.RawMessage
+				json.Unmarshal(userRaw, &foo)
+				var votes postgres.Jsonb
+				if foo == nil {
+					votes = postgres.Jsonb{json.RawMessage(fmt.Sprintf(`{"%v": %v}`, expID, vote))}
+				} else {
+					userMap := foo.(map[string]interface{})
+					if userMap[c.Param("expID")] != nil {
+						subtractScore = userMap[c.Param("expID")].(float64)
+					}
+					userMap[c.Param("expID")] = vote
+					marshalM, err := json.Marshal(userMap)
+					if err != nil {
+						votes = postgres.Jsonb{userRaw}
+						fmt.Println("YOU HAVE ENCOUNTERED AN ERROR!")
+					} else {
+						votes = postgres.Jsonb{json.RawMessage(marshalM)}
+					}
+				}
+				user.Votes = votes
+				db.Where("ID = ?", expID).First(&exp)
+				exp.Score += vote - int(subtractScore)
+				db.Save(&user)
+				db.Save(&exp)
+				c.JSON(200, exp)
+			}
+		}
 	}
-	vote, err := strconv.Atoi(c.PostForm("voteValue"))
-	if err != nil || vote != 1 && vote != -1 {
-		c.JSON(400, gin.H{"error": "invalid vote value"})
-	}
-	db.Where("ID = ?", expID).First(&exp)
-	exp.Score += vote
-	db.Save(&exp)
-	c.JSON(200, exp)
+}
+
+func Search(c *gin.Context, db *gorm.DB) {
+	query := c.Param("query")
+	query = "%" + query + "%"
+	exps := []data.Experience{}
+	quantity := 25
+	db.Where("Title LIKE ? OR Description LIKE ? OR Genre LIKE ?", query, query, query).Limit(quantity).Order("Score desc").Find(&exps)
+	c.JSON(200, exps)
 }

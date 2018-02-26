@@ -1,5 +1,5 @@
 import * as APIUtil from '../util/experiences_util';
-import {uploadFiles} from '../util/upload_util'
+import {uploadFiles} from '../util/upload_util';
 export const RECEIVE_EXPERIENCES = "RECEIVE_EXPERIENCES";
 export const RECEIVE_EXPERIENCE_ERRORS = "RECEIVE_EXPERIENCE_ERRORS";
 export const RECEIVE_EXPERIENCE = "RECEIVE_EXPERIENCE";
@@ -64,9 +64,9 @@ export const fetchExperience = (expID) => dispatch => {
   );
 };
 
-export const voteOnExperience = (expID, vote) => dispatch => {
+export const voteOnExperience = (expID, vote, userID) => dispatch => {
   return (
-    APIUtil.voteOnExperience(expID, vote)
+    APIUtil.voteOnExperience(expID, vote, userID)
       .then(
         experience => dispatch(receiveExperience(experience)),
         errors => dispatch(receiveErrors(errors))
