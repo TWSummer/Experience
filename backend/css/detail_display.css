@@ -4,3 +4,34 @@
   box-shadow: 0 2px 4px -1px rgba(0,0,0,.1),0 2px 2px -2px rgba(0,0,0,.02),0 1px 4px 0 rgba(0,0,0,.04);
 
 }
+
+.detail-display {
+  position: relative;
+}
+
+.detail-user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 7px;
+}
+
+.detail-user-pic {
+  margin-right: 15px;
+}
+
+.detail-user-pic img {
+  border-radius: 50%;
+}
+
+.created-by {
+  font-size: 14px;
+  font-family: 'Arial';
+}
+
+.detail-user-name {
+  font-size: 15px;
+  font-family: 'Permanent Marker', cursive;
+}
