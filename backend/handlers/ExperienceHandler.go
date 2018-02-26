@@ -164,6 +164,11 @@ func VoteExperience(c *gin.Context, db *gorm.DB) {
 	if err != nil || vote != 1 && vote != -1 {
 		c.JSON(400, gin.H{"error": "invalid vote value"})
 	}
+	userID, err := strconv.Atoi(c.PostForm("userID"))
+	if err != nil {
+		c.JSON(400, gin.H{"error": "must be logged in to vote"})
+	}
+	fmt.Printf("User id is: %v", userID)
 	db.Where("ID = ?", expID).First(&exp)
 	exp.Score += vote
 	db.Save(&exp)
