@@ -36,24 +36,42 @@ class NewExperience extends React.Component {
 
   addGenre(e) {
     e.preventDefault();
-    if ( this.state.genre && !(this.state.genres.split("|*|").includes(this.state.genre))) {
+    if (this.state.genre && !(this.state.genres.split("|*|").includes(this.state.genre))) {
 
       this.setState({
         genres: this.state.genres + `|*|${this.state.genre}`,
         genre: "",
-        genreError: false,
+        genreError: "",
       });
     } else if (this.state.genres.split("|*|").includes(this.state.genre)) {
+      if (this.state.genre === "") {
 
-      this.setState({
-        genreError: true
-      });
+      } else {
+        this.setState({
+          genreError: true
+        });
+      }
     }
 
   }
 
   validateExperience(experience) {
-    const errors = [];
+    const errors = {};
+    if (!experience) {
+      if (!this.state.title) {
+        errors.Title = ("Please include a title.");
+      }
+      if (!this.state.description) {
+        errors.Description = ("Please include a description.");
+      }
+      if (!this.state.genres){
+        errors.Genres = ("Please include at least one tag.");
+      }
+
+
+      this.props.receiveFormErrors(errors);
+      return false;
+    }
     if (!experience.Title) {
       errors.Title = ("Please include a title.");
     }
@@ -68,10 +86,17 @@ class NewExperience extends React.Component {
   }
 
   validateSave(experience) {
-    let activities = Object.values(experience.Activities);
+    let errors = {};
     let bool = true;
-    bool = this.validateExperience(experience);
+    if (!this.validateExperience(experience)) {
+      // errors.Experience = ("Please finish building your experience.");
+      // this.props.receiveFormErrors(errors);
+      return false;
+    }
+    let activities = Object.values(experience.Activities);
     if (Object.values(activities).length < 1) {
+      errors.ActivitiesCount = ("Please add at least one activity to your experience.");
+      this.props.receiveFormErrors(errors);
       return false;
     }
     activities.forEach(activity => {
@@ -231,13 +256,14 @@ class NewExperience extends React.Component {
 
     e.preventDefault();
     let experience = this.state.experience;
-    console.log(experience);
-    experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
+    if (this.validateSave(experience)) {
+      experience.ActivitiesString = JSON.stringify(this.state.experience.Activities);
 
-    this.props.createExperience(experience, this.state.files).then(experience2 => {
+      this.props.createExperience(experience, this.state.files).then(experience2 => {
 
-      this.props.history.push(`/experience/${experience2.ID}`);
-    });
+        this.props.history.push(`/experience/${experience2.ID}`);
+      });
+    }
   }
 
  render() {
@@ -256,6 +282,7 @@ class NewExperience extends React.Component {
       <section className={'create-activity-form-container'}>
         <div className="form-header">
           <h1 className="form-title">{this.state.experience ? this.state.experience.Title : "Create an Experience"}</h1>
+
 
             <ul className="genre-tags">
               {this.state.genres && this.state.genres.split("|*|").map(genre => {
@@ -308,6 +335,8 @@ class NewExperience extends React.Component {
         <button
           className="btn"
           onClick={(e) => this.handleBuild(e)}>Build your Experience</button></div>}
+        {this.state.experience && !this.props.errors.ActivitiesCount && <div className="activity-menu-header">{this.state.form ? "" : 'Select an activity type:' }</div>}
+        {this.props.errors.ActivitiesCount && <div className="activity-menu-header red">{this.props.errors.Experience ? this.props.errors.Experience : this.props.errors.ActivitiesCount }</div>}
         {this.state.experience &&
           <ActivityMenu showForm={this.showForm}/>
         }
