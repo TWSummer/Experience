@@ -70,6 +70,9 @@ class NewExperience extends React.Component {
     let activities = Object.values(experience.Activities);
     let bool = true;
     bool = this.validateExperience(experience);
+    if (Object.values(activities).length < 1) {
+      return false;
+    }
     activities.forEach(activity => {
       if (bool) {
         bool = this.validateActivity(activity);
