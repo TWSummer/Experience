@@ -85,5 +85,5 @@ func seedExp(db *gorm.DB) {
 			}
 		}`)}
 
-	db.Create(&Experience{UserID: "1", Title: "North Berkeley Date Night", Genre: "Romantic", Description: "A casual but romantic night out exploring the natural beauty of the East Bay. Start in North Berkeley's famed gourmet ghetto, wind your way up to the Berkeley hills, and enjoy the sights as you chow down on a hillside picnic", Duration: 180, Activities: activities1})
+	db.Create(&Experience{UserName: "Andrew Blum", UserPictureURL: "https://i.imgur.com/clq9lGO.jpg", UserID: "1", Title: "North Berkeley Date Night", Genre: "Romantic", Description: "A casual but romantic night out exploring the natural beauty of the East Bay. Start in North Berkeley's famed gourmet ghetto, wind your way up to the Berkeley hills, and enjoy the sights as you chow down on a hillside picnic", Duration: 180, Activities: activities1})
 }

@@ -434,7 +434,15 @@ class DetailDisplay extends React.Component {
             {itemToDisplay.Description}
           </p>
         </div>
-
+        <div className="detail-user-info">
+          <div className="detail-user-pic">
+            <img src={ this.props.experience.UserPictureURL }></img>
+          </div>
+          <div className="detail-user-name">
+            <div className="created-by">CREATED BY<br /></div>
+            { this.props.experience.UserName }
+          </div>
+        </div>
       </div>
     );
   }

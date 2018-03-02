@@ -7,11 +7,13 @@ import (
 
 type Experience struct {
 	gorm.Model
-	Title       string         `gorm:"NOT NULL" json:"Title"`
-	UserID      string         `gorm:"NOT NULL" json:"UserID"`
-	Description string         `json:"Description"`
-	Genre       string         `json:"Genre"`
-	Score       int            `gorm:"NOT NULL" json:"Score"`
-	Activities  postgres.Jsonb `json:"Activities"`
-	Duration    int            `json:"Duration"`
+	Title          string         `gorm:"NOT NULL" json:"Title"`
+	UserID         string         `gorm:"NOT NULL" json:"UserID"`
+	UserName       string         `json:"UserName"`
+	UserPictureURL string         `json:"UserPictureURL"`
+	Description    string         `json:"Description"`
+	Genre          string         `json:"Genre"`
+	Score          int            `gorm:"NOT NULL" json:"Score"`
+	Activities     postgres.Jsonb `json:"Activities"`
+	Duration       int            `json:"Duration"`
 }

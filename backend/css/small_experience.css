@@ -38,7 +38,7 @@
 }
 
 .small-exp-title {
-  padding-left: 70px;
+  padding-left: 4.2vw;
   font-size: 22px;
   /* font-family: arial, sans-serif; */
   font-family: 'Futura', sans-serif;
@@ -86,13 +86,13 @@
 }
 
 .small-exp-word {
-  letter-spacing: -4px;
+  letter-spacing: -2px;
   margin-top: -10px;
   opacity: 0.8;
 }
 
 .small-exp-word:nth-child(even) {
-  letter-spacing: -4px;
+  letter-spacing: -2px;
   opacity: 0.8;
   color: rgba(87, 118, 168, 0.8);
   /* background-image: linear-gradient(to top, darkblue 60%, lightblue);
