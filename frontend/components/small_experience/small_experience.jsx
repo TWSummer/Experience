@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 class SmallExperience extends React.Component {
   constructor(props) {
@@ -137,9 +138,11 @@ class SmallExperience extends React.Component {
            </a>
            <div className="small-exp-ribbion-box">
              {this.votes()}
-             <section className="experience-ribbon">
-               { this.state.actHTMLArr }
-             </section>
+             <Link to={`/experience/${this.props.experience.ID}`}>
+               <section className="experience-ribbon">
+                 { this.state.actHTMLArr }
+               </section>
+             </Link>
            </div>
          </section>
        </div>
