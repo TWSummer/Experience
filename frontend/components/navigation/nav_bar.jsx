@@ -91,7 +91,7 @@ class NavBar extends React.Component {
         <nav className="nav-content-box">
         <ul className="left-nav">
           <Link className='logo' to='/home'>
-            <span>x</span><span>PERIENCITY</span>
+            <span>x</span><span>PERIENCE.CITY</span>
           </Link>
           <form
             onSubmit={this.handleSubmit}
