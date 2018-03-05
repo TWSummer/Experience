@@ -15,7 +15,7 @@ import (
 )
 
 func ValidateAuthToken(UserID, OAuthID string) bool {
-	if UserID == "demo" && OAuthID == "demo" {
+	if UserID == "1" && OAuthID == "demo" {
 		return true
 	}
 	dotEnvErr := godotenv.Load()

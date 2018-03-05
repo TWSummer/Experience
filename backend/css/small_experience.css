@@ -2,7 +2,7 @@
   width: 95%;
   /* height: 15%; */
   height: 9vw;
-  /* min-height: 100px; */
+  min-height: 100px;
 
   margin: 30px auto;
   display: flex;
@@ -16,6 +16,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.small-exp-ribbion-box a {
+  width: 100%;
+  min
 }
 
 .vote-buttons {
@@ -54,8 +59,8 @@
 
 .experience-ribbon {
   display: flex;
-  height: 84.44444444444%;
   min-height: 100px;
+  height: 8vw;
   width: 100%;
   background: url("https://images.fineartamerica.com/images-medium-large-5/color-explosion-abstract-art-ann-powell.jpg")
 }

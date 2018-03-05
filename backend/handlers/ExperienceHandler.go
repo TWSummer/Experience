@@ -115,7 +115,7 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 	marshalM, err := json.Marshal(activitiesMap)
 	fmt.Printf("err, %+v\n", err)
 	exp.Activities = postgres.Jsonb{json.RawMessage(marshalM)}
-	
+
 	db.Save(&exp)
 	c.JSON(200, exp)
 
@@ -170,7 +170,10 @@ func VoteExperience(c *gin.Context, db *gorm.DB) {
 			if userID == "" {
 				c.JSON(400, gin.H{"error": "must be logged in to vote"})
 			} else {
+				fmt.Printf("userID = %+v", userID)
+
 				db.Where("user_id = ?", userID).First(&user)
+				fmt.Printf("user = %+v", user)
 				var foo interface{}
 				userRaw := user.Votes.RawMessage
 				json.Unmarshal(userRaw, &foo)
