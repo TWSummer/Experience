@@ -1,6 +1,9 @@
 .experience-index-item {
   width: 95%;
-  height: 15%;
+  /* height: 15%; */
+  height: 9vw;
+  /* min-height: 100px; */
+
   margin: 30px auto;
   display: flex;
 }
@@ -52,6 +55,7 @@
 .experience-ribbon {
   display: flex;
   height: 84.44444444444%;
+  min-height: 100px;
   width: 100%;
   background: url("https://images.fineartamerica.com/images-medium-large-5/color-explosion-abstract-art-ann-powell.jpg")
 }
@@ -83,6 +87,7 @@
   color: black;
   position: relative;
   padding: 2px 6px;
+  padding-top: 15px;
 }
 
 .small-exp-word {
@@ -104,6 +109,7 @@
 .small-exp-selected-title {
   font-size: 24px;
   background-color: #fff;
+  margin-top: -10px;
 }
 
 .small-exp-description {

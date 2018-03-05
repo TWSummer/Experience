@@ -38,6 +38,17 @@ export const fetchNameAndPicture = () => (dispatch) => {
     dispatch(receiveUser(response));
   });
 };
+
+export const loginDemo = () => (dispatch) => {
+    loginUser("demo", "demo");
+    dispatch(receiveUser({
+      id: "1",
+      name: "David Chang",
+      picture: {data: {url: "http://www.allcladchefs.com/content/ambassadors/chefs/thumbs/david-chang.jpg"}},
+    }));
+};
+
+
 export const logoutUser = () => dispatch => {
   FB.api("/me/permissions", "delete", function(response){
     dispatch(removeUser(response));
