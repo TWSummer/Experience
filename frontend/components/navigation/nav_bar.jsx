@@ -13,6 +13,7 @@ class NavBar extends React.Component {
     this.update = this.update.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDemo = this.handleDemo.bind(this);
   }
 
   componentWillReceiveProps() {
@@ -33,6 +34,12 @@ class NavBar extends React.Component {
     //Completed or exited auth process
     FB.login(this.props.checkLoginState);
 
+  }
+
+  handleDemo(e) {
+    console.log("click");
+    e.preventDefault();
+    this.props.loginDemo();
   }
 
   handleLogout(e) {
@@ -77,12 +84,21 @@ class NavBar extends React.Component {
         </div>
       </div>
       <button
+        className="demo-button btn"
+        onClick={(e) => {
+          this.handleDemo(e);
+        }}>
+        Demo
+      </button>
+      <button
         className="login-button btn"
         onClick={(e) => {
+          console.log("click?");
           this.handleLogin(e);
         }}>
-        <i className="fab fa-facebook-square"></i> Login
+        <i className="fab fa-facebook-square"></i> Log In
       </button>
+
     </div>
   );
 
@@ -91,7 +107,7 @@ class NavBar extends React.Component {
         <nav className="nav-content-box">
         <ul className="left-nav">
           <Link className='logo' to='/home'>
-            <span>x</span><span>PERIENCITY</span>
+            <span>x</span><span>PERIENCE.CITY</span>
           </Link>
           <form
             onSubmit={this.handleSubmit}

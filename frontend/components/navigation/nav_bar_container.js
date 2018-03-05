@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { checkLoginState, logoutUser} from '../../actions/session_actions';
+import { checkLoginState, logoutUser, loginDemo} from '../../actions/session_actions';
 import { searchExperiences, resetSearch } from '../../actions/search_actions';
 import { withRouter } from 'react-router-dom';
 import NavBar from './nav_bar';
@@ -15,7 +15,8 @@ const mapDispatchToProps = dispatch => {
     checkLoginState: () => dispatch(checkLoginState()),
     logoutUser: () => dispatch(logoutUser()),
     searchExperiences: (query) => dispatch(searchExperiences(query)),
-    resetSearch: () => dispatch(resetSearch())
+    resetSearch: () => dispatch(resetSearch()),
+    loginDemo: () => dispatch(loginDemo()),
   };
 };
 
