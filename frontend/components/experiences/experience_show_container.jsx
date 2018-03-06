@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import { fetchExperience,
          createExperience } from '../../actions/experience_actions';
 import { singleExperience } from '../../reducers/selectors';
+import { withRouter } from 'react-router-dom';
 
 const mapStateToProps = (state, ownProps) => {
+  let queryString = ownProps.location.search;
+  let id = parseInt(queryString.split("=")[1]);
   return ({
-    experience: singleExperience(state, ownProps)
+    experience: singleExperience(state, ownProps),
+    selected: id
   });
 };
 
@@ -17,7 +21,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   });
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(ExperienceShow);
+)(ExperienceShow));

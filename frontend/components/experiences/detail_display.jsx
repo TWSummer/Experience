@@ -3,14 +3,19 @@ import React from 'react';
 class DetailDisplay extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+
+    this.state = {
+      selectedActivity: props.selectedActivity
+    };
   }
 
   componentDidMount() {
     this.setState({mounted: true});
+    console.log();
     if (this.props.experience) {
       this.setupMap(this.props);
     }
+
   }
 
   setupMap(props) {
@@ -399,6 +404,7 @@ class DetailDisplay extends React.Component {
   render() {
     let itemToDisplay = this.props.selectedActivity ?
       this.props.selectedActivity : this.props.experience;
+      // console.log(itemToDisplay);
     return (
       <div className="detail-display">
         <div className="detail-display-header">
