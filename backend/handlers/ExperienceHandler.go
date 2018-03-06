@@ -43,11 +43,6 @@ func CreateExperience(c *gin.Context, db *gorm.DB) {
 
 
 	exp.Activities = postgres.Jsonb{(json.RawMessage(c.PostForm("ActivitiesString")))}
-
-
-	// exp.Activities = postgres.Jsonb{exp.Activities}
-	// fmt.Printf("File: %+v \n", file)
-	// fmt.Println("success?")
 	exp.Score = 1
 	db.Create(&exp)
 	c.JSON(200, exp)
@@ -73,8 +68,6 @@ func UploadActivityPhotos(c *gin.Context, db *gorm.DB) {
 
 		return
 	}
-
-	//data is an array containing activity ids for the files
 	data := form.Value["data"]
 	files := form.File["file"]
 	bucket := "experience.images"

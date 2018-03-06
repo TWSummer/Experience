@@ -304,6 +304,14 @@ class DetailDisplay extends React.Component {
       this.displayRoute(mapOptions.startPoint, mapOptions.endPoint,
         directionsService, directionsDisplay, mapOptions.waypoints);
 
+      if (this.props.selectedActivity) {
+        console.log("sdfsdfasdfasdfasdfasf");
+        map.panTo({
+          lat: this.props.selectedActivity.Lat,
+          lng: this.props.selectedActivity.Lng
+        });
+        map.setZoom(15);
+      }
     }
   }
 
