@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"flex_project/backend/data"
-	
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )
@@ -15,4 +15,5 @@ func NewSession(c *gin.Context, db *gorm.DB) {
 	}
 	user := db.Where("UserID = ?", tempUser.UserID)
 	c.JSON(200, user)
+
 }
