@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 class SmallExperience extends React.Component {
   constructor(props) {
@@ -8,7 +9,8 @@ class SmallExperience extends React.Component {
     this.resizeActivity = this.resizeActivity.bind(this);
     this.state = {
       actHTMLArr: [],
-      totalDur: 0
+      totalDur: 0,
+      targetActivityID: undefined,
     };
     this.icons = {
       Food: <i className="fa fa-utensils small-exp-icon"></i>,
@@ -76,7 +78,12 @@ class SmallExperience extends React.Component {
             key={ curAct.ID }
             data={ dur }
             className="small-exp-activity"
-            onMouseEnter={(e) => this.resizeActivity(curAct.ID, 'grow')}
+            onMouseEnter={(e) => {
+              this.resizeActivity(curAct.ID, 'grow');
+              this.setState({
+                targetActivityID: curAct.ID
+              });
+            }}
             onMouseLeave={(e) => this.resizeActivity(curAct.ID, 'shrink')}
             style={ actStyle }>
             <div className="small-exp-text-box">
@@ -110,7 +117,12 @@ class SmallExperience extends React.Component {
           key={ curAct.ID }
           data={ curAct.Duration }
           className="small-exp-activity"
-          onMouseEnter={(e) => this.resizeActivity(curAct.ID, 'grow')}
+          onMouseEnter={(e) => {
+            this.resizeActivity(curAct.ID, 'grow');
+            this.setState({
+              targetActivityID: curAct.ID
+            });
+          }}
           onMouseLeave={(e) => this.resizeActivity(curAct.ID, 'shrink')}
           style={{
             width: (curAct.Duration/totalDur) * 100 + '%',
@@ -137,9 +149,11 @@ class SmallExperience extends React.Component {
            </a>
            <div className="small-exp-ribbion-box">
              {this.votes()}
-             <section className="experience-ribbon">
-               { this.state.actHTMLArr }
-             </section>
+             <Link to={`/experience/${this.props.experience.ID}?selected=${this.state.targetActivityID}`}>
+               <section className="experience-ribbon">
+                 { this.state.actHTMLArr }
+               </section>
+             </Link>
            </div>
          </section>
        </div>

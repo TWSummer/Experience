@@ -4,15 +4,17 @@
 }
 
 .home-header {
-  padding-top: 20px;
+  padding-top: 50px;
   display: flex;
   justify-content: center;
 }
 
 .header-text {
   position: absolute;
-  font-size: 180px;
+  font-size: 10.5vw;
   font-weight: 900;
+  text-align: center;
+  width: 100%;
   /* font-family: 'Rock Salt', cursive; */
   /* font-family: 'Open Sans Condensed', sans-serif; */
   /* font-family: 'Permanent Marker', cursive; */
@@ -22,6 +24,6 @@
 }
 
 .banner-image {
-  height: 38%;
-  width: 83vw;
+  height: 20vw;
+  /* width: 83vw; */
 }

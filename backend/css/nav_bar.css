@@ -61,10 +61,11 @@ a:link:visited {
 .left-nav {
   display: flex;
   justify-content: space-between;
+  /* width: 700px; */
 }
 
 .search-container {
-  margin-left: 200px;
+  margin-left: 100px;
   display: flex;
   align-items: center;
 }
@@ -114,6 +115,7 @@ a:link:visited {
 .logout-text {
   font-family: 'Rock Salt', cursive;
   font-size: 12px;
+
 }
 
 .profile-picture {
@@ -130,16 +132,21 @@ a:link:visited {
 }
 
 .login-button {
-  width: 100px;
+  margin-left: 20px;
+  width: 90px;
+  font-family: 'Rock Salt', cursive;
+  font-size: 12px;
+  margin-right: 10px;
 }
 
 .logout-button {
   margin-left: 20px;
-  width: 100px;
+  width: 90px;
 }
 
 .btn {
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
