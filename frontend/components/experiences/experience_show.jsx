@@ -7,8 +7,11 @@ import DetailDisplay from './detail_display';
 class ExperienceShow extends React.Component {
   constructor(props) {
     super(props);
+    // if (isNaN(props.selected)) {
+        this.state = {};
+    // } else {
 
-    this.state = {};
+    // }
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -26,6 +29,12 @@ class ExperienceShow extends React.Component {
     // } else if (oldProps.match.params.id !== newProps.match.params.id) {
     //   this.props.fetchExperience(newProps.match.params.id);
     // }
+    if (newProps.experience && !isNaN(newProps.selected)) {
+      this.setState({
+        selected: newProps.experience.activities[newProps.selected - 1],
+        clicked: newProps.selected
+      });
+    }
   }
 
   handleMouseEnter(e, activityId) {
@@ -75,6 +84,7 @@ class ExperienceShow extends React.Component {
             handleMouseLeave={this.handleMouseLeave}
             handleMouseEnter={this.handleMouseEnter}
             handleClick={this.handleClick}
+            selectedActivity={this.state.selected}
             />
           <DetailDisplay
             experience={this.props.experience}
