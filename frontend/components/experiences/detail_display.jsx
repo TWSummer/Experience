@@ -7,11 +7,11 @@ class DetailDisplay extends React.Component {
     this.state = {
       selectedActivity: props.selectedActivity
     };
+    this.zoomIn = this.zoomIn.bind(this);
   }
 
   componentDidMount() {
     this.setState({mounted: true});
-    console.log();
     if (this.props.experience) {
       this.setupMap(this.props);
     }
@@ -29,7 +29,7 @@ class DetailDisplay extends React.Component {
         streetViewControl: false,
         rotateControl: false,
         fullscreenControl: false,
-        center: mapOptions.center,  // Australia.
+        center: mapOptions.center,
         styles:[
     {
         "featureType": "administrative",
@@ -305,7 +305,6 @@ class DetailDisplay extends React.Component {
         directionsService, directionsDisplay, mapOptions.waypoints);
 
       if (this.props.selectedActivity) {
-        console.log("sdfsdfasdfasdfasdfasf");
         map.panTo({
           lat: this.props.selectedActivity.Lat,
           lng: this.props.selectedActivity.Lng
@@ -360,6 +359,7 @@ class DetailDisplay extends React.Component {
     }, (response, status) => {
       if (status === 'OK') {
         display.setDirections(response);
+        setTimeout(this.zoomIn, 75);
       } else {
         service.route({
           origin: origin,
@@ -370,12 +370,24 @@ class DetailDisplay extends React.Component {
         }, (res2, stat2) => {
           if (stat2 === 'OK') {
             display.setDirections(res2);
+            setTimeout(this.zoomIn, 75);
           } else {
             alert('Could not display directions due to: ' + stat2);
           }
         });
       }
     });
+  }
+
+  zoomIn() {
+    if (this.props.selectedActivity && this.props.selectedActivity.Lat &&
+    this.props.selectedActivity.Lng) {
+      this.state.map.panTo({
+        lat: this.props.selectedActivity.Lat,
+        lng: this.props.selectedActivity.Lng
+      });
+      this.state.map.setZoom(15);
+    }
   }
 
   componentWillReceiveProps(newProps) {
@@ -412,7 +424,6 @@ class DetailDisplay extends React.Component {
   render() {
     let itemToDisplay = this.props.selectedActivity ?
       this.props.selectedActivity : this.props.experience;
-      // console.log(itemToDisplay);
     return (
       <div className="detail-display">
         <div className="detail-display-header">

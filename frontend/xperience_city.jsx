@@ -6,7 +6,6 @@ import Root from './components/root';
 
 //This method is called in the window once Facebook has been loaded in our script tags
 window.fbAsyncInit = function() {
-  console.log(window.appID);
   FB.init({
     appId      : window.appID,
     status     : true,
