@@ -37,7 +37,6 @@ class NavBar extends React.Component {
   }
 
   handleDemo(e) {
-    console.log("click");
     e.preventDefault();
     this.props.loginDemo();
   }
@@ -93,7 +92,6 @@ class NavBar extends React.Component {
       <button
         className="login-button btn"
         onClick={(e) => {
-          console.log("click?");
           this.handleLogin(e);
         }}>
         <i className="fab fa-facebook-square"></i> Log In

@@ -27,7 +27,6 @@ class NewExperience extends React.Component {
     this.validateSave = this.validateSave.bind(this);
     this.handleSave= this.handleSave.bind(this);
     this.addGenre = this.addGenre.bind(this);
-    console.log(this.props.currentUser);
   }
 
   componentDidMount() {

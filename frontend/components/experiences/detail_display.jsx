@@ -380,7 +380,6 @@ class DetailDisplay extends React.Component {
   }
 
   zoomIn() {
-    console.log(this.props.selectedActivity);
     if (this.props.selectedActivity && this.props.selectedActivity.Lat &&
     this.props.selectedActivity.Lng) {
       this.state.map.panTo({
@@ -425,7 +424,6 @@ class DetailDisplay extends React.Component {
   render() {
     let itemToDisplay = this.props.selectedActivity ?
       this.props.selectedActivity : this.props.experience;
-      // console.log(itemToDisplay);
     return (
       <div className="detail-display">
         <div className="detail-display-header">

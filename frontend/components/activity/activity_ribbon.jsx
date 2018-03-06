@@ -19,9 +19,8 @@ class ActivityRibbon extends React.Component {
 
     this.state = {
       selectedActivity: props.selectedActivity,
-      
+
     };
-    console.log(this.state);
   }
 
 
