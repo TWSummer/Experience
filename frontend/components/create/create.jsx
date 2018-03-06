@@ -94,8 +94,8 @@ class NewExperience extends React.Component {
       return false;
     }
     let activities = Object.values(experience.Activities);
-    if (Object.values(activities).length < 1) {
-      errors.ActivitiesCount = ("Please add at least one activity to your experience.");
+    if (Object.values(activities).length < 2) {
+      errors.ActivitiesCount = ("Please add at least two activities to your experience.");
       this.props.receiveFormErrors(errors);
       return false;
     }
