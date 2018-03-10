@@ -172,6 +172,7 @@ input.duration-input {
 
 .form-title {
   font-size: 28px;
+  margin-bottom: 10px;
 }
 
 .create-activity-form {
@@ -181,6 +182,15 @@ input.duration-input {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.experience-description-label {
+  font-weight: 900;
+}
+.experience-description-container {
+  font-size: 20px;
+  margin-bottom: 30px;
+  margin-top: 30px;
 }
 
 .activity-menu {

@@ -34,6 +34,11 @@ class NewExperience extends React.Component {
     this.setupMap();
   }
 
+  clearImageUrl(e) {
+    e.preventDefault();
+    this.setState({ImageUrl: ""})
+  }
+
   addGenre(e) {
     e.preventDefault();
     if (this.state.genre && !(this.state.genres.split("|*|").includes(this.state.genre))) {
@@ -335,23 +340,27 @@ class NewExperience extends React.Component {
         <button
           className="btn"
           onClick={(e) => this.handleBuild(e)}>Build your Experience</button></div>}
+        {this.state.experience && <div className="experience-description-container">
+          <span className="experience-description-label">Description: </span>
+          {this.state.experience.Description}
+        </div>}
         {this.state.experience && !this.props.errors.ActivitiesCount && <div className="activity-menu-header">{this.state.form ? "" : 'Select an activity type:' }</div>}
         {this.props.errors.ActivitiesCount && <div className="activity-menu-header red">{this.props.errors.Experience ? this.props.errors.Experience : this.props.errors.ActivitiesCount }</div>}
         {this.state.experience &&
           <ActivityMenu showForm={this.showForm}/>
         }
         <div className="maps-header">
-          {this.state.activity && this.state.form !== "Custom" && !this.state.imgUrls ? "Search the Map to Find Photos": ""}
+          {this.state.activity && this.state.form !== "Custom" && !this.state.imgUrls ? "Search the Map to Add a Location and Find Photos": ""}
         </div>
         <input className={`google-maps-search ${this.state.activity && this.state.form !== "Custom" ? "" : "hidden"}`} type="search" placeholder="Search" id="pac-input"></input>
         <div className={this.state.activity && this.state.form !== "Custom"? "" : "hidden"} id="map">This is the map</div>
         {this.state.activity && <form className="create-activity-form">
-          {this.state.file && <div className="custom-preview"><img src={this.state.file}></img></div>}
-          {!this.props.ImageUrl && this.state.imgUrls && !this.state.file && <span className="photos-header">Choose a photo</span>}
+          {this.state.ImageUrl && <div className="custom-preview"><img src={this.state.ImageUrl}></img></div>}
+          {!this.props.ImageUrl && this.state.imgUrls && !this.state.ImageUrl && <span className="photos-header">Choose a photo</span>}
           <div className="error-container img">
             {this.props.errors.ImageUrl && this.props.errors.ImageUrl}
           </div>
-          {this.state.imgUrls && !this.state.file ? <div className="hide-scrollbar-div">
+          {this.state.imgUrls && !this.state.ImageUrl ? <div className="hide-scrollbar-div">
           <ul className="google-maps-photos" style={{overflowX: "scroll"}}>
 
 
@@ -370,16 +379,21 @@ class NewExperience extends React.Component {
           <div className="gradient-overlay">
           </div>
         </div> : ""}
-        {this.state.form !== "Custom" && <label className="file-input">
+        {this.state.form !== "Custom" && !this.state.ImageUrl && <label className="file-input">
             <span className="file-input btn">Or Upload Your Own</span>
             <input
               onChange={(e) => this.setFile(e)}
               className="file-input"
               type="file"></input>
-
-
-
           </label>}
+        { this.state.form !== "Custom" && this.state.ImageUrl &&
+          <span
+            onClick={(e) => this.clearImageUrl(e)}
+            className="file-input btn">Select a Different Photo</span>}
+
+
+
+
           {this.state.form === "Custom" && <label className="file-input">
               <span className="file-input btn">Upload Image</span>
               <input

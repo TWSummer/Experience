@@ -417,10 +417,10 @@ class DetailDisplay extends React.Component {
       <div className="detail-display">
         <div className="detail-display-header">
           <h1>{itemToDisplay.Title}</h1>
-          <span>Time: {this.props.precisionRound(itemToDisplay.Duration/60, 1)} hours</span>
+          <span className="time-display">Time: {this.props.precisionRound(itemToDisplay.Duration/60, 1)} hours</span>
         </div>
         <div id="show-map">
-
+          {}
         </div>
 
         <ul className="details-details-details">
