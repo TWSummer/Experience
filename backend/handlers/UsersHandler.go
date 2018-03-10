@@ -33,7 +33,7 @@ func ValidateAuthToken(UserID, OAuthID string) bool {
 	json.Unmarshal(contents, &foo)
 	m := foo.(map[string]interface{})
 	n := m["data"].(map[string]interface{})
-	return (n["user_id"] == UserID && n["app_id"] == "867019043470476")
+	return (n["user_id"] == UserID && n["app_id"] == appId)
 }
 
 func CreateUser(c *gin.Context, db *gorm.DB) {
