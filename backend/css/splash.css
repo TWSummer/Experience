@@ -1,0 +1,52 @@
+.splash-header {
+  position: relative;
+}
+
+.splash-image {
+  width: 100vw;
+  margin-left: -12.5%;
+}
+
+.splash-text {
+  font-style: italic;
+  font-size: 3vw;
+  width: 100%;
+  text-align: right;
+  margin-left: 5vw;
+}
+
+.large-logo {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  margin-top: -10px;
+  justify-content: center;
+  width: 80%;
+  top: 30vw;
+
+}
+
+.large-logo span {
+
+  font-family: 'Permanent Marker', cursive;
+
+  color: #050505;
+
+}
+
+.large-logo span:first-child {
+
+  font-size: 25vw;
+  line-height: .70;
+}
+
+.large-logo span:last-child {
+  font-family: 'Open Sans Condensed', sans-serif;
+
+  margin-left: -2vw;
+  font-size: 12.5vw;
+  line-height: 1;
+  margin-top: 5vw;
+}
