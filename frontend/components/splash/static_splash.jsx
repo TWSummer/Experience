@@ -23,7 +23,7 @@ export default (props) => {
         </div>
         <div className="starry-sky">
           <div className="splash-content-2">
-            Sites like Yelp and TripAdvisor provide <strong>more stars than than the night sky</strong> to help us find the <strong>best chinese restaurant</strong> within walking distance of our homes. <br/><br/><strong>Can't we do better than that?</strong>
+            Sites like Yelp and TripAdvisor provide <strong>more stars than the night sky</strong> to help us find the <strong>best chinese restaurant</strong> within walking distance of our homes. <br/><br/><strong>Can't we do better than that?</strong>
           </div>
         </div>
         <div className="splash-content-3">
