@@ -1,49 +1,62 @@
 .footer {
-  border-top: 1px solid #000;
+  /* border-top: 1px solid #000;
   width: 100vw;
 
   margin-left: -10vw;
   padding: 2vw;
   box-sizing: border-box;
-  position: relative;
+  position: relative; */
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  /* align-items: flex-end; */
   font-family: 'Raleway', sans-serif;
-  padding-right: 10vw;
+  /* padding-right: 10vw; */
 
 }
 
 .info-header {
   width: 258px;
   font-size: 20px;
-
+  margin: 15px auto;
+  margin-top: 45px;
 }
 
 .author-information {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 250px;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 5px;
+  /* align-self: center; */
+  /* align-items: flex-end; */
+  /* width: 250px; */
 }
 
 
 .author-information ul{
   display: flex;
   font-size: 20px;
-  justify-content: space-between;
-  width: 100%;
+  /* justify-content: space-between; */
+  /* width: 100%; */
   align-items: center;
 }
 
 .author {
-  width: 150px;
+  /* width: 150px; */
+  margin-right: 7px;
 }
 
 .github {
   font-size: 40px;
+  margin-right: 7px;
+  transition: 0.25s ease;
 }
 
 .linkedin {
   font-size: 40px;
+  transition: 0.3s ease;
+}
+
+.github:hover, .linkedin:hover {
+  opacity: 0.7;
+  transition: 0.3s ease;
 }

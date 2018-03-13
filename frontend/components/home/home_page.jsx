@@ -12,7 +12,8 @@ class HomePage extends React.Component {
   }
 
   handleScroll(e) {
-    let heightBound = window.height * 0.8;
+    console.log("Keep Scrollin");
+    let heightBound = window.height * 0.2;
     if (heightBound > window.scrollY) {
         this.props.fetchExperiences(10, this.props.experiences.length);
     }

@@ -6,7 +6,7 @@ export default (props) => {
   return (
     <footer className="footer">
       <div className='info-header'>
-        Xperience.City was built by:
+        Xperience.City was built by
       </div>
       <div className="author-information">
         <ul>
