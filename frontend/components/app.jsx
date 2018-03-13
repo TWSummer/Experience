@@ -7,18 +7,21 @@ import SearchResultContainer from './home/search_result_container';
 import NavBarContainer from './navigation/nav_bar_container';
 import CreateContainer from './create/create_container';
 import ExperienceShowContainer from './experiences/experience_show_container';
-
+import StaticSplash from './splash/static_splash';
+import Footer from './footer/footer';
 
 const App = () => (
   <div className="full-page-body">
     <NavBarContainer />
     <Switch>
+      <Route exact path='/' component={StaticSplash} />
       <Route path="/home" component={HomePageContainer} />
       <Route path="/create" component={CreateContainer} />
       <Route path="/activitytest" component={ExperienceShowContainer}/>
       <Route path="/experience/:id" component={ExperienceShowContainer}/>
       <Route path="/search/:query" component={SearchResultContainer} />
     </Switch>
+    <Footer/>
   </div>
 );
 
