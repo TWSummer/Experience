@@ -65,7 +65,7 @@ a:link:visited {
 }
 
 .search-container {
-  margin-left: 100px;
+  margin-left: 5vw;
   display: flex;
   align-items: center;
 }
@@ -77,6 +77,12 @@ a:link:visited {
   padding: 5px 10px;
   width: 375px;
   background: #fff;
+}
+
+@media only screen and (max-width: 1500px) {
+    .search-container input  {
+        width: 25vw;
+    }
 }
 
 ::placeholder {
@@ -163,7 +169,13 @@ a:link:visited {
 .nav-create-exp {
   display: flex;
   position: relative;
-  margin-right: 60px;
+  margin-right: 3.125vw;
+}
+
+@media only screen and (max-width: 960px) {
+    .search-container input  {
+        margin-right: 30px;
+    }
 }
 
 .nav-create-exp a svg{
