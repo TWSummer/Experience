@@ -1,0 +1,49 @@
+.footer {
+  border-top: 1px solid #000;
+  width: 100vw;
+
+  margin-left: -10vw;
+  padding: 2vw;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: 'Raleway', sans-serif;
+  padding-right: 10vw;
+
+}
+
+.info-header {
+  width: 258px;
+  font-size: 20px;
+
+}
+
+.author-information {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 250px;
+}
+
+
+.author-information ul{
+  display: flex;
+  font-size: 20px;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.author {
+  width: 150px;
+}
+
+.github {
+  font-size: 40px;
+}
+
+.linkedin {
+  font-size: 40px;
+}

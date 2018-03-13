@@ -8,7 +8,7 @@ import NavBarContainer from './navigation/nav_bar_container';
 import CreateContainer from './create/create_container';
 import ExperienceShowContainer from './experiences/experience_show_container';
 import StaticSplash from './splash/static_splash';
-
+import Footer from './footer/footer';
 
 const App = () => (
   <div className="full-page-body">
@@ -21,6 +21,7 @@ const App = () => (
       <Route path="/experience/:id" component={ExperienceShowContainer}/>
       <Route path="/search/:query" component={SearchResultContainer} />
     </Switch>
+    <Footer/>
   </div>
 );
 

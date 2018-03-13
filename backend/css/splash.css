@@ -5,26 +5,39 @@
 .splash-image {
   width: 100vw;
   margin-left: -12.5%;
+  position: relative;
+}
+
+.image-overlay {
+  background: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
 }
 
 .splash-text {
   font-style: italic;
-  font-size: 3vw;
-  width: 100%;
+  font-size: 2.5vw;
+  width: 100vw;
   text-align: right;
-  margin-left: 5vw;
+  margin-left: -20vw;
+  font-family: 'Open Sans', sans-serif;
+
 }
 
 .large-logo {
   position: absolute;
-
+  z-index: 1;
   display: flex;
   align-items: center;
   line-height: 1;
   margin-top: -10px;
   justify-content: center;
   width: 80%;
-  top: 30vw;
+  top: 29vw;
 
 }
 
@@ -49,4 +62,172 @@
   font-size: 12.5vw;
   line-height: 1;
   margin-top: 5vw;
+}
+
+.box {
+  margin-bottom: 150px;
+}
+
+.box:last-of-type {
+  margin-bottom: 0px;
+}
+.splash-content-1, .splash-content-2, .splash-content-3 {
+  font-size: 3vw;
+  font-family: 'Open Sans Condensed', sans-serif;
+
+}
+
+.splash-content-1 {
+  margin-left: -5%;
+  font-weight: 900;
+}
+
+.splash-content-2 {
+  font-size: 3vw;
+  text-align: center;
+  color: #fff;
+  width: 50%;
+  padding: 10vw;
+  font-family: 'Raleway', sans-serif;
+
+  font-weight: 300;
+}
+
+.splash-content-2 strong {
+  font-weight: 700;
+  color: #fff;
+
+}
+
+.starry-sky {
+  background-image: url("https://i.imgur.com/tbON8Hk.jpg");
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  margin-left: -12.5%;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+
+}
+
+.splash-content-3 {
+  margin-right: -5%;
+  text-align: right;
+  font-weight: 900;
+
+}
+
+.xperience-blurb {
+  font-size: 3vw;
+  text-align: center;
+  font-weight: 300;
+  margin-bottom: 150px;
+
+}
+
+.xperience-blurb strong {
+  font-weight: 700;
+  font-family: 'Raleway', sans-serif;
+
+}
+
+.cool-images-header {
+  font-size: 5vw;
+  margin-left: -5vw;
+  font-family: 'Open Sans Condensed', sans-serif;
+
+}
+
+.cool-images {
+
+  font-size: 3vw;
+  font-family: 'Raleway', sans-serif;
+  width: 100vw;
+  margin-left: -10vw;
+
+}
+
+.cool-images-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.3);
+}
+
+.explore-image {
+  position: relative;
+
+  height: 30vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/SanFrancisco_from_TwinPeaks_dusk_MC.jpg/1680px-SanFrancisco_from_TwinPeaks_dusk_MC.jpg");
+}
+
+.explore-image .cool-span {
+  position: absolute;
+  color: #fff;
+  right: 12vw;
+  top: 2vw;
+
+}
+
+.date-image {
+  position: relative;
+  color: #fff;
+
+  height: 30vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0% 55%;
+  background-image: url("https://afktravel.com/wp-content/uploads/2016/02/romantic-dinner-wide.jpg");
+}
+
+.date-image .cool-span {
+  position: absolute;
+  color: #fff;
+  left: 12vw;
+  top: 2vw;
+
+}
+
+.friend-image {
+  position: relative;
+  color: #fff;
+
+  height: 30vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+
+  background-image: url("https://i.imgur.com/cnnA6DW.jpg");
+}
+
+.friend-image .cool-span {
+  position: absolute;
+  color: #fff;
+  right: 12vw;
+  top: 2vw;
+
+}
+
+.link-container {
+  display: flex;
+}
+
+.splash-button.btn {
+  font-size: 8vw;
+  margin: 40vh auto;
+  padding: 0 4vw;
+
+  font-family: 'Permanent Marker', sans-serif;
+
+  border-radius: 1vw;
+
+}
+
+.btn:hover {
+  background: #36454f
 }
