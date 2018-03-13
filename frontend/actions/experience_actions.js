@@ -38,6 +38,7 @@ export const fetchExperiences = (quantity, offset) => dispatch => {
 };
 
 export const createExperience = (exp, files) => dispatch => {
+  console.log(exp);
   return (
     APIUtil.createExperience(exp)
       .then(

@@ -142,6 +142,7 @@ a:link:visited {
 .logout-button {
   margin-left: 20px;
   width: 90px;
+  min-width: 90px;
 }
 
 .btn {

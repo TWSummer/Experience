@@ -380,6 +380,7 @@ class DetailDisplay extends React.Component {
   }
 
   zoomIn() {
+    this.setState({ defaultZoom: this.state.map.zoom });
     if (this.props.selectedActivity && this.props.selectedActivity.Lat &&
     this.props.selectedActivity.Lng) {
       this.state.map.panTo({
